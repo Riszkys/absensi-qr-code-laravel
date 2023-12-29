@@ -47,6 +47,29 @@
                     </select>
                 </div>
             </div>
+            <div class="row my-3">
+                <div class="col-4 col-md-2">
+                    <label for="namaTraining" class="col-form-label col-auto pr-3">Jawaban Benar</label>
+                </div>
+                @foreach ($soal as $s)
+                    @php
+                        $selectedJawaban = $s->jawaban_benar ?? '';
+                        // @dump($s->jawaban_benar);
+                    @endphp
+                    <div class="col-8 col-md-3">
+                        <select name="jawabanbenar{{ $s->id }}" class="form-select">
+                            @foreach (['A', 'B', 'C', 'D', 'E'] as $opsi)
+                                <option value="{{ $opsi }}" {{ $selectedJawaban == $opsi ? 'selected' : '' }}>
+                                    {{ $opsi }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endforeach
+            </div>
+
+
+
 
             <div class="row">
                 @foreach ($soal as $s)
