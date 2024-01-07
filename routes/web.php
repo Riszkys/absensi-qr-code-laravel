@@ -68,6 +68,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/panitia/training/absensi', [AbsensiController::class, 'index'])->name('training.absensi');
     Route::post('/selesai-pelatihan', [AbsensiController::class, 'updateStatus'])->name('selesai.pelatihan');
     Route::get('/panitia/training/report', [ReportController::class, 'index'])->name('report.index');
+    Route::post('/panitia/training/store-training', [ReportController::class, 'store'])->name('simpan.report');
     Route::post('/generate-pdf', [ReportController::class, 'generatePDF'])->name('simpan.pdf');
     Route::get('/panitia/test/detail-test/{id}', [detailTest::class, 'detail'])->name('detailtest');
     Route::get('/panitia/test/showupdate/{id}', [detailTest::class, 'tampilupdate'])->name('showupdatesoal');
