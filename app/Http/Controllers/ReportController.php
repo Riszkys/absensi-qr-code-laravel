@@ -297,80 +297,127 @@ class ReportController extends Controller
 
         $sheet->mergeCells('C27:K27');
         $sheet->setCellValue('C27', 'Evaluasi Training');
-        $sheet->getStyle('C27')->getAlignment()->setHorizontal('center')->setVertical('center');
         $sheet->getStyle('C27')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
 
+        $sheet->mergeCells('B29:C29');
         $sheet->setCellValue('B29', 'Kehadiran');
-        $sheet->getStyle('B29')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-        $sheet->getStyle('B29')->getBorders()->getTop()->setBorderStyle('medium');
+        $sheet->getStyle('B29:C29')->getAlignment()->setHorizontal('center')->setVertical('center');
+        $sheet->getStyle('B29:C29')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
+        $sheet->getStyle('B29:C29')->getBorders()->getAllBorders()->setBorderStyle('medium');
 
+        $sheet->mergeCells('D29:E29');
         $sheet->setCellValue('D29', 'Test');
-        $sheet->getStyle('D29')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-        $sheet->getStyle('D29')->getBorders()->getTop()->setBorderStyle('medium');
+        $sheet->getStyle('D29:E29')->getAlignment()->setHorizontal('center')->setVertical('center');
+        $sheet->getStyle('D29:E29')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
+        $sheet->getStyle('D29:E29')->getBorders()->getAllBorders()->setBorderStyle('medium');
 
+        $sheet->mergeCells('F29:G29');
         $sheet->setCellValue('F29', 'Peserta');
-        $sheet->getStyle('F29')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-        $sheet->getStyle('F29')->getBorders()->getTop()->setBorderStyle('medium');
+        $sheet->getStyle('F29:G29')->getAlignment()->setHorizontal('center')->setVertical('center');
+        $sheet->getStyle('F29:G29')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
+        $sheet->getStyle('F29:G29')->getBorders()->getAllBorders()->setBorderStyle('medium');
 
+        $sheet->mergeCells('H29:K29');
         $sheet->setCellValue('H29', 'Evaluasi');
-        $sheet->getStyle('H29')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-        $sheet->getStyle('H29')->getBorders()->getTop()->setBorderStyle('medium');
+        $sheet->getStyle('F29:K29')->getAlignment()->setHorizontal('center')->setVertical('center');
+        $sheet->getStyle('F29:K29')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
+        $sheet->getStyle('F29:K29')->getBorders()->getAllBorders()->setBorderStyle('medium');
+        $sheet->getStyle('F29')->getAlignment()->setWrapText(true);
 
         $sheet->setCellValue('B30', 'Plan');
-        $sheet->getStyle('B30')->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
+        $sheet->getStyle('B30')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
+        $sheet->getStyle('B30')->getAlignment()->setHorizontal('center')->setVertical('center');
+        $sheet->getStyle('B30')->getBorders()->getAllBorders()->setBorderStyle('medium');
 
         $sheet->setCellValue('C30', 'Actual');
-        $sheet->getStyle('C30')->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
+        $sheet->getStyle('C30')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
+        $sheet->getStyle('C30')->getAlignment()->setHorizontal('center')->setVertical('center');
+        $sheet->getStyle('C30')->getBorders()->getAllBorders()->setBorderStyle('medium');
 
         $sheet->setCellValue('D30', 'Ave Pre');
-        $sheet->getStyle('D30')->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
+        $sheet->getStyle('D30')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
+        $sheet->getStyle('D30')->getAlignment()->setHorizontal('center')->setVertical('center');
+        $sheet->getStyle('D30')->getBorders()->getAllBorders()->setBorderStyle('medium');
 
         $sheet->setCellValue('E30', 'Ave Post');
-        $sheet->getStyle('E30')->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
+        $sheet->getStyle('E30')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
+        $sheet->getStyle('E30')->getAlignment()->setHorizontal('center')->setVertical('center');
+        $sheet->getStyle('E30')->getBorders()->getAllBorders()->setBorderStyle('medium');
 
         $sheet->setCellValue('F30', 'Male');
-        $sheet->getStyle('F30')->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
+        $sheet->getStyle('F30')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
+        $sheet->getStyle('F30')->getAlignment()->setHorizontal('center')->setVertical('center');
+        $sheet->getStyle('F30')->getBorders()->getAllBorders()->setBorderStyle('medium');
 
         $sheet->setCellValue('G30', 'Female');
-        $sheet->getStyle('G30')->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
+        $sheet->getStyle('G30')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
+        $sheet->getStyle('G30')->getAlignment()->setHorizontal('center')->setVertical('center');
+        $sheet->getStyle('G30')->getBorders()->getAllBorders()->setBorderStyle('medium');
 
-        $sheet->setCellValue('H30', 'Berdasarkan hasil perhitungan rata-rata,terdapat peningkatan nilai dari pre test ke post test sebesar 3.7 poin.Maka dapat disimpulkan bahwa secara keseluruhan,peserta mengalami peningkatan pengetahuan mengenai materi yang ditrainingkan.Namun pelatihan ini tetap harus rutin dilakukan agar pemahaman dan kesadaran karyawan dapat terus meningkat');
-        $sheet->getStyle('H30')->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle('H30')->getBorders()->getTop()->setBorderStyle('medium');
+        $sheet->mergeCells('H30:K32');
+        $sheet->setCellValue('H30', 'Berdasarkan hasil perhitungan rata-rata, terdapat peningkatan nilai dari pre-test ke post-test sebesar 3.7 poin. Maka dapat disimpulkan bahwa secara keseluruhan, peserta mengalami peningkatan pengetahuan mengenai materi yang ditrainingkan. Namun pelatihan ini tetap harus rutin dilakukan agar pemahaman dan kesadaran karyawan dapat terus meningkat');
+        $sheet->getStyle('H30:K32')->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
+        $sheet->getStyle('H30:K32')->getBorders()->getAllBorders()->setBorderStyle('medium');
+        $sheet->getStyle('H30:K32')->getAlignment()->setHorizontal('center')->setVertical('center');
+        $sheet->getStyle('H30:K32')->getAlignment()->setWrapText(true);
+
+        $sheet->setCellValue('B30', 'Plan');
+        $sheet->getStyle('B30')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
+        $sheet->getStyle('B30')->getAlignment()->setHorizontal('center')->setVertical('center');
+        $sheet->getStyle('B30')->getBorders()->getAllBorders()->setBorderStyle('medium');
 
         $sheet->setCellValue('B31', '6');
-        $sheet->getStyle('B31')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
+        $sheet->getStyle('B31')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
+        $sheet->getStyle('B31')->getAlignment()->setHorizontal('center')->setVertical('center');
+        $sheet->getStyle('B31')->getBorders()->getAllBorders()->setBorderStyle('medium');
 
         $sheet->setCellValue('C31', '6');
-        $sheet->getStyle('C31')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
+        $sheet->getStyle('C31')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
+        $sheet->getStyle('C31')->getAlignment()->setHorizontal('center')->setVertical('center');
+        $sheet->getStyle('C31')->getBorders()->getAllBorders()->setBorderStyle('medium');
 
-        $sheet->setCellValue('D31', '6.3');
-        $sheet->getStyle('D31')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
+        $sheet->setCellValue('D31', '6,3');
+        $sheet->getStyle('D31')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
+        $sheet->getStyle('D31')->getAlignment()->setHorizontal('center')->setVertical('center');
+        $sheet->getStyle('D31')->getBorders()->getAllBorders()->setBorderStyle('medium');
 
         $sheet->setCellValue('E31', '10');
-        $sheet->getStyle('E31')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
+        $sheet->getStyle('E31')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
+        $sheet->getStyle('E31')->getAlignment()->setHorizontal('center')->setVertical('center');
+        $sheet->getStyle('E31')->getBorders()->getAllBorders()->setBorderStyle('medium');
 
         $sheet->setCellValue('F31', '4');
-        $sheet->getStyle('F31')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
+        $sheet->getStyle('F31')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
+        $sheet->getStyle('F31')->getAlignment()->setHorizontal('center')->setVertical('center');
+        $sheet->getStyle('F31')->getBorders()->getAllBorders()->setBorderStyle('medium');
 
         $sheet->setCellValue('G31', '2');
-        $sheet->getStyle('G31')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
+        $sheet->getStyle('G31')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
+        $sheet->getStyle('G31')->getAlignment()->setHorizontal('center')->setVertical('center');
+        $sheet->getStyle('G31')->getBorders()->getAllBorders()->setBorderStyle('medium');
 
-        $sheet->setCellValue('B32', '=C31/B31');
-        $sheet->getStyle('B32')->getFont()->setSize(26)->setName('Times New Roman')->setBold('bold');
+        $sheet->mergeCells('B32:C32');
+        $sheet->setCellValue('B32', '100%');
+        $sheet->getStyle('B32:C32')->getFont()->setSize(26)->setName('Times New Roman')->setBold(false);
+        $sheet->getStyle('B32:C32')->getAlignment()->setHorizontal('center')->setVertical('center');
+        $sheet->getStyle('B32:C32')->getBorders()->getAllBorders()->setBorderStyle('medium');
 
-        $sheet->setCellValue('C32', '');
-        $sheet->getStyle('C32')->getFont()->setSize(26)->setName('Times New Roman')->setBold('bold');
+        $sheet->mergeCells('D32:E32');
+        $sheet->setCellValue('D32', '3,7');
+        $sheet->getStyle('D32:E32')->getFont()->setSize(26)->setName('Times New Roman')->setBold(false);
+        $sheet->getStyle('D32:E32')->getAlignment()->setHorizontal('center')->setVertical('center');
+        $sheet->getStyle('D32:E32')->getBorders()->getAllBorders()->setBorderStyle('medium');
 
-        $sheet->setCellValue('D32', '=E31-D31');
-        $sheet->getStyle('D32')->getFont()->setSize(26)->setName('Times New Roman')->setBold('bold');
+        $sheet->setCellValue('F32', '67%');
+        $sheet->getStyle('F32')->getFont()->setSize(18)->setName('Times New Roman')->setBold(false);
+        $sheet->getStyle('F32')->getAlignment()->setHorizontal('center')->setVertical('center');
+        $sheet->getStyle('F32')->getBorders()->getAllBorders()->setBorderStyle('medium');
 
+        $sheet->setCellValue('G32', '33%');
+        $sheet->getStyle('G32')->getFont()->setSize(18)->setName('Times New Roman')->setBold(false);
+        $sheet->getStyle('G32')->getAlignment()->setHorizontal('center')->setVertical('center');
+        $sheet->getStyle('G32')->getBorders()->getAllBorders()->setBorderStyle('medium');
 
-        $sheet->setCellValue('F32', '=F31/($F$31+$G$31)');
-        $sheet->getStyle('F32')->getFont()->setSize(18)->setName('Times New Roman')->setBold('bold');
-
-        $sheet->setCellValue('G32', '=G31/($F$31+$G$31)');
-        $sheet->getStyle('G32')->getFont()->setSize(18)->setName('Times New Roman')->setBold('bold');
 
         $sheet->setCellValue('B33', 'Evaluasi Training');
         $sheet->getStyle('B33')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
