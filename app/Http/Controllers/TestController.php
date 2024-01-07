@@ -71,7 +71,6 @@ class TestController extends Controller
         return view('peserta.test', compact('test', 'soal', 'nama_training'));
     }
 
-
     public function simpanjawaban(Request $request)
     {
         $id_test = $request->input('id_test');
@@ -87,12 +86,15 @@ class TestController extends Controller
             if ($jawabanSamaIdSoal->count() > 0) {
                 $soal = Soal::find($id);
                 $indeksJawabanBenar = $soal->jawaban_benar;
-
-                $jawabanBenar = $jawabanSamaIdSoal[$indeksJawabanBenar - 1];
-
-                $nilaiJawaban[] = ($jawaban[$id] == $jawabanBenar->jawaban) ? '1' : '0';
+                if ($indeksJawabanBenar > 0 && $indeksJawabanBenar <= count($jawabanSamaIdSoal)) {
+                    $jawabanBenar = $jawabanSamaIdSoal[$indeksJawabanBenar - 1];
+                    $nilaiJawaban[] = ($jawaban[$id] == $jawabanBenar->jawaban) ? '1' : '0';
+                } else {
+                    $nilaiJawaban[] = '0';
+                }
             }
         }
+
         $totalJawabanBenar = array_sum($nilaiJawaban);
         $totalSoal = count($nilaiJawaban);
         $persentaseBenar = ($totalJawabanBenar / $totalSoal) * 100;
@@ -122,6 +124,56 @@ class TestController extends Controller
             }
         }
     }
+    // public function simpanjawaban(Request $request)
+    // {
+    //     $id_test = $request->input('id_test');
+    //     $id_user = Auth::user()->id;
+    //     $id_soal = $request->input('id_soal');
+    //     $jawaban = $request->input('jawaban');
+    //     $nilaiJawaban = [];
+    //     $totalJawabanBenar = 0;
+
+    //     foreach ($id_soal as $id) {
+    //         $jawabanSamaIdSoal = Jawaban::where('id_soal', $id)->get();
+
+    //         if ($jawabanSamaIdSoal->count() > 0) {
+    //             $soal = Soal::find($id);
+    //             $indeksJawabanBenar = $soal->jawaban_benar;
+
+    //             $jawabanBenar = $jawabanSamaIdSoal[$indeksJawabanBenar - 1];
+
+    //             $nilaiJawaban[] = ($jawaban[$id] == $jawabanBenar->jawaban) ? '1' : '0';
+    //         }
+    //     }
+    //     $totalJawabanBenar = array_sum($nilaiJawaban);
+    //     $totalSoal = count($nilaiJawaban);
+    //     $persentaseBenar = ($totalJawabanBenar / $totalSoal) * 100;
+    //     $nilaiAkhir = round($persentaseBenar);
+
+    //     $testPeserta = TestPeserta::where('id_test', $id_test)
+    //         ->where('id_user', $id_user)
+    //         ->first();
+
+    //     if ($testPeserta) {
+    //         $testPeserta->hasil_test = $nilaiAkhir;
+    //         if ($testPeserta->save()) {
+    //             return redirect()->route('dashboard')->with('success', 'Nilai berhasil disimpan.');
+    //         } else {
+    //             return redirect()->route('dashboard')->with('error', 'Gagal menyimpan nilai.');
+    //         }
+    //     } else {
+    //         $testPeserta = new TestPeserta();
+    //         $testPeserta->id_test = $id_test;
+    //         $testPeserta->id_user = $id_user;
+    //         $testPeserta->hasil_test = $nilaiAkhir;
+
+    //         if ($testPeserta->save()) {
+    //             return redirect()->route('dashboard')->with('success', 'Nilai berhasil disimpan.');
+    //         } else {
+    //             return redirect()->route('dashboard')->with('error', 'Gagal menyimpan nilai.');
+    //         }
+    //     }
+    // }
 
 
 

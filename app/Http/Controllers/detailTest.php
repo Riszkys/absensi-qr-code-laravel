@@ -54,7 +54,7 @@ class detailTest extends Controller
                 $soal = new Soal();
                 $soal->id_test = $id_test_baru;
                 $soal->soal = $data['soal'];
-                $soal->jawaban_benar = $data['jawaban_benar'] ?? 0; // Memberikan nilai default 0 jika key tidak ditemukan
+                $soal->jawaban_benar = $data['jawaban_benar'] ?? 0;
                 $soal->save();
                 $id_soal_baru = $soal->id;
                 foreach ($data['opsi'] as $nomorOpsi => $nilaiOpsi) {
