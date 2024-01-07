@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DetailTraining;
 use App\Models\User;
-use App\Models\Absensi;
+use App\Models\absensi;
 use App\Http\Requests\StoreAbsensiRequest;
 use App\Http\Requests\UpdateAbsensiRequest;
 use Illuminate\Http\Request;

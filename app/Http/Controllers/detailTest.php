@@ -23,102 +23,54 @@ class detailTest extends Controller
 
     public function simpan(Request $request)
     {
-        $test = new Test();
-        $test->id_training = $request->input('training');
-        $test->jenis_test = $request->input('jenistest');
-        $test->save();
-        $id_test_baru = $test->id;
-        $inputData = $request->except('_token', 'training', 'jenistest');
+        try {
+            $test = new Test();
+            $test->id_training = $request->input('training');
+            $test->jenis_test = $request->input('jenistest');
+            $test->save();
+            $id_test_baru = $test->id;
+            $inputData = $request->except('_token', 'training', 'jenistest');
 
-        $nomorSoal = null;
-        $soalData = [];
+            $nomorSoal = null;
+            $soalData = [];
 
-        foreach ($inputData as $key => $value) {
-            if (strpos($key, 'soalnomer') === 0) {
-                $nomorSoal = substr($key, 9);
-                $soalData[$nomorSoal]['soal'] = $value;
-            } elseif (strpos($key, 'radio') === 0) {
-                $soalData[$nomorSoal]['jawaban_benar'] = $value;
-            } elseif (strpos($key, 'nilaiopsi') === 0) {
-                $jawabanCounter = (int) substr($key, 9);
-                $soalData[$nomorSoal]['opsi'][$jawabanCounter] = $value;
+            foreach ($inputData as $key => $value) {
+                if (strpos($key, 'soalnomer') === 0) {
+                    $nomorSoal = substr($key, 9);
+                    $soalData[$nomorSoal]['soal'] = $value;
+                } elseif (strpos($key, 'radio') === 0) {
+                    $soalData[$nomorSoal]['jawaban_benar'] = $value;
+                } elseif (strpos($key, 'nilaiopsi') === 0) {
+                    $jawabanCounter = (int) substr($key, 9);
+                    $soalData[$nomorSoal]['opsi'][$jawabanCounter] = $value;
+                }
             }
-        }
 
-        if (empty($soalData)) {
-            return redirect()->route('tampilkantest')->with('error', 'Tambahkan Soal Minimal 1.');
-        }
-
-        foreach ($soalData as $data) {
-            $soal = new Soal();
-            $soal->id_test = $id_test_baru;
-            $soal->soal = $data['soal'];
-            $soal->jawaban_benar = $data['jawaban_benar'];
-            $soal->save();
-            $id_soal_baru = $soal->id;
-            foreach ($data['opsi'] as $nomorOpsi => $nilaiOpsi) {
-                $jawaban = new Jawaban();
-                $jawaban->id_soal = $id_soal_baru;
-                $jawaban->jawaban = $nilaiOpsi;
-                $jawaban->save();
+            if (empty($soalData)) {
+                return redirect()->route('tampilkantest')->with('error', 'Tambahkan Soal Minimal 1.');
             }
+
+            foreach ($soalData as $data) {
+                $soal = new Soal();
+                $soal->id_test = $id_test_baru;
+                $soal->soal = $data['soal'];
+                $soal->jawaban_benar = $data['jawaban_benar'] ?? 0; // Memberikan nilai default 0 jika key tidak ditemukan
+                $soal->save();
+                $id_soal_baru = $soal->id;
+                foreach ($data['opsi'] as $nomorOpsi => $nilaiOpsi) {
+                    $jawaban = new Jawaban();
+                    $jawaban->id_soal = $id_soal_baru;
+                    $jawaban->jawaban = $nilaiOpsi;
+                    $jawaban->save();
+                }
+            }
+
+            return redirect()->route('tampilkantest')->with('success', 'Test berhasil disimpan.');
+        } catch (\Exception $e) {
+            return redirect()->route('tampilkantest')->with('error', 'Gagal menyimpan test: ' . $e->getMessage());
         }
-        return redirect()->route('tampilkantest')->with('success', 'Test berhasil disimpan.');
     }
-    // public function simpan(Request $request)
-    // {
-    //     // try {
-    //     //     $existingTest = Test::where('id_training', $request->input('training'))
-    //     //         ->where('jenis_test', $request->input('jenistest'))
-    //     //         ->first();
-    //     //     if ($existingTest) {
-    //     //         return redirect()->route('tampilkantest')->with('error', 'jenis test yang sama sudah ada pada training tersebut.');
-    //     //     }
 
-    //     $test = new Test();
-    //     $test->id_training = $request->input('training');
-    //     $test->jenis_test = $request->input('jenistest');
-    //     $test->save();
-    //     $id_test_baru = $test->id;
-    //     $inputData = $request->except('_token', 'training', 'jenistest');
-
-    //     $nomorSoal = null;
-    //     $soalData = [];
-
-    //     foreach ($inputData as $key => $value) {
-    //         if (strpos($key, 'soalnomer') === 0) {
-    //             $nomorSoal = substr($key, 9);
-    //             $soalData[$nomorSoal]['soal'] = $value;
-    //         } elseif (strpos($key, 'radio') === 0) {
-    //             $soalData[$nomorSoal]['jawaban_benar'] = $value;
-    //         } elseif (strpos($key, 'nilaiopsi') === 0) {
-    //             $jawabanCounter = (int) substr($key, 9);
-    //             $soalData[$nomorSoal]['opsi'][$jawabanCounter] = $value;
-    //         }
-    //     }
-
-    //     if (empty($soalData)) {
-    //         return redirect()->route('tampilkantest')->with('error', 'Tambahkan Soal Minimal 1.');
-    //     }
-
-    //     foreach ($soalData as $data) {
-    //         $soal = new Soal();
-    //         $soal->id_test = $id_test_baru;
-    //         $soal->soal = $data['soal'];
-    //         $soal->jawaban_benar = $data['jawaban_benar'];
-    //         $soal->save();
-    //         $id_soal_baru = $soal->id;
-    //         foreach ($data['opsi'] as $nomorOpsi => $nilaiOpsi) {
-    //             $jawaban = new Jawaban();
-    //             $jawaban->id_soal = $id_soal_baru;
-    //             $jawaban->jawaban = $nilaiOpsi;
-    //             $jawaban->save();
-    //         }
-    //     }
-    //     return redirect()->route('tampilkantest')->with('success', 'Test berhasil disimpan.');
-
-    //     return redirect()->route('tampilkantest')->with('error', 'Gagal menyimpan test: ' . $e->getMessage());
-    // }
 
 
 
@@ -134,7 +86,6 @@ class detailTest extends Controller
         return view('panitia.test.detail-test', compact('test', 'soal', 'nama_training'));
     }
 
-
     public function tampilupdate($id)
     {
         $test = Test::find($id);
@@ -146,6 +97,7 @@ class detailTest extends Controller
         $nama_training = Training::find($test->id_training);
         return view('panitia.test.update-soal', compact('test', 'soal', 'nama_training'));
     }
+
 
 
     public function delete($id)
@@ -224,16 +176,23 @@ class detailTest extends Controller
                 'jenis_test' => $jenisTest,
             ]);
 
-            $requestData = $request->except('_token', 'idtraining1', 'jenistest2'); // Mengabaikan token dan kunci yang tidak diperlukan
+            $requestData = $request->except('_token', 'idtraining1', 'jenistest2');
 
             foreach ($requestData as $key => $value) {
                 if (strpos($key, 'soalnomer') === 0) {
-                    $soalId = substr($key, 9); // Mendapatkan ID soal dari nama kunci
-                    Soal::where('id', $soalId)->update([
+                    $soalId = substr($key, 9);
+                    $soal = Soal::find($soalId);
+                    if (!$soal) {
+                        return redirect()->route('tampilkantest')->with('error', 'ID Soal tidak valid.');
+                    }
+                    $nilaiJawaban = $this->mapJawabanToValue($request->input('jawabanbenar' . $soalId));
+
+                    $soal->update([
                         'soal' => $value,
+                        'jawaban_benar' => $nilaiJawaban,
                     ]);
                 } elseif (strpos($key, 'jawaban') === 0) {
-                    $jawabanId = substr($key, 7); // Mendapatkan ID jawaban dari nama kunci
+                    $jawabanId = substr($key, 7);
                     Jawaban::where('id', $jawabanId)->update([
                         'jawaban' => $value,
                     ]);
@@ -244,6 +203,19 @@ class detailTest extends Controller
         } catch (\Exception $e) {
             return redirect()->route('tampilkantest')->with('error', 'Gagal memperbarui test: ' . $e->getMessage());
         }
+    }
+
+    private function mapJawabanToValue($jawaban)
+    {
+        $map = [
+            'A' => 1,
+            'B' => 2,
+            'C' => 3,
+            'D' => 4,
+            'E' => 5,
+        ];
+
+        return $map[$jawaban] ?? null;
     }
 
 
