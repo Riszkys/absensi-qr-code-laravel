@@ -29,9 +29,31 @@
                         <div class="row">
                             <div class="col-3">
                                 <label for="feedback" class="col-form-label col-auto pr-3">Feedback</label>
+                                <input type="hidden" value="{{ $id_training }}">
                             </div>
                             <div class="col">
                                 <input name="feedback" type="text" id="feedback" class="form-control col">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 py-2">
+                        <div class="row">
+                            <div class="col-3">
+                                <label for="evaluasi" class="col-form-label col-auto pr-3">Evalusi</label>
+                            </div>
+                            <div class="col">
+                                <textarea name="evaluasi" type="text" id="evaluasi" class="form-control col"> </textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 py-2" id="gambar-container">
+                        <div class="row">
+                            <div class="col-3">
+                                <label for="gambar" class="col-form-label col-auto pr-3">Gambar</label>
+                            </div>
+                            <div class="col">
+                                <input name="gambar[]" type="file" id="gambar" class="form-control col">
+                                <button class="btntambah btn btn-primary mt-3" id="btntambah">Tambah Gambar</button>
                             </div>
                         </div>
                     </div>
@@ -123,15 +145,27 @@
                         </tbody>
                     </table>
                 </div>
-                {{-- <div class="row my-3">
-                    <h5 class="my-2">Dokumentasi Pelatihan</h5>
-                    <input type="file" name="foto[]" id="image" multiple accept="image/*">
-                    <div class="col-12 py-2" id="image-preview"></div>
-                </div> --}}
                 <div class="row justify-content-start g-2 my-3">
                     <input type="hidden" name="id_training" value="{{ $id_training }}">
                     <button id="submitBtn" type="submit" class="btn btn-primary col-2 col-md-1 mx-2">Cetak PDF</button>
                 </div>
             </form>
         </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var tambahButton = document.getElementById('btntambah');
+                var container = document.getElementById('gambar-container');
+
+                tambahButton.addEventListener('click', function(event) {
+                    event.preventDefault();
+
+                    var newInput = document.createElement('input');
+                    newInput.name = 'gambar[]';
+                    newInput.type = 'file';
+                    newInput.className = 'form-control col mt-2';
+
+                    container.appendChild(newInput);
+                });
+            });
+        </script>
     @endsection

@@ -136,7 +136,6 @@ class ReportController extends Controller
         $lokasi_training = $reportData[0]->lokasi_training;
         $pic = $reportData[0]->pic;
         $status_training = $reportData[0]->status_training;
-
         return view('panitia.training.tReport', compact(
             'reportData',
             'id_training',
