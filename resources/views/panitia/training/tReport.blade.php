@@ -14,7 +14,7 @@
         @endif
         <h2 class="my-3 text-center">Report Training</h2>
         <div class="row justify-content-end g-2 my-3">
-            <form action="{{ route('simpan.pdf') }}" method="POST">
+            <form action="{{ route('simpan.excel') }}" method="POST">
                 @csrf
                 <div class="row">
                     <div class="col-12 py-2">
@@ -130,7 +130,8 @@
                 </div> --}}
                 <div class="row justify-content-start g-2 my-3">
                     <input type="hidden" name="id_training" value="{{ $id_training }}">
-                    <button id="submitBtn" type="submit" class="btn btn-primary col-2 col-md-1 mx-2">Cetak PDF</button>
+                    <button id="submitBtn" type="submit" class="btn btn-danger col-2 col-md-1 mx-2">Cetak PDF</button>
+                    <button id="submitBtn" type="submit" class="btn btn-success col-2 col-md-1 mx-2">Cetak Excel</button>
                 </div>
             </form>
         </div>
