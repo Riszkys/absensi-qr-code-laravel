@@ -15,10 +15,10 @@ class CreateDetailTrainingsTable extends Migration
     {
         Schema::create('detail_trainings', function (Blueprint $table) {
             $table->id();
-            $table->integer("id_user");
-            $table->integer("id_training");
-            $table->integer("id_departement");
-            $table->string("id_absen");
+            $table->foreignId("id_user");
+            $table->foreignId("id_training");
+            $table->foreignId("id_departement");
+            $table->foreignId("id_absen");
             $table->string("nama_training");
             $table->string("waktu_mulai");
             $table->string("tanggal_training");
@@ -27,6 +27,10 @@ class CreateDetailTrainingsTable extends Migration
             $table->string("status");
             $table->string("status_training");
             $table->timestamps();
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('id_training')->references('id')->on('training')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('id_departement')->references('id')->on('departement')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('id_absen')->references('id')->on('absensi')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

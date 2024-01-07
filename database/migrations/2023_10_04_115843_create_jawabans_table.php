@@ -15,9 +15,10 @@ class CreateJawabansTable extends Migration
     {
         Schema::create('jawaban', function (Blueprint $table) {
             $table->id();
-            $table->integer("id_soal");
+            $table->foreignId("id_soal");
             $table->string("jawaban");
             $table->timestamps();
+            $table->foreign('id_soal')->references('id')->on('soal')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

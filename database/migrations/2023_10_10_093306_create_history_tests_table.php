@@ -15,13 +15,16 @@ class CreateHistoryTestsTable extends Migration
     {
         Schema::create('history_tests', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_user');
-            $table->integer('id_training');
-            $table->integer('id_test');
+            $table->foreignId('id_user');
+            $table->foreignId('id_training');
+            $table->foreignId('id_test');
             $table->boolean('pre_test');
             $table->boolean('post_test');
             $table->boolean('evaluasi');
             $table->timestamps();
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('id_training')->references('id')->on('training')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('id_test')->references('id')->on('test')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

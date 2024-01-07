@@ -15,10 +15,12 @@ class CreateTesPesertasTable extends Migration
     {
         Schema::create('test_pesertas', function (Blueprint $table) {
             $table->id();
-            $table->integer("id_test");
-            $table->integer("id_user");
+            $table->foreignId("id_test");
+            $table->foreignId("id_user");
             $table->string("hasil_test");
             $table->timestamps();
+            $table->foreign('id_test')->references('id')->on('test')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

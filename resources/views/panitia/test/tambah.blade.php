@@ -39,9 +39,9 @@
                 </div>
                 <div class="col-8 col-md-3">
                     <select class="form-select" id="inputGroupSelect01" name="jenistest" required>
-                        <option value="Post Test">Post Test</option>
-                        <option value="Pre Test">Pre Test</option>
-                        <option value="Evaluasi">Evaluasi</option>
+                        <option value="Post Test" id="post_test">Post Test</option>
+                        <option value="Pre Test" id="pre_test">Pre Test</option>
+                        <option value="Evaluasi" id="evaluasi">Evaluasi</option>
                     </select>
                 </div>
             </div>

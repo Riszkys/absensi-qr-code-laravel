@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            // $table->foreign('id_departement')->references('id')->on('departement')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

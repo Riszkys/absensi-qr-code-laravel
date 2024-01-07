@@ -15,10 +15,11 @@ class CreateSoalsTable extends Migration
     {
         Schema::create('soal', function (Blueprint $table) {
             $table->id();
-            $table->integer("id_test");
+            $table->foreignId("id_test");
             $table->string("soal");
             $table->string("jawaban_benar");
             $table->timestamps();
+            $table->foreign('id_test')->references('id')->on('test')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
