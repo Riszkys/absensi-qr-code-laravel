@@ -7,11 +7,14 @@ use App\Models\User;
 use App\Models\Report;
 use App\Models\Training;
 use Illuminate\Http\Request;
+
 use App\Http\Requests\StoreReportRequest;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use App\Http\Requests\UpdateReportRequest;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+use App\Models\GambarTraining;
+
 
 class ReportController extends Controller
 {
@@ -608,6 +611,28 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function store(Request $request)
+    {
+        try {
+        $report = new Report();
+        $report->id_training = $request->input('id_training');
+        $report->feedback = $request->input('feedback');
+        $report->evaluasi = $request->input('evaluasi');
+        $report->save();
+
+        if ($request->hasFile('gambar')) {
+            foreach ($request->file('gambar') as $image) {
+                $gambarTraining = new GambarTraining();
+                $gambarTraining->id_report = $request->input('id_training');
+                $gambarTraining->gambar = $image->store('gambar_training', 'public');
+                $gambarTraining->save();
+            }
+        }
+        return redirect()->route('report.index')->with('success', 'Data berhasil disimpan.');
+    } catch (\Exception $e) {
+        return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+    }
+    }
 
     public function generatePDF(Request $request)
     {
@@ -676,7 +701,6 @@ class ReportController extends Controller
         ));
         return $pdf->download('training_report.pdf');
     }
-
     public function index(Request $request)
     {
         $id_training = $request->input('id_training');
@@ -689,19 +713,38 @@ class ReportController extends Controller
             'training.status_training',
             'users.nik',
             'users.name',
+            'users.jenis_kelamin',
             'departement.nama as department_name',
             'absensi.status_absen',
-            'test_pesertas.hasil_test'
+            'test_pesertas.hasil_test',
+            'test_pesertas.id_test',
+            'test.jenis_test',
+            'report.*',
+            'gambar_training.gambar'
         )
-            ->join('detail_trainings', 'training.id', '=', 'detail_trainings.id_training')
-            ->join('users', 'detail_trainings.id_user', '=', 'users.id')
-            ->join('departement', 'detail_trainings.id_departement', '=', 'departement.id')
-            ->leftJoin('absensi', 'detail_trainings.id_absen', '=', 'absensi.id')
-            ->leftJoin('test_pesertas', 'detail_trainings.id_user', '=', 'test_pesertas.id_user')
-            ->where('training.id', $id_training)
-            ->distinct()
-            ->get();
+        ->join('detail_trainings', 'training.id', '=', 'detail_trainings.id_training')
+        ->join('users', 'detail_trainings.id_user', '=', 'users.id')
+        ->join('departement', 'detail_trainings.id_departement', '=', 'departement.id')
+        ->leftJoin('absensi', 'detail_trainings.id_absen', '=', 'absensi.id')
+        ->leftJoin('test_pesertas', 'detail_trainings.id_user', '=', 'test_pesertas.id_user')
+        ->leftJoin('report', 'training.id', '=', 'report.id_training')
+        ->leftJoin('gambar_training', 'report.id_training', '=', 'gambar_training.id_report')
+        ->leftJoin('test', 'test_pesertas.id_test', '=', 'test.id')
+        ->where('training.id', $id_training)
+        ->distinct()
+        ->get();
 
+        $genderCount = $reportData->groupBy('jenis_kelamin')->map(function ($item, $key) {
+            return count($item);
+        });
+        $lakiCount = $genderCount['laki'] ?? 0;
+        $perempuanCount = $genderCount['perempuan'] ?? 0;
+        $totalAttendance = $reportData->count();
+        $hadirCount = $reportData->where('status_absen', 'hadir')->count();
+        $preTestResults = $reportData->where('id_test', 1)->pluck('hasil_test');
+        $postTestResults = $reportData->where('id_test', 2)->pluck('hasil_test');
+        $averagePreTest = $preTestResults->avg();
+        $averagePostTest = $postTestResults->avg();
         if ($reportData->isEmpty()) {
             $materi_training = '';
             $waktu_mulai = '';
@@ -709,7 +752,7 @@ class ReportController extends Controller
             $lokasi_training = '';
             $pic = '';
             $status_training = '';
-
+            $gambarTraining= '';
             return view('panitia.training.tReport', compact(
                 'reportData',
                 'id_training',
@@ -718,9 +761,18 @@ class ReportController extends Controller
                 'tanggal_training',
                 'lokasi_training',
                 'pic',
-                'status_training'
+                'gambarTraining',
+                'status_training',
+                'genderCount',
+                'averagePreTest',
+                'averagePostTest',
+                'totalAttendance',
+                'hadirCount',
+                'lakiCount',
+                'perempuanCount'
             ));
         }
+
         $materi_training = $reportData[0]->materi_training;
         $waktu_mulai = $reportData[0]->waktu_mulai;
         $tanggal_training = $reportData[0]->tanggal_training;
@@ -736,9 +788,17 @@ class ReportController extends Controller
             'tanggal_training',
             'lokasi_training',
             'pic',
-            'status_training'
+            'status_training',
+            'genderCount',
+            'averagePreTest',
+            'averagePostTest',
+            'totalAttendance',
+            'hadirCount',
+            'lakiCount',
+            'perempuanCount'
         ));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -756,10 +816,7 @@ class ReportController extends Controller
      * @param  \App\Http\Requests\StoreReportRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreReportRequest $request)
-    {
-        //
-    }
+
 
     /**
      * Display the specified resource.
