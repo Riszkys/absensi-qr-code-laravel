@@ -683,26 +683,28 @@ class ReportController extends Controller
     }
     public function store(Request $request)
     {
-        $report = new Report();
-        $report->id_training = $request->input('id_training');
-        $report->feedback = $request->input('feedback');
-        $report->evaluasi = $request->input('evaluasi');
-        $report->save();
+        try {
+            $report = new Report();
+            $report->id_training = $request->input('id_training');
+            $report->feedback = $request->input('feedback');
+            $report->evaluasi = $request->input('evaluasi');
+            $report->save();
 
-        if ($request->hasFile('gambar')) {
-            foreach ($request->file('gambar') as $image) {
-                $gambarTraining = new GambarTraining();
-                $gambarTraining->id_report = $request->input('id_training');
-                $gambarTraining->gambar = $image->store('gambar_training', 'public');
-                $gambarTraining->save();
+            if ($request->hasFile('gambar')) {
+                foreach ($request->file('gambar') as $image) {
+                    $gambarTraining = new GambarTraining();
+                    $gambarTraining->id_report = $report->id;
+                    $gambarTraining->gambar = $image->store('gambar_training', 'public');
+                    $gambarTraining->save();
+                }
             }
-            return redirect()->route('report.index')->with('success', 'Data berhasil disimpan.');
+
+            return redirect()->back()->with('success', 'Data berhasil disimpan.');
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
-
-        return redirect()->back()->with('success', 'Data berhasil disimpan.');
     }
+
 
     public function generatePDF(Request $request)
     {
