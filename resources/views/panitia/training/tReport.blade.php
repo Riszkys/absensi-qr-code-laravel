@@ -15,10 +15,9 @@
         <h2 class="my-3 text-center">Report Training</h2>
         <form id="formEvaluasi" action="{{ route('simpan.report') }}" method="post" enctype="multipart/form-data">
             @csrf
-        <div class="row justify-content-end g-2 my-3">
 
-            <form action="{{ route('simpan.excel') }}" method="POST">
-                @csrf
+        <div class="row justify-content-end g-2 my-3">
+                <input type="hidden" value="{{ $id_training }}" name="id_training" id="id_training">
                 <div class="row">
                     <div class="col-12 py-2">
                         <label for="namaTraining" class="col-form-label col-auto pr-3">Materi Training</label>
@@ -226,14 +225,11 @@
                       @endif
                     </div>
                   @endif
-
                 </div>
                 <div class="row justify-content-start g-2 my-3">
                     <input type="hidden" name="id_training" value="{{ $id_training }}">
-
-                    <button id="submitBtn" type="submit" class="btn btn-success col-2 col-md-1 mx-2">Cetak Excel</button>
-
-                    {{-- <button id="submitBtn" type="submit" class="btn btn-primary col-2 col-md-1 mx-2">Cetak PDF</button> --}}
+                    <a href="#" id="downloadExcel" class="btn btn-success col-2 col-md-1 mx-2">Cetak Excel</a>
+                    <a href="#" id="cetakPdfLink" class="btn btn-primary col-2 col-md-1 mx-2">Cetak PDF</a>
                     <button id="btnsimpanreport" type="submit" class="btn btn-primary col-2 col-md-1 mx-2">Simpan Data</button>
                 </div>
                 </div>
@@ -256,39 +252,38 @@
 
         container.appendChild(newInput);
     });
-
-//     btnSimpanReport.addEventListener('click', function(event) {
-//         event.preventDefault();
-//         var idTraining = document.getElementById('id_training').value;
-//         var feedback = document.getElementById('feedback').value;
-//         var evaluasi = document.getElementById('evaluasi').value;
-//         var formData = new FormData(formEvaluasi);
-
-//         formData.append('id_training', idTraining);
-//         formData.append('feedback', feedback);
-//         formData.append('evaluasi', evaluasi);
-
-//         var gambarInputs = document.querySelectorAll('[name="gambar[]"]');
-//             gambarInputs.forEach(function(input, index) {
-//                 formData.append('gambar[]', input.files[0]);
-//             });
-//         var xhr = new XMLHttpRequest();
-//         xhr.open('POST', '{{ route("simpan.report") }}', true);
-
-//         xhr.onreadystatechange = function() {
-//             if (xhr.readyState === XMLHttpRequest.DONE) {
-//                 if (xhr.status === 200) {
-//                     console.log(xhr.responseText);
-//                     window.location.href = '{{ route("report.index") }}';
-//                 } else {
-//                     console.error('Error:', xhr.statusText);
-//                 }
-//             }
-//         };
-
-//         xhr.send(formData);
-//     });
 });
+        </script>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
+        <!-- Your custom script -->
+        <script>
+            $(document).on('click', '#cetakPdfLink', function (e) {
+                e.preventDefault();
+                var form = $('<form>', {
+                    'method': 'POST',
+                    'action': '{{ route("simpan.pdf") }}',
+                    'target': '_blank',
+                    'style': 'display:none;'
+                });
+                form.append('{{ csrf_field() }}');
+                $('body').append(form);
+                form.submit();
+            });
+        </script>
+        <script>
+            $(document).on('click', '#downloadExcel', function (e) {
+                e.preventDefault();
+                var form = $('<form>', {
+                    'method': 'POST',
+                    'action': '{{ route("simpan.excel") }}',
+                    'target': '_blank',
+                    'style': 'display:none;'
+                });
+
+                form.append('{{ csrf_field() }}');
+                $('body').append(form);
+                form.submit();
+            });
         </script>
     @endsection

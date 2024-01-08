@@ -75,6 +75,19 @@
                 </div>
                 <div class="col-12 py-2">
                     <div class="row">
+                        <div class="col-3">
+                            <label for="email" class="col-form-label col-auto pr-3">Jenis Kelamin</label>
+                        </div>
+                        <div class="col">
+                            <select name="jenis_kelamin" id="jenis_kelamin" class="form-control">
+                                <option value="laki">Laki - Laki</option>
+                                <option value="perempuan">Perempuan</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 py-2">
+                    <div class="row">
                         <div class="col">
                             <input type="hidden" id="role" name="role" class="form-control col"
                                 aria-describedby="passwordHelpInline" value="user">

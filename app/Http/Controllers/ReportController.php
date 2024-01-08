@@ -7,18 +7,22 @@ use App\Models\User;
 use App\Models\Report;
 use App\Models\Training;
 use Illuminate\Http\Request;
+use App\Http\Requests\UpdateReportRequest;
+use App\Models\GambarTraining;
 use App\Http\Requests\StoreReportRequest;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use App\Http\Requests\UpdateReportRequest;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
-use App\Models\GambarTraining;
-
 
 class ReportController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
 
-    public function exportDataToExcel()
+     public function exportDataToExcel()
     {
         // Ambil data yang ingin diekspor (contoh: data dari model User)
         $data = User::all();
@@ -677,33 +681,27 @@ class ReportController extends Controller
         // Mengirim file sebagai respons
         return response()->download($filename)->deleteFileAfterSend(true);
     }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        try {
-            $report = new Report();
-            $report->id_training = $request->input('id_training');
-            $report->feedback = $request->input('feedback');
-            $report->evaluasi = $request->input('evaluasi');
-            $report->save();
+        $report = new Report();
+        $report->id_training = $request->input('id_training');
+        $report->feedback = $request->input('feedback');
+        $report->evaluasi = $request->input('evaluasi');
+        $report->save();
 
-            if ($request->hasFile('gambar')) {
-                foreach ($request->file('gambar') as $image) {
-                    $gambarTraining = new GambarTraining();
-                    $gambarTraining->id_report = $request->input('id_training');
-                    $gambarTraining->gambar = $image->store('gambar_training', 'public');
-                    $gambarTraining->save();
-                }
+        if ($request->hasFile('gambar')) {
+            foreach ($request->file('gambar') as $image) {
+                $gambarTraining = new GambarTraining();
+                $gambarTraining->id_report = $request->input('id_training');
+                $gambarTraining->gambar = $image->store('gambar_training', 'public');
+                $gambarTraining->save();
             }
             return redirect()->route('report.index')->with('success', 'Data berhasil disimpan.');
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
+
+        return redirect()->back()->with('success', 'Data berhasil disimpan.');
     }
 
     public function generatePDF(Request $request)
@@ -881,6 +879,7 @@ class ReportController extends Controller
     {
         //
     }
+
 
     /**
      * Store a newly created resource in storage.
