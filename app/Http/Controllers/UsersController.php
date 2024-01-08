@@ -85,6 +85,7 @@ class UsersController extends Controller
             'id_departement' => 'required',
             'name' => 'required|string|max:255',
             'role' => 'required|string|max:255',
+            'jenis_kelamin' => 'required|string|max:255',
             'nik' => 'required|numeric',
             'email' => 'required|email|unique:users',
             'password' => 'required|string|min:6',
@@ -96,6 +97,7 @@ class UsersController extends Controller
             'role' => $request->input('role'),
             'nik' => $request->input('nik'),
             'email' => $request->input('email'),
+            'jenis_kelamin' => $request->input('jenis_kelamin'),
             'password' => Hash::make($request->input('password')),
         ]);
 

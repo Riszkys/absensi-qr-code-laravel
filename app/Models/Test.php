@@ -18,6 +18,4 @@ class Test extends Model
     {
         return $this->hasMany(testpeserta::class, 'id_test', 'id');
     }
-
-
 }
