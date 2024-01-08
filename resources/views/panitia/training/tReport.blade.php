@@ -16,6 +16,9 @@
         <form id="formEvaluasi" action="{{ route('simpan.report') }}" method="post" enctype="multipart/form-data">
             @csrf
         <div class="row justify-content-end g-2 my-3">
+
+            <form action="{{ route('simpan.excel') }}" method="POST">
+                @csrf
                 <div class="row">
                     <div class="col-12 py-2">
                         <label for="namaTraining" class="col-form-label col-auto pr-3">Materi Training</label>
@@ -227,6 +230,9 @@
                 </div>
                 <div class="row justify-content-start g-2 my-3">
                     <input type="hidden" name="id_training" value="{{ $id_training }}">
+
+                    <button id="submitBtn" type="submit" class="btn btn-success col-2 col-md-1 mx-2">Cetak Excel</button>
+
                     {{-- <button id="submitBtn" type="submit" class="btn btn-primary col-2 col-md-1 mx-2">Cetak PDF</button> --}}
                     <button id="btnsimpanreport" type="submit" class="btn btn-primary col-2 col-md-1 mx-2">Simpan Data</button>
                 </div>

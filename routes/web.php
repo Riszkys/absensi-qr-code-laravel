@@ -70,6 +70,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/panitia/training/report', [ReportController::class, 'index'])->name('report.index');
     Route::post('/panitia/training/store-training', [ReportController::class, 'store'])->name('simpan.report');
     Route::post('/generate-pdf', [ReportController::class, 'generatePDF'])->name('simpan.pdf');
+    Route::post('/generate-excel', [ReportController::class, 'exportDataToExcel'])->name('simpan.excel');
     Route::get('/panitia/test/detail-test/{id}', [detailTest::class, 'detail'])->name('detailtest');
     Route::get('/panitia/test/showupdate/{id}', [detailTest::class, 'tampilupdate'])->name('showupdatesoal');
     Route::post('/panitia/test/update/{id}', [detailTest::class, 'updatetest'])->name('updatetest');
