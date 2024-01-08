@@ -696,6 +696,9 @@ class ReportController extends Controller
                 $gambarTraining->gambar = $image->store('gambar_training', 'public');
                 $gambarTraining->save();
             }
+            return redirect()->route('report.index')->with('success', 'Data berhasil disimpan.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
 
         return redirect()->back()->with('success', 'Data berhasil disimpan.');
@@ -789,17 +792,17 @@ class ReportController extends Controller
             'report.*',
             'gambar_training.gambar'
         )
-        ->join('detail_trainings', 'training.id', '=', 'detail_trainings.id_training')
-        ->join('users', 'detail_trainings.id_user', '=', 'users.id')
-        ->join('departement', 'detail_trainings.id_departement', '=', 'departement.id')
-        ->leftJoin('absensi', 'detail_trainings.id_absen', '=', 'absensi.id')
-        ->leftJoin('test_pesertas', 'detail_trainings.id_user', '=', 'test_pesertas.id_user')
-        ->leftJoin('report', 'training.id', '=', 'report.id_training')
-        ->leftJoin('gambar_training', 'report.id_training', '=', 'gambar_training.id_report')
-        ->leftJoin('test', 'test_pesertas.id_test', '=', 'test.id')
-        ->where('training.id', $id_training)
-        ->distinct()
-        ->get();
+            ->join('detail_trainings', 'training.id', '=', 'detail_trainings.id_training')
+            ->join('users', 'detail_trainings.id_user', '=', 'users.id')
+            ->join('departement', 'detail_trainings.id_departement', '=', 'departement.id')
+            ->leftJoin('absensi', 'detail_trainings.id_absen', '=', 'absensi.id')
+            ->leftJoin('test_pesertas', 'detail_trainings.id_user', '=', 'test_pesertas.id_user')
+            ->leftJoin('report', 'training.id', '=', 'report.id_training')
+            ->leftJoin('gambar_training', 'report.id_training', '=', 'gambar_training.id_report')
+            ->leftJoin('test', 'test_pesertas.id_test', '=', 'test.id')
+            ->where('training.id', $id_training)
+            ->distinct()
+            ->get();
 
         $genderCount = $reportData->groupBy('jenis_kelamin')->map(function ($item, $key) {
             return count($item);
@@ -819,7 +822,7 @@ class ReportController extends Controller
             $lokasi_training = '';
             $pic = '';
             $status_training = '';
-            $gambarTraining= '';
+            $gambarTraining = '';
             return view('panitia.training.tReport', compact(
                 'reportData',
                 'id_training',
