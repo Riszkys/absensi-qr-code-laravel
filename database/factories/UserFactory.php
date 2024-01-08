@@ -15,9 +15,10 @@ class UserFactory extends Factory
             'name' => 'Bejo',
             'role' => 'admin',
             'nik' => '1234567890',
+            'jenis_kelamin' => 'laki-laki',
             'email' => 'admin@gmail.com',
             'email_verified_at' => now(),
-            'password' => bcrypt('admin123123'), // Ganti dengan kata sandi yang Anda inginkan
+            'password' => bcrypt('admin123123'),
             'remember_token' => Str::random(10),
         ];
     }
