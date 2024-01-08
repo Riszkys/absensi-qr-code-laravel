@@ -22,8 +22,54 @@ class ReportController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     public function exportDataToExcel()
+    public function exportDataToExcel(Request $request)
     {
+        // Mengambil semua data dari formulir
+        $sangatTidakPuasProgram1 = $request->input('sangat_tidak_puas_program1');
+        $sangatTidakPuasProgram2 = $request->input('sangat_tidak_puas_program2');
+        $sangatTidakPuasPelatih1 = $request->input('sangat_tidak_puas_pelatih1');
+        $sangatTidakPuasPelatih2 = $request->input('sangat_tidak_puas_pelatih2');
+        $sangatTidakPuasMetode1 = $request->input('sangat_tidak_puas_metode1');
+        $sangatTidakPuasMetode2 = $request->input('sangat_tidak_puas_metode2');
+        $sangatTidakPuasKesan1 = $request->input('sangat_tidak_puas_kesan1');
+        $sangatTidakPuasKesan2 = $request->input('sangat_tidak_puas_kesan2');
+
+        $tidakPuasProgram1 = $request->input('tidak_puas_program1');
+        $tidakPuasProgram2 = $request->input('tidak_puas_program2');
+        $tidakPuasPelatih1 = $request->input('tidak_puas_pelatih1');
+        $tidakPuasPelatih2 = $request->input('tidak_puas_pelatih2');
+        $tidakPuasMetode1 = $request->input('tidak_puas_metode1');
+        $tidakPuasMetode2 = $request->input('tidak_puas_metode2');
+        $tidakPuasKesan1 = $request->input('tidak_puas_kesan1');
+        $tidakPuasKesan2 = $request->input('tidak_puas_kesan2');
+
+        $netralProgram1 = $request->input('netral_program1');
+        $netralProgram2 = $request->input('netral_program2');
+        $netralPelatih1 = $request->input('netral_pelatih1');
+        $netralPelatih2 = $request->input('netral_pelatih2');
+        $netralMetode1 = $request->input('netral_metode1');
+        $netralMetode2 = $request->input('netral_metode2');
+        $netralKesan1 = $request->input('netral_kesan1');
+        $netralKesan2 = $request->input('netral_kesan2');
+
+        $puasProgram1 = $request->input('puas_program1');
+        $puasProgram2 = $request->input('puas_program2');
+        $puasPelatih1 = $request->input('puas_pelatih1');
+        $puasPelatih2 = $request->input('puas_pelatih2');
+        $puasMetode1 = $request->input('puas_metode1');
+        $puasMetode2 = $request->input('puas_metode2');
+        $puasKesan1 = $request->input('puas_kesan1');
+        $puasKesan2 = $request->input('puas_kesan2');
+
+        $sangatPuasProgram1 = $request->input('sangat_puas_program1');
+        $sangatPuasProgram2 = $request->input('sangat_puas_program2');
+        $sangatPuasPelatih1 = $request->input('sangat_puas_pelatih1');
+        $sangatPuasPelatih2 = $request->input('sangat_puas_pelatih2');
+        $sangatPuasMetode1 = $request->input('sangat_puas_metode1');
+        $sangatPuasMetode2 = $request->input('sangat_puas_metode2');
+        $sangatPuasKesan1 = $request->input('sangat_puas_kesan1');
+        $sangatPuasKesan2 = $request->input('sangat_puas_kesan2');
+
         // Ambil data yang ingin diekspor (contoh: data dari model User)
         $data = User::all();
 
@@ -424,7 +470,9 @@ class ReportController extends Controller
         $sheet->mergeCells('B33:K33');
         $sheet->setCellValue('B33', 'Evaluasi Training');
         $sheet->getStyle('B33')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-        $sheet->getStyle('B33')->getBorders()->getTop()->setBorderStyle('medium');
+        $sheet->getStyle('B33:K33')->getBorders()->getAllBorders()->setBorderStyle('medium');
+        $sheet->getStyle('B33:K33')->getAlignment()->setHorizontal('center')->setVertical('center');
+        $sheet->getStyle('B33:K33')->getFill()->setFillType('solid')->getStartColor()->setRGB('98FB98');
 
         $sheet->setCellValue('B34', 'Bagian');
         $sheet->getStyle('B34:C34')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
@@ -482,165 +530,174 @@ class ReportController extends Controller
 
         $rangeD35toK39 = 'D35:K39';
 
-        $sheet->setCellValue('D35', '0');
+        $sheet->setCellValue('D35', $sangatTidakPuasProgram1);
         $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
         $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
 
-        $sheet->setCellValue('E35', '0');
+        $sheet->setCellValue('E35', $sangatTidakPuasProgram2);
         $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
         $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
 
-        $sheet->setCellValue('F35', '0');
+        $sheet->setCellValue('F35', $sangatTidakPuasPelatih1);
         $sheet->getStyle($rangeD35toK39)->getFont()->setSize(11)->setName('Times New Roman')->setBold('normal');
         $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
 
-        $sheet->setCellValue('G35', '0');
+        $sheet->setCellValue('G35', $sangatTidakPuasPelatih2);
         $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
         $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
 
-        $sheet->setCellValue('H35', '0');
+        $sheet->setCellValue('H35', $sangatTidakPuasMetode1);
         $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
         $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
 
-        $sheet->setCellValue('I35', '0');
+        $sheet->setCellValue('I35', $sangatTidakPuasMetode2);
         $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
         $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
 
-        $sheet->setCellValue('J35', '0');
+        $sheet->setCellValue('J35', $sangatTidakPuasKesan1);
         $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
         $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
 
-        $sheet->setCellValue('K35', '0');
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-
-
-        $sheet->setCellValue('D36', '0');
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('E36', '0');
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('F36', '0');
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('G36', '0');
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('H36', '0');
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('I36', '0');
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('J36', '0');
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('K36', '0');
+        $sheet->setCellValue('K35', $sangatTidakPuasKesan2);
         $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
         $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
 
 
 
-        $sheet->setCellValue('D37', '0');
+        $sheet->setCellValue('D36', $tidakPuasProgram1);
         $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
         $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
 
-        $sheet->setCellValue('E37', '0');
+        $sheet->setCellValue('E36', $tidakPuasProgram2);
         $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
         $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
 
-        $sheet->setCellValue('F37', '0');
+        $sheet->setCellValue('F36', $tidakPuasPelatih1);
         $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
         $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
 
-        $sheet->setCellValue('G37', '0');
+        $sheet->setCellValue('G36', $tidakPuasPelatih2);
         $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
         $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
 
-        $sheet->setCellValue('H37', '0');
+        $sheet->setCellValue('H36', $tidakPuasMetode1);
         $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
         $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
 
-        $sheet->setCellValue('I37', '0');
+        $sheet->setCellValue('I36', $tidakPuasMetode2);
         $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
         $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
 
-        $sheet->setCellValue('J37', '0');
+        $sheet->setCellValue('J36', $tidakPuasKesan1);
         $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
         $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
 
-        $sheet->setCellValue('K37', '0');
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-
-
-        $sheet->setCellValue('D38', '9');
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('E38', '0.5');
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('F38', '0.17');
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('G38', '0.56666666666667');
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('H38', '19');
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('I38', '0.63333333333333');
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('J38', '18');
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('K38', '0.6');
+        $sheet->setCellValue('K36', $tidakPuasKesan2);
         $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
         $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
 
 
 
-        $sheet->setCellValue('D39', '9');
+        $sheet->setCellValue('D37', $netralProgram1);
         $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
         $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
 
-        $sheet->setCellValue('E39', '0.5');
+        $sheet->setCellValue('E37', $netralProgram2);
         $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
         $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
 
-        $sheet->setCellValue('F39', '0.13');
+        $sheet->setCellValue('F37', $netralPelatih1);
         $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
         $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
 
-        $sheet->setCellValue('G39', '0.43333333333333');
+        $sheet->setCellValue('G37', $netralPelatih2);
         $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
         $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
 
-        $sheet->setCellValue('H39', '11');
+        $sheet->setCellValue('H37', $netralMetode1);
         $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
         $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
 
-        $sheet->setCellValue('I39', '0.36666666666667');
+        $sheet->setCellValue('I37', $netralMetode2);
         $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
         $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
+
+        $sheet->setCellValue('J37', $netralKesan1);
+        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
+        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
+
+        $sheet->setCellValue('K37', $netralKesan2);
+        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
+        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
+
+
+        $sheet->setCellValue('D38', $puasProgram1);
+        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
+        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
+
+        $sheet->setCellValue('E38', $puasProgram2);
+        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
+        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
+
+        $sheet->setCellValue('F38', $puasPelatih1);
+        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
+        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
+
+        $sheet->setCellValue('G38', $puasPelatih2);
+        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
+        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
+
+        $sheet->setCellValue('H38',  $puasMetode1);
+        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
+        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
+
+        $sheet->setCellValue('I38', $puasMetode2);
+        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
+        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
+
+        $sheet->setCellValue('J38', $puasKesan1);
+        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
+        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
+
+        $sheet->setCellValue('K38', $puasKesan2);
+        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
+        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
+
+
+
+        $sheet->setCellValue('D39', $sangatPuasProgram1);
+        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
+        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
+
+        $sheet->setCellValue('E39', $sangatPuasProgram2);
+        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
+        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
+
+        $sheet->setCellValue('F39', $sangatPuasPelatih1);
+        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
+        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
+
+        $sheet->setCellValue('G39', $sangatPuasPelatih2);
+        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
+        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
+
+        $sheet->setCellValue('H39', $sangatPuasMetode1);
+        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
+        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
+
+        $sheet->setCellValue('I39', $sangatPuasMetode2);
+        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
+        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
+
+        $sheet->setCellValue('J39', $sangatPuasKesan1);
+        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
+        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
+
+        $sheet->setCellValue('K39', $sangatPuasKesan2);
+        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
+        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
+
+
 
         $sheet->setCellValue('B41', '5');
         $sheet->getStyle('B41')->getAlignment()->setHorizontal('center')->setVertical('center');
@@ -683,25 +740,26 @@ class ReportController extends Controller
     }
     public function store(Request $request)
     {
-        $report = new Report();
-        $report->id_training = $request->input('id_training');
-        $report->feedback = $request->input('feedback');
-        $report->evaluasi = $request->input('evaluasi');
-        $report->save();
+        try {
+            $report = new Report();
+            $report->id_training = $request->input('id_training');
+            $report->feedback = $request->input('feedback');
+            $report->evaluasi = $request->input('evaluasi');
+            $report->save();
 
-        if ($request->hasFile('gambar')) {
-            foreach ($request->file('gambar') as $image) {
-                $gambarTraining = new GambarTraining();
-                $gambarTraining->id_report = $request->input('id_training');
-                $gambarTraining->gambar = $image->store('gambar_training', 'public');
-                $gambarTraining->save();
+            if ($request->hasFile('gambar')) {
+                foreach ($request->file('gambar') as $image) {
+                    $gambarTraining = new GambarTraining();
+                    $gambarTraining->id_report = $report->id; // Use $report->id instead of $request->input('id_training')
+                    $gambarTraining->gambar = $image->store('gambar_training', 'public');
+                    $gambarTraining->save();
+                }
             }
+
             return redirect()->route('report.index')->with('success', 'Data berhasil disimpan.');
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
-
-        return redirect()->back()->with('success', 'Data berhasil disimpan.');
     }
 
     public function generatePDF(Request $request)

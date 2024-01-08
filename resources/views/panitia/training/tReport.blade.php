@@ -16,7 +16,7 @@
         <form id="formEvaluasi" action="{{ route('simpan.report') }}" method="post" enctype="multipart/form-data">
             @csrf
 
-        <div class="row justify-content-end g-2 my-3">
+            <div class="row justify-content-end g-2 my-3">
                 <input type="hidden" value="{{ $id_training }}" name="id_training" id="id_training">
                 <div class="row">
                     <div class="col-12 py-2">
@@ -28,35 +28,36 @@
                         <h5>Pelaksanaan Training</h5>
                     </div>
                     <div class="col-12 py-2">
-                        <table class="table table-bordered">
+                        <table class="table-bordered table">
                             <thead>
-                              <tr>
-                                <th scope="col" class="text-center">Feedback</th>
-                                <th scope="col">Tanggal & Tempat</th>
-                                <th scope="col" class="text-center">Fasilitator / Trainer</th>
-                                <th scope="col">Durasi</th>
-                              </tr>
+                                <tr>
+                                    <th scope="col" class="text-center">Feedback</th>
+                                    <th scope="col">Tanggal & Tempat</th>
+                                    <th scope="col" class="text-center">Fasilitator / Trainer</th>
+                                    <th scope="col">Durasi</th>
+                                </tr>
                             </thead>
                             <tbody>
-                              <tr>
-                                <td rowspan="4">
-                                    <input type="hidden" value="{{ $id_training }}" name="id_training" id="id_training">
-                                    <input name="feedback" type="text" id="feedback" class="form-control col">
-                                </td>
-                                <td>{{ $tanggal_training }}</td>
-                                <td class="text-center">{{ $pic }}</td>
-                                <td><input type="text" class="form-control"></td>
-                              </tr>
-                              <tr>
-                                <td>{{ $lokasi_training }}</td>
-                                <td colspan="2" class="text-center">Alat</td>
-                              </tr>
-                              <tr>
-                                <td >Larry the Bird</td>
-                                <td colspan="2" class="text-center"><input type="text" class="form-control"></td>
-                              </tr>
+                                <tr>
+                                    <td rowspan="4">
+                                        <input type="hidden" value="{{ $id_training }}" name="id_training"
+                                            id="id_training">
+                                        <input name="feedback" type="text" id="feedback" class="form-control col">
+                                    </td>
+                                    <td>{{ $tanggal_training }}</td>
+                                    <td class="text-center">{{ $pic }}</td>
+                                    <td><input type="text" class="form-control"></td>
+                                </tr>
+                                <tr>
+                                    <td>{{ $lokasi_training }}</td>
+                                    <td colspan="2" class="text-center">Alat</td>
+                                </tr>
+                                <tr>
+                                    <td>Larry the Bird</td>
+                                    <td colspan="2" class="text-center"><input type="text" class="form-control"></td>
+                                </tr>
                             </tbody>
-                          </table>
+                        </table>
                     </div>
                     <div class="col-12 py-2" id="gambar-container">
                         <div class="row">
@@ -66,203 +67,227 @@
                             <div class="col">
                                 {{-- <input type="text" name="id_training" id="id_training_input" value="{{ $id_training }}"> --}}
                                 <input name="gambar[]" type="file" id="gambar" class="form-control col">
-                                <button type="button" class="btntambah btn btn-primary mt-3" id="btntambah">Tambah Gambar</button>
+                                <button type="button" class="btntambah btn btn-primary mt-3" id="btntambah">Tambah
+                                    Gambar</button>
                             </div>
                         </div>
                     </div>
-                <div class="row my-3">
-                    <h5 class="my-2">Peserta Training</h5>
-                    <table class="table-striped table-hover table">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Nama Peserta</th>
-                                <th scope="col">NiK</th>
-                                <th scope="col">Pre </th>
-                                <th scope="col">Post</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($reportData->unique('name') as $data)
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>{{ $data->name }}</td>
-                                <td>{{ $data->nik }}</td>
-                                <td>{{ $data->hasil_test ?? 'Belum Test' }}</td>
-                                <td>{{ $data->hasil_test ?? 'Belum Test' }}</td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                <div class="row my-3">
-                    <h5 class="my-2" class="text-center">Evaluasi Training</h5>
-                    <table class="table-responsive table table-bordered" border="2">
-                        <thead>
-                          <tr>
-                            <th scope="col" colspan="2" class="text-center">Kehadiran</th>
-                            <th scope="col" colspan="2" class="text-center">Test</th>
-                            <th scope="col" colspan="2" class="text-center">Test</th>
-                            <th scope="col" class="text-center" >Evaluasi</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <th >Plan</th>
-                            <td>Actual</td>
-                            <td>Ave Pre</td>
-                            <td>Ave Pos</td>
-                            <td>Male</td>
-                            <td>Female</td>
-                            <td rowspan="4"><textarea name="evaluasi" type="text" id="evaluasi" class="form-control col"> </textarea></td>
-                          </tr>
-                          <tr>
-                            <th>{{ $totalAttendance }}</th>
-                            <td>{{ $hadirCount }}</td>
-                            <td>{{ $averagePreTest }}</td>
-                            <td>{{ $averagePostTest }}</td>
-                            <td>{{ $lakiCount ?? 0 }}</td>
-                            <td>{{ $perempuanCount ?? 0 }}</td>
-                          </tr>
-                          <tr>
-                            <th colspan="2" rowspan="3" class="text-center">
-                                @if ($hadirCount != 0)
-                                    {{ number_format(($totalAttendance / $hadirCount) * 100, 2) }}%
-                                @else
-                                    N/A
-                                @endif
-                            </th>
-                            <td rowspan="3" colspan="2" class="text-center">{{ ($averagePreTest + $averagePostTest) / 2 }}</td>
-                            <td colspan="2" rowspan="3" class="text-center">{{ ($lakiCount + $perempuanCount) / 2 }}</td>
-                          </tr>
-                          <tr>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <table class="table table-bordered" border="2">
-                        <thead>
-                          <tr>
-                            <th colspan="9" class="text-center">evaluasi training</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                            @if(count($reportData) > 0)
-                          <tr>
-                            <th>Bagian</th>
-                            <td colspan="2" class="text-center">Program</td>
-                            <td colspan="2" class="text-center">pelatih</td>
-                            <td colspan="2" class="text-center">metode pelatihan</td>
-                            <td colspan="2" class="text-center">kesan umum</td>
-                          </tr>
-                          <tr>
-                            <th>Sangat Tidak Puas</th>
-                            <td>Jumlah</td>
-                            <td>Precentage</td>
-                            <td><input type="number" class="form-control"></td>
-                            <td><input type="number" class="form-control"></td>
-                            <td><input type="number" class="form-control"></td>
-                            <td><input type="number" class="form-control"></td>
-                            <td><input type="number" class="form-control"></td>
-                            <td><input type="number" class="form-control"></td>
-                          </tr>
-                          <tr>
-                            <th>Tidak Puas</th>
-                            <td>{{ $data->hasil_test * 0.1}}</td>
-                            <td>{{ $data->hasil_test * 0.2}}</td>
-                            <td><input type="number" class="form-control"></td>
-                            <td><input type="number" class="form-control"></td>
-                            <td ><input type="number" class="form-control"></td>
-                            <td ><input type="number" class="form-control"></td>
-                            <td><input type="number" class="form-control"></td>
-                            <td><input type="number" class="form-control"></td>
-                          </tr>
-                          <tr>
-                            <th>Netral</th>
-                            <td>{{ $data->hasil_test * 0.3}}</td>
-                            <td >{{ $data->hasil_test * 0.4}}</td>
-                            <td><input type="number" class="form-control"></td>
-                            <td ><input type="number" class="form-control"></td>
-                            <td><input type="number" class="form-control"></td>
-                            <td><input type="number" class="form-control"></td>
-                            <td><input type="number" class="form-control"></td>
-                            <td><input type="number" class="form-control"></td>
-                          </tr>
-                          <tr>
-                            <th>Puas</th>
-                            <td >{{ $data->hasil_test * 0.5}}</td>
-                            <td >{{ $data->hasil_test * 0.6}}</td>
-                            <td><input type="number" class="form-control"></td>
-                            <td><input type="number" class="form-control"></td>
-                            <td><input type="number" class="form-control"></td>
-                            <td><input type="number" class="form-control"></td>
-                            <td><input type="number" class="form-control"></td>
-                            <td><input type="number" class="form-control"></td>
-                          </tr>
-                          <tr>
-                            <th>Sangat Puas</th>
-                            <td><input type="number" class="form-control"></td>
-                            <td><input type="number" class="form-control"></td>
-                            <td><input type="number" class="form-control"></td>
-                            <td ><input type="number" class="form-control"></td>
-                            <td ><input type="number" class="form-control"></td>
-                            <td><input type="number" class="form-control"></td>
-                            <td><input type="number" class="form-control"></td>
-                            <td><input type="number" class="form-control"></td>
-                          </tr>
-                      @endif
-                        </tbody>
-                      </table>
-                </div>
-                <div class="row my-3 text-center">
-                    <h5 class="my-2">Gambar Training</h5>
-
-                    @if(count($reportData) > 0)
-                    <div class="col-md-4 mb-3">
-                      @if ($reportData[0]->gambar)
-                        <img src="{{ asset('storage/' . $reportData[0]->gambar) }}" alt="Gambar Training" class="img-fluid" style="max-width: 250px;">
-                      @else
-                        <p>Tidak ada gambar</p>
-                      @endif
+                    <div class="row my-3">
+                        <h5 class="my-2">Peserta Training</h5>
+                        <table class="table-striped table-hover table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Nama Peserta</th>
+                                    <th scope="col">NiK</th>
+                                    <th scope="col">Pre </th>
+                                    <th scope="col">Post</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($reportData->unique('name') as $data)
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>{{ $data->name }}</td>
+                                        <td>{{ $data->nik }}</td>
+                                        <td>{{ $data->hasil_test ?? 'Belum Test' }}</td>
+                                        <td>{{ $data->hasil_test ?? 'Belum Test' }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
-                  @endif
+                    <div class="row my-3">
+                        <h5 class="my-2" class="text-center">Evaluasi Training</h5>
+                        <table class="table-responsive table-bordered table" border="2">
+                            <thead>
+                                <tr>
+                                    <th scope="col" colspan="2" class="text-center">Kehadiran</th>
+                                    <th scope="col" colspan="2" class="text-center">Test</th>
+                                    <th scope="col" colspan="2" class="text-center">Test</th>
+                                    <th scope="col" class="text-center">Evaluasi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>Plan</th>
+                                    <td>Actual</td>
+                                    <td>Ave Pre</td>
+                                    <td>Ave Pos</td>
+                                    <td>Male</td>
+                                    <td>Female</td>
+                                    <td rowspan="4">
+                                        <textarea name="evaluasi" type="text" id="evaluasi" class="form-control col"> </textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ $totalAttendance }}</th>
+                                    <td>{{ $hadirCount }}</td>
+                                    <td>{{ $averagePreTest }}</td>
+                                    <td>{{ $averagePostTest }}</td>
+                                    <td>{{ $lakiCount ?? 0 }}</td>
+                                    <td>{{ $perempuanCount ?? 0 }}</td>
+                                </tr>
+                                <tr>
+                                    <th colspan="2" rowspan="3" class="text-center">
+                                        @if ($hadirCount != 0)
+                                            {{ number_format(($totalAttendance / $hadirCount) * 100, 2) }}%
+                                        @else
+                                            N/A
+                                        @endif
+                                    </th>
+                                    <td rowspan="3" colspan="2" class="text-center">
+                                        {{ ($averagePreTest + $averagePostTest) / 2 }}</td>
+                                    <td colspan="2" rowspan="3" class="text-center">
+                                        {{ ($lakiCount + $perempuanCount) / 2 }}</td>
+                                </tr>
+                                <tr>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table-bordered table" border="2">
+                            <thead>
+                                <tr>
+                                    <th colspan="9" class="text-center">evaluasi training</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (count($reportData) > 0)
+                                    <tr>
+                                        <th>Bagian</th>
+                                        <td colspan="2" class="text-center">Program</td>
+                                        <td colspan="2" class="text-center">pelatih</td>
+                                        <td colspan="2" class="text-center">metode pelatihan</td>
+                                        <td colspan="2" class="text-center">kesan umum</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Sangat Tidak Puas</th>
+                                        {{-- <td>Jumlah</td>
+                                        <td>Precentage</td> --}}
+                                        <td><input type="number" class="form-control" name="sangat_tidak_puas_program1">
+                                        </td>
+                                        <td><input type="number" class="form-control" name="sangat_tidak_puas_program2">
+                                        </td>
+                                        <td><input type="number" class="form-control" name="sangat_tidak_puas_pelatih1">
+                                        </td>
+                                        <td><input type="number" class="form-control" name="sangat_tidak_puas_pelatih2">
+                                        </td>
+                                        <td><input type="number" class="form-control" name="sangat_tidak_puas_metode1">
+                                        </td>
+                                        <td><input type="number" class="form-control" name="sangat_tidak_puas_metode2">
+                                        </td>
+                                        <td><input type="number" class="form-control" name="sangat_tidak_puas_kesan1">
+                                        </td>
+                                        <td><input type="number" class="form-control" name="sangat_tidak_puas_kesan2">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Tidak Puas</th>
+                                        {{-- <td>{{ $data->hasil_test * 0.1 }}</td>
+                                        <td>{{ $data->hasil_test * 0.2 }}</td> --}}
+                                        <td><input type="number" class="form-control" name="tidak_puas_program1"></td>
+                                        <td><input type="number" class="form-control" name="tidak_puas_program2"></td>
+                                        <td><input type="number" class="form-control" name="tidak_puas_pelatih1"></td>
+                                        <td><input type="number" class="form-control" name="tidak_puas_pelatih2"></td>
+                                        <td><input type="number" class="form-control" name="tidak_puas_metode1"></td>
+                                        <td><input type="number" class="form-control" name="tidak_puas_metode2"></td>
+                                        <td><input type="number" class="form-control" name="tidak_puas_kesan1"></td>
+                                        <td><input type="number" class="form-control" name="tidak_puas_kesan2"></td>
+
+                                    </tr>
+                                    <tr>
+                                        <th>Netral</th>
+                                        {{-- <td>{{ $data->hasil_test * 0.3 }}</td>
+                                        <td>{{ $data->hasil_test * 0.4 }}</td> --}}
+                                        <td><input type="number" class="form-control" name="netral_program1"></td>
+                                        <td><input type="number" class="form-control" name="netral_program2"></td>
+                                        <td><input type="number" class="form-control" name="netral_pelatih1"></td>
+                                        <td><input type="number" class="form-control" name="netral_pelatih2"></td>
+                                        <td><input type="number" class="form-control" name="netral_metode1"></td>
+                                        <td><input type="number" class="form-control" name="netral_metode2"></td>
+                                        <td><input type="number" class="form-control" name="netral_kesan1"></td>
+                                        <td><input type="number" class="form-control" name="netral_kesan2"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Puas</th>
+                                        {{-- <td>{{ $data->hasil_test * 0.5 }}</td>
+                                        <td>{{ $data->hasil_test * 0.6 }}</td> --}}
+                                        <td><input type="number" class="form-control" name="puas_program1"></td>
+                                        <td><input type="number" class="form-control" name="puas_program2"></td>
+                                        <td><input type="number" class="form-control" name="puas_pelatih1"></td>
+                                        <td><input type="number" class="form-control" name="puas_pelatih2"></td>
+                                        <td><input type="number" class="form-control" name="puas_metode1"></td>
+                                        <td><input type="number" class="form-control" name="puas_metode2"></td>
+                                        <td><input type="number" class="form-control" name="puas_kesan1"></td>
+                                        <td><input type="number" class="form-control" name="puas_kesan2"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Sangat Puas</th>
+                                        <td><input type="number" class="form-control" name="sangat_puas_program1"></td>
+                                        <td><input type="number" class="form-control" name="sangat_puas_program2"></td>
+                                        <td><input type="number" class="form-control" name="sangat_puas_pelatih1"></td>
+                                        <td><input type="number" class="form-control" name="sangat_puas_pelatih2"></td>
+                                        <td><input type="number" class="form-control" name="sangat_puas_metode1"></td>
+                                        <td><input type="number" class="form-control" name="sangat_puas_metode2"></td>
+                                        <td><input type="number" class="form-control" name="sangat_puas_kesan1"></td>
+                                        <td><input type="number" class="form-control" name="sangat_puas_kesan2"></td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row my-3 text-center">
+                        <h5 class="my-2">Gambar Training</h5>
+
+                        @if (count($reportData) > 0)
+                            <div class="col-md-4 mb-3">
+                                @if ($reportData[0]->gambar)
+                                    <img src="{{ asset('storage/' . $reportData[0]->gambar) }}" alt="Gambar Training"
+                                        class="img-fluid" style="max-width: 250px;">
+                                @else
+                                    <p>Tidak ada gambar</p>
+                                @endif
+                            </div>
+                        @endif
+                    </div>
+                    <div class="row justify-content-start g-2 my-3">
+                        <input type="hidden" name="id_training" value="{{ $id_training }}">
+                        <a href="#" id="downloadExcel" class="btn btn-success col-2 col-md-1 mx-2">Cetak Excel</a>
+                        <a href="#" id="cetakPdfLink" class="btn btn-primary col-2 col-md-1 mx-2">Cetak PDF</a>
+                        <button id="btnsimpanreport" type="submit" class="btn btn-primary col-2 col-md-1 mx-2">Simpan
+                            Data</button>
+                    </div>
                 </div>
-                <div class="row justify-content-start g-2 my-3">
-                    <input type="hidden" name="id_training" value="{{ $id_training }}">
-                    <a href="#" id="downloadExcel" class="btn btn-success col-2 col-md-1 mx-2">Cetak Excel</a>
-                    <a href="#" id="cetakPdfLink" class="btn btn-primary col-2 col-md-1 mx-2">Cetak PDF</a>
-                    <button id="btnsimpanreport" type="submit" class="btn btn-primary col-2 col-md-1 mx-2">Simpan Data</button>
-                </div>
-                </div>
-        </div>
+            </div>
         </form>
-         <script>
+        <script>
             document.addEventListener('DOMContentLoaded', function() {
-    var tambahButton = document.getElementById('btntambah');
-    var container = document.getElementById('gambar-container');
-    var formEvaluasi = document.getElementById('formEvaluasi');
-    var btnSimpanReport = document.getElementById('btnsimpanreport');
+                var tambahButton = document.getElementById('btntambah');
+                var container = document.getElementById('gambar-container');
+                var formEvaluasi = document.getElementById('formEvaluasi');
+                var btnSimpanReport = document.getElementById('btnsimpanreport');
 
-    tambahButton.addEventListener('click', function(event) {
-        event.preventDefault();
+                tambahButton.addEventListener('click', function(event) {
+                    event.preventDefault();
 
-        var newInput = document.createElement('input');
-        newInput.name = 'gambar[]';
-        newInput.type = 'file';
-        newInput.className = 'form-control col mt-2';
+                    var newInput = document.createElement('input');
+                    newInput.name = 'gambar[]';
+                    newInput.type = 'file';
+                    newInput.className = 'form-control col mt-2';
 
-        container.appendChild(newInput);
-    });
-});
+                    container.appendChild(newInput);
+                });
+            });
         </script>
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
         <!-- Your custom script -->
         <script>
-            $(document).on('click', '#cetakPdfLink', function (e) {
+            $(document).on('click', '#cetakPdfLink', function(e) {
                 e.preventDefault();
                 var form = $('<form>', {
                     'method': 'POST',
-                    'action': '{{ route("simpan.pdf") }}',
+                    'action': '{{ route('simpan.pdf') }}',
                     'target': '_blank',
                     'style': 'display:none;'
                 });
@@ -272,16 +297,75 @@
             });
         </script>
         <script>
-            $(document).on('click', '#downloadExcel', function (e) {
+            $(document).on('click', '#downloadExcel', function(e) {
                 e.preventDefault();
+
+                // Menyiapkan data yang akan dikirim
+                var formData = {
+                    '_token': '{{ csrf_token() }}',
+                    'id_training': $('#id_training').val(),
+                    'feedback': $('#feedback').val(),
+                    'sangat_tidak_puas_program1': $('input[name="sangat_tidak_puas_program1"]').val(),
+                    'sangat_tidak_puas_program2': $('input[name="sangat_tidak_puas_program2"]').val(),
+                    'sangat_tidak_puas_pelatih1': $('input[name="sangat_tidak_puas_pelatih1"]').val(),
+                    'sangat_tidak_puas_pelatih2': $('input[name="sangat_tidak_puas_pelatih2"]').val(),
+                    'sangat_tidak_puas_metode1': $('input[name="sangat_tidak_puas_metode1"]').val(),
+                    'sangat_tidak_puas_metode2': $('input[name="sangat_tidak_puas_metode2"]').val(),
+                    'sangat_tidak_puas_kesan1': $('input[name="sangat_tidak_puas_kesan1"]').val(),
+                    'sangat_tidak_puas_kesan2': $('input[name="sangat_tidak_puas_kesan2"]').val(),
+                    'tidak_puas_program1': $('input[name="tidak_puas_program1"]').val(),
+                    'tidak_puas_program2': $('input[name="tidak_puas_program2"]').val(),
+                    'tidak_puas_pelatih1': $('input[name="tidak_puas_pelatih1"]').val(),
+                    'tidak_puas_pelatih2': $('input[name="tidak_puas_pelatih2"]').val(),
+                    'tidak_puas_metode1': $('input[name="tidak_puas_metode1"]').val(),
+                    'tidak_puas_metode2': $('input[name="tidak_puas_metode2"]').val(),
+                    'tidak_puas_kesan1': $('input[name="tidak_puas_kesan1"]').val(),
+                    'tidak_puas_kesan2': $('input[name="tidak_puas_kesan2"]').val(),
+                    'netral_program1': $('input[name="netral_program1"]').val(),
+                    'netral_program2': $('input[name="netral_program2"]').val(),
+                    'netral_pelatih1': $('input[name="netral_pelatih1"]').val(),
+                    'netral_pelatih2': $('input[name="netral_pelatih2"]').val(),
+                    'netral_metode1': $('input[name="netral_metode1"]').val(),
+                    'netral_metode2': $('input[name="netral_metode2"]').val(),
+                    'netral_kesan1': $('input[name="netral_kesan1"]').val(),
+                    'netral_kesan2': $('input[name="netral_kesan2"]').val(),
+                    'puas_program1': $('input[name="puas_program1"]').val(),
+                    'puas_program2': $('input[name="puas_program2"]').val(),
+                    'puas_pelatih1': $('input[name="puas_pelatih1"]').val(),
+                    'puas_pelatih2': $('input[name="puas_pelatih2"]').val(),
+                    'puas_metode1': $('input[name="puas_metode1"]').val(),
+                    'puas_metode2': $('input[name="puas_metode2"]').val(),
+                    'puas_kesan1': $('input[name="puas_kesan1"]').val(),
+                    'puas_kesan2': $('input[name="puas_kesan2"]').val(),
+                    'sangat_puas_program1': $('input[name="sangat_puas_program1"]').val(),
+                    'sangat_puas_program2': $('input[name="sangat_puas_program2"]').val(),
+                    'sangat_puas_pelatih1': $('input[name="sangat_puas_pelatih1"]').val(),
+                    'sangat_puas_pelatih2': $('input[name="sangat_puas_pelatih2"]').val(),
+                    'sangat_puas_metode1': $('input[name="sangat_puas_metode1"]').val(),
+                    'sangat_puas_metode2': $('input[name="sangat_puas_metode2"]').val(),
+                    'sangat_puas_kesan1': $('input[name="sangat_puas_kesan1"]').val(),
+                    'sangat_puas_kesan2': $('input[name="sangat_puas_kesan2"]').val(),
+                };
+
+                // Membuat form baru untuk mengirim data
                 var form = $('<form>', {
                     'method': 'POST',
-                    'action': '{{ route("simpan.excel") }}',
+                    'action': '{{ route('simpan.excel') }}',
                     'target': '_blank',
                     'style': 'display:none;'
                 });
 
-                form.append('{{ csrf_field() }}');
+                // Menambahkan setiap data ke dalam form sebagai input tersembunyi
+                $.each(formData, function(key, value) {
+                    var input = $('<input>', {
+                        'type': 'hidden',
+                        'name': key,
+                        'value': value
+                    });
+                    form.append(input);
+                });
+
+                // Menambahkan form ke dalam body dan meng-submit form
                 $('body').append(form);
                 form.submit();
             });
