@@ -91,6 +91,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/generate-pdf/get', [PDFController::class, 'generatePDF'])->name('generate-pdf');
     Route::post('/panitia/training/absen', [AbsensiController::class, 'absen'])->name('absen');
     Route::post('/panitia/training/tolak', [AbsensiController::class, 'tolak'])->name('tolak');
+
+    Route::get('/viewpdf', function () {
+        return view('pdf.report');
+    });
 });
 
 

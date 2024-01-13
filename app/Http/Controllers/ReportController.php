@@ -22,7 +22,7 @@ class ReportController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     public function exportDataToExcel()
+    public function exportDataToExcel()
     {
         // Ambil data yang ingin diekspor (contoh: data dari model User)
         $data = User::all();
@@ -32,7 +32,7 @@ class ReportController extends Controller
         $sheet = $spreadsheet->getActiveSheet();
 
         // Path ke file gambar di storage Laravel
-        $imagePath = storage_path('app/public/header1.png');
+        $imagePath = storage_path('app/public/header1.jpg');
 
         // Menyisipkan gambar ke dalam sel B2:C4
         $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
@@ -58,7 +58,7 @@ class ReportController extends Controller
         $sheet->getStyle('D2:I3')->getBorders()->getAllBorders()->setBorderStyle('medium');
 
         // Path ke file gambar di storage Laravel
-        $imagePath = storage_path('app/public/header2.png');
+        $imagePath = storage_path('app/public/header2.jpg');
 
         // Menyisipkan gambar ke dalam sel B2:C4
         $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
@@ -705,7 +705,6 @@ class ReportController extends Controller
         }
     }
 
-
     public function generatePDF(Request $request)
     {
         $id_training = $request->input('id_training');
@@ -718,22 +717,39 @@ class ReportController extends Controller
             'training.status_training',
             'users.nik',
             'users.name',
+            'users.jenis_kelamin',
             'departement.nama as department_name',
             'absensi.status_absen',
-            'test_pesertas.hasil_test'
+            'test_pesertas.hasil_test',
+            'test_pesertas.id_test',
+            'test.jenis_test',
+            'report.*',
+            'gambar_training.gambar'
         )
             ->join('detail_trainings', 'training.id', '=', 'detail_trainings.id_training')
             ->join('users', 'detail_trainings.id_user', '=', 'users.id')
             ->join('departement', 'detail_trainings.id_departement', '=', 'departement.id')
             ->leftJoin('absensi', 'detail_trainings.id_absen', '=', 'absensi.id')
             ->leftJoin('test_pesertas', 'detail_trainings.id_user', '=', 'test_pesertas.id_user')
+            ->leftJoin('report', 'training.id', '=', 'report.id_training')
+            ->leftJoin('gambar_training', 'report.id_training', '=', 'gambar_training.id_report')
+            ->leftJoin('test', 'test_pesertas.id_test', '=', 'test.id')
             ->where('training.id', $id_training)
             ->distinct()
             ->get();
+        // dd($reportData);
 
-        $feedback = $request->input('feedback');
-
-        // dd($feedback);
+        $genderCount = $reportData->groupBy('jenis_kelamin')->map(function ($item, $key) {
+            return count($item);
+        });
+        $lakiCount = $genderCount['laki'] ?? 0;
+        $perempuanCount = $genderCount['perempuan'] ?? 0;
+        $totalAttendance = $reportData->count();
+        $hadirCount = $reportData->where('status_absen', 'hadir')->count();
+        $preTestResults = $reportData->where('id_test', 1)->pluck('hasil_test');
+        $postTestResults = $reportData->where('id_test', 2)->pluck('hasil_test');
+        $averagePreTest = $preTestResults->avg();
+        $averagePostTest = $postTestResults->avg();
         if ($reportData->isEmpty()) {
             $materi_training = '';
             $waktu_mulai = '';
@@ -741,7 +757,8 @@ class ReportController extends Controller
             $lokasi_training = '';
             $pic = '';
             $status_training = '';
-            $pdf = PDF::loadView('pdf.report', compact(
+            $gambarTraining = '';
+            return view('panitia.training.tReport', compact(
                 'reportData',
                 'id_training',
                 'materi_training',
@@ -749,17 +766,27 @@ class ReportController extends Controller
                 'tanggal_training',
                 'lokasi_training',
                 'pic',
+                'gambarTraining',
                 'status_training',
-                'feedback'
+                'genderCount',
+                'averagePreTest',
+                'averagePostTest',
+                'totalAttendance',
+                'hadirCount',
+                'lakiCount',
+                'perempuanCount'
             ));
+            $pdf->setPaper('landscape');
             return $pdf->download('training_report.pdf');
         }
+
         $materi_training = $reportData[0]->materi_training;
         $waktu_mulai = $reportData[0]->waktu_mulai;
         $tanggal_training = $reportData[0]->tanggal_training;
         $lokasi_training = $reportData[0]->lokasi_training;
         $pic = $reportData[0]->pic;
         $status_training = $reportData[0]->status_training;
+
         $pdf = PDF::loadView('pdf.report', compact(
             'reportData',
             'id_training',
@@ -769,10 +796,87 @@ class ReportController extends Controller
             'lokasi_training',
             'pic',
             'status_training',
-            'feedback'
+            'genderCount',
+            'averagePreTest',
+            'averagePostTest',
+            'totalAttendance',
+            'hadirCount',
+            'lakiCount',
+            'perempuanCount'
         ));
+        $pdf->setPaper('landscape');
         return $pdf->download('training_report.pdf');
     }
+
+    // public function generatePDF(Request $request)
+    // {
+    //     $id_training = $request->input('id_training');
+    //     $reportData = Training::select(
+    //         'training.materi_training',
+    //         'training.waktu_mulai',
+    //         'training.tanggal_training',
+    //         'training.pic',
+    //         'training.lokasi_training',
+    //         'training.status_training',
+    //         'users.nik',
+    //         'users.name',
+    //         'departement.nama as department_name',
+    //         'absensi.status_absen',
+    //         'test_pesertas.hasil_test'
+    //     )
+    //         ->join('detail_trainings', 'training.id', '=', 'detail_trainings.id_training')
+    //         ->join('users', 'detail_trainings.id_user', '=', 'users.id')
+    //         ->join('departement', 'detail_trainings.id_departement', '=', 'departement.id')
+    //         ->leftJoin('absensi', 'detail_trainings.id_absen', '=', 'absensi.id')
+    //         ->leftJoin('test_pesertas', 'detail_trainings.id_user', '=', 'test_pesertas.id_user')
+    //         ->where('training.id', $id_training)
+    //         ->distinct()
+    //         ->get();
+
+    //     dd($reportData);
+
+    //     $feedback = $request->input('feedback');
+
+    //     // dd($feedback);
+    //     if ($reportData->isEmpty()) {
+    //         $materi_training = '';
+    //         $waktu_mulai = '';
+    //         $tanggal_training = '';
+    //         $lokasi_training = '';
+    //         $pic = '';
+    //         $status_training = '';
+    //         $pdf = PDF::loadView('pdf.report', compact(
+    //             'reportData',
+    //             'id_training',
+    //             'materi_training',
+    //             'waktu_mulai',
+    //             'tanggal_training',
+    //             'lokasi_training',
+    //             'pic',
+    //             'status_training',
+    //             'feedback'
+    //         ));
+    //         return $pdf->download('training_report.pdf');
+    //     }
+    //     $materi_training = $reportData[0]->materi_training;
+    //     $waktu_mulai = $reportData[0]->waktu_mulai;
+    //     $tanggal_training = $reportData[0]->tanggal_training;
+    //     $lokasi_training = $reportData[0]->lokasi_training;
+    //     $pic = $reportData[0]->pic;
+    //     $status_training = $reportData[0]->status_training;
+    //     $pdf = PDF::loadView('pdf.report', compact(
+    //         'reportData',
+    //         'id_training',
+    //         'materi_training',
+    //         'waktu_mulai',
+    //         'tanggal_training',
+    //         'lokasi_training',
+    //         'pic',
+    //         'status_training',
+    //         'feedback'
+    //     ));
+    //     return $pdf->download('training_report.pdf');
+    // }
     public function index(Request $request)
     {
         $id_training = $request->input('id_training');

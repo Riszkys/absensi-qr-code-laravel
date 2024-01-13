@@ -39,7 +39,7 @@
                 <th scope="col">Nama Peserta</th>
                 <th scope="col">Dept. Peserta</th>
                 <th scope="col">Status Absen</th>
-                <th scope="col">Hasil Test</th>
+                <th scope="col">col</th>
             </tr>
         </thead>
         <tbody>
