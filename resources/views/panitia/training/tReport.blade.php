@@ -164,56 +164,100 @@
                                         <th>Sangat Tidak Puas</th>
                                         <td>Jumlah</td>
                                         <td>Precentage</td>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
+                                        <td><input type="number" name="sangat_puas1" id="sangat_puas1"
+                                                class="form-control"></td>
+                                        <td><input type="number" name="sangat_puas2" id="sangat_puas2"
+                                                class="form-control"></td>
+                                        <td><input type="number" name="sangat_puas3" id="sangat_puas3"
+                                                class="form-control"></td>
+                                        <td><input type="number" name="sangat_puas4" id="sangat_puas4"
+                                                class="form-control"></td>
+                                        <td><input type="number" name="sangat_puas5" id="sangat_puas5"
+                                                class="form-control"></td>
+                                        <td><input type="number" name="sangat_puas6" id="sangat_puas6"
+                                                class="form-control"></td>
                                     </tr>
                                     <tr>
                                         <th>Tidak Puas</th>
-                                        <td>{{ $data->hasil_test * 0.1 }}</td>
-                                        <td>{{ $data->hasil_test * 0.2 }}</td>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
+                                        {{-- <td>{{ $data->hasil_test * 0.1 }}</td>
+                                        <td>{{ $data->hasil_test * 0.2 }}</td> --}}
+                                        <td><input type="number" name="hasil_tes1" id="hasil_tes1"
+                                                class="form-control"></td>
+                                        <td><input type="number" name="hasil_tes2" id="hasil_tes2"
+                                                class="form-control"></td>
+                                        <td><input type="number" name="hasil_tes3" id="hasil_tes3"
+                                                class="form-control"></td>
+                                        <td><input type="number" name="hasil_tes4" id="hasil_tes4"
+                                                class="form-control"></td>
+                                        <td><input type="number" name="hasil_tes5" id="hasil_tes5"
+                                                class="form-control"></td>
+                                        <td><input type="number" name="hasil_tes6" id="hasil_tes6"
+                                                class="form-control"></td>
+                                        <td><input type="number" name="hasil_tes7" id="hasil_tes7"
+                                                class="form-control"></td>
+                                        <td><input type="number" id="hasil_tes8" name="hasil_tes8"
+                                                class="form-control"></td>
                                     </tr>
                                     <tr>
                                         <th>Netral</th>
-                                        <td>{{ $data->hasil_test * 0.3 }}</td>
-                                        <td>{{ $data->hasil_test * 0.4 }}</td>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
+                                        {{-- <td>{{ $data->hasil_test * 0.3 }}</td>
+                                        <td>{{ $data->hasil_test * 0.4 }}</td> --}}
+                                        <td><input type="number" name="netrral1" id="netrral1" class="form-control">
+                                        </td>
+                                        <td><input type="number" name="netrral2" id="netrral2" class="form-control">
+                                        </td>
+                                        <td><input type="number" name="netrral3" id="netrral3" class="form-control">
+                                        </td>
+                                        <td><input type="number" name="netrral4" id="netrral4" class="form-control">
+                                        </td>
+                                        <td><input type="number" name="netrral5" id="netrral5" class="form-control">
+                                        </td>
+                                        <td><input type="number" name="netrral6" id="netrral6" class="form-control">
+                                        </td>
+                                        <td><input type="number" name="netrral7" id="netrral7" class="form-control">
+                                        </td>
+                                        <td><input type="number" name="netrral8" name="netrral8" class="form-control">
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>Puas</th>
-                                        <td>{{ $data->hasil_test * 0.5 }}</td>
-                                        <td>{{ $data->hasil_test * 0.6 }}</td>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
+                                        {{-- <td>{{ $data->hasil_test * 0.5 }}</td>
+                                        <td>{{ $data->hasil_test * 0.6 }}</td> --}}
+                                        <td><input type="number" name="puas1" id="puas1" class="form-control">
+                                        </td>
+                                        <td><input type="number" name="puas2" id="puas2" class="form-control">
+                                        </td>
+                                        <td><input type="number" name="puas3" id="puas3" class="form-control">
+                                        </td>
+                                        <td><input type="number" name="puas4" id="puas4" class="form-control">
+                                        </td>
+                                        <td><input type="number" name="puas5" id="puas5" class="form-control">
+                                        </td>
+                                        <td><input type="number" name="puas6" id="puas6" class="form-control">
+                                        </td>
+                                        <td><input type="number" name="puas7" id="puas7" class="form-control">
+                                        </td>
+                                        <td><input type="number" name="puas8" id="puas8" class="form-control">
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>Sangat Puas</th>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
-                                        <td><input type="number" class="form-control"></td>
+                                        <td><input type="number" name="sangat_puas1" id="sangat_puas1"
+                                                class="form-control"></td>
+                                        <td><input type="number" name="sangat_puas2" id="sangat_puas2"
+                                                class="form-control"></td>
+                                        <td><input type="number" name="sangat_puas3" id="sangat_puas3"
+                                                class="form-control"></td>
+                                        <td><input type="number" name="sangat_puas4" id="sangat_puas4"
+                                                class="form-control"></td>
+                                        <td><input type="number" name="sangat_puas5" id="sangat_puas5"
+                                                class="form-control"></td>
+                                        <td><input type="number" name="sangat_puas6" id="sangat_puas7"
+                                                class="form-control"></td>
+                                        <td><input type="number" name="sangat_puas7" id="sangat_puas7"
+                                                class="form-control"></td>
+                                        <td><input type="number" name="sangat_puas8" id="sangat_puas8"
+                                                class="form-control"></td>
                                     </tr>
                                 @endif
                             </tbody>
@@ -263,8 +307,9 @@
             });
         </script>
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <!-- Include jsPDF library -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 
-        <!-- Your custom script -->
         <script>
             $(document).on('click', '#cetakPdfLink', function(e) {
                 e.preventDefault();
