@@ -38,14 +38,12 @@
                             <tbody>
                                 <tr>
                                     <td rowspan="4">
-                                        <input type="hidden" value="{{ $id_training }}" name="id_training"
-                                            id="id_training">
-                                        {{-- <input name="feedback" type="text" id="feedback" class="form-control col"> --}}
+                                        <p>{{ $feedback }}</p>
                                     </td>
                                     <td>{{ $tanggal_training }}</td>
                                     <td class="text-center">{{ $pic }}</td>
                                     <td>
-                                        <p>cok</p>
+                                        <p>{{ $durasi }}</p>
                                     </td>
                                 </tr>
                                 <tr>
@@ -53,9 +51,9 @@
                                     <td colspan="2" class="text-center">Alat</td>
                                 </tr>
                                 <tr>
-                                    <td>Larry the Bird</td>
+                                    <td></td>
                                     <td colspan="2" class="text-center">
-                                        <p>1</p>
+                                        <p>{{ $alat }}</p>
                                     </td>
                                 </tr>
                             </tbody>
@@ -154,118 +152,130 @@
                                         <td>Jumlah</td>
                                         <td>Precentage</td>
                                         <td>
-                                            <p>1</p>
+                                            <p>{{ $sangat_tidak_puas1 }}</p>
                                         </td>
                                         <td>
-                                            <p>1
+                                            <p>{{ $sangat_tidak_puas2 }} </p>
                                         </td>
                                         <td>
-                                            <p>1
+                                            <p>{{ $sangat_tidak_puas3 }} </p>
                                         </td>
                                         <td>
-                                            <p>1
+                                            <p>{{ $sangat_tidak_puas4 }} </p>
                                         </td>
                                         <td>
-                                            <p>1
+                                            <p>{{ $sangat_tidak_puas5 }} </p>
                                         </td>
                                         <td>
-                                            <p>1
+                                            <p>{{ $sangat_tidak_puas6 }} </p>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>Tidak Puas</th>
-                                        <td>{{ $data->hasil_test * 0.1 }}</td>
-                                        <td>{{ $data->hasil_test * 0.2 }}</td>
                                         <td>
-                                            <p>1</p>
+                                            <p>{{ $hasil_tes1 }}</p>
                                         </td>
                                         <td>
-                                            <p>1</p>
+                                            <p> {{ $hasil_tes2 }}</p>
                                         </td>
                                         <td>
-                                            <p>1</p>
+                                            <p> {{ $hasil_tes3 }}</p>
                                         </td>
                                         <td>
-                                            <p>1</p>
+                                            <p>{{ $hasil_tes4 }}</p>
                                         </td>
                                         <td>
-                                            <p>1</p>
+                                            <p>{{ $hasil_tes5 }}</p>
                                         </td>
                                         <td>
-                                            <p>1</p>
+                                            <p>{{ $hasil_tes6 }}</p>
+                                        </td>
+                                        <td>
+                                            <p>{{ $hasil_tes7 }}</p>
+                                        </td>
+                                        <td>
+                                            <p>{{ $hasil_tes8 }}</p>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>Netral</th>
-                                        <td>{{ $data->hasil_test * 0.3 }}</td>
-                                        <td>{{ $data->hasil_test * 0.4 }}</td>
                                         <td>
-                                            <p>1</p>
+                                            <p>{{ $netral1 }}</p>
                                         </td>
                                         <td>
-                                            <p>1</p>
+                                            <p>{{ $netral2 }}</p>
                                         </td>
                                         <td>
-                                            <p>1</p>
+                                            <p>{{ $netral3 }}</p>
                                         </td>
                                         <td>
-                                            <p>1</p>
+                                            <p>{{ $netral4 }}</p>
                                         </td>
                                         <td>
-                                            <p>1</p>
+                                            <p>{{ $netral5 }}</p>
                                         </td>
                                         <td>
-                                            <p>1</p>
+                                            <p>{{ $netral6 }}</p>
+                                        </td>
+                                        <td>
+                                            <p>{{ $netral7 }}</p>
+                                        </td>
+                                        <td>
+                                            <p>{{ $netral8 }}</p>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>Puas</th>
-                                        <td>{{ $data->hasil_test * 0.5 }}</td>
-                                        <td>{{ $data->hasil_test * 0.6 }}</td>
                                         <td>
-                                            <p>1</p>
+                                            <p>{{ $puas1 }}</p>
                                         </td>
                                         <td>
-                                            <p>1</p>
+                                            <p>{{ $puas2 }}</p>
                                         </td>
                                         <td>
-                                            <p>1</p>
+                                            <p>{{ $puas3 }}</p>
                                         </td>
                                         <td>
-                                            <p>1</p>
+                                            <p>{{ $puas4 }}</p>
                                         </td>
                                         <td>
-                                            <p>1</p>
+                                            <p>{{ $puas5 }}</p>
                                         </td>
                                         <td>
-                                            <p>1</p>
+                                            <p>{{ $puas6 }}</p>
+                                        </td>
+                                        <td>
+                                            <p>{{ $puas7 }}</p>
+                                        </td>
+                                        <td>
+                                            <p>{{ $puas8 }}</p>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>Sangat Puas</th>
                                         <td>
-                                            <p>1</p>
+                                            <p>{{ $sangat_puas1 }}</p>
                                         </td>
                                         <td>
-                                            <p>1</p>
+                                            <p>{{ $sangat_puas2 }}</p>
                                         </td>
                                         <td>
-                                            <p>1</p>
+                                            <p>{{ $sangat_puas3 }}</p>
                                         </td>
                                         <td>
-                                            <p>1</p>
+                                            <p>{{ $sangat_puas4 }}</p>
                                         </td>
                                         <td>
-                                            <p>1</p>
+                                            <p>{{ $sangat_puas5 }}</p>
                                         </td>
                                         <td>
-                                            <p>1</p>
+                                            <p>{{ $sangat_puas6 }}</p>
                                         </td>
                                         <td>
-                                            <p>1</p>
+                                            <p>{{ $sangat_puas7 }}</p>
                                         </td>
                                         <td>
-                                            <p>1</p>
+                                            <p>{{ $sangat_puas8 }}</p>
                                         </td>
                                     </tr>
                                 @endif

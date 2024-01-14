@@ -712,12 +712,12 @@ class ReportController extends Controller
         $durasi = $request->input('durasi');
         $evaluasi = $request->input('evaluasi');
         $feedback = $request->input('feedback');
-        $sangat_puas1 = $request->input('sangat_puas1');
-        $sangat_puas2 = $request->input('sangat_puas2');
-        $sangat_puas3 = $request->input('sangat_puas3');
-        $sangat_puas4 = $request->input('sangat_puas4');
-        $sangat_puas5 = $request->input('sangat_puas5');
-        $sangat_puas6 = $request->input('sangat_puas6');
+        $sangat_tidak_puas1 = $request->input('sangat_tidak_puas1');
+        $sangat_tidak_puas2 = $request->input('sangat_tidak_puas2');
+        $sangat_tidak_puas3 = $request->input('sangat_puas3');
+        $sangat_tidak_puas4 = $request->input('sangat_tidak_puas4');
+        $sangat_tidak_puas5 = $request->input('sangat_tidak_puas5');
+        $sangat_tidak_puas6 = $request->input('sangat_tidak_puas6');
         $hasil_tes1 = $request->input('hasil_tes1');
         $hasil_tes2 = $request->input('hasil_tes2');
         $hasil_tes3 = $request->input('hasil_tes3');
@@ -818,12 +818,12 @@ class ReportController extends Controller
                 'hadirCount',
                 'lakiCount',
                 'perempuanCount',
-                'sangat_puas1',
-                'sangat_puas2',
-                'sangat_puas3',
-                'sangat_puas4',
-                'sangat_puas5',
-                'sangat_puas6',
+                'sangat_tidak_puas1',
+                'sangat_tidak_puas2',
+                'sangat_tidak_puas3',
+                'sangat_tidak_puas4',
+                'sangat_tidak_puas5',
+                'sangat_tidak_puas6',
                 'hasil_tes1',
                 'hasil_tes2',
                 'hasil_tes3',
@@ -888,12 +888,12 @@ class ReportController extends Controller
             'hadirCount',
             'lakiCount',
             'perempuanCount',
-            'sangat_puas1',
-            'sangat_puas2',
-            'sangat_puas3',
-            'sangat_puas4',
-            'sangat_puas5',
-            'sangat_puas6',
+            'sangat_tidak_puas1',
+            'sangat_tidak_puas2',
+            'sangat_tidak_puas3',
+            'sangat_tidak_puas4',
+            'sangat_tidak_puas5',
+            'sangat_tidak_puas6',
             'hasil_tes1',
             'hasil_tes2',
             'hasil_tes3',

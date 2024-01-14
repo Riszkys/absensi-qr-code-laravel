@@ -42,11 +42,13 @@
                                     <td rowspan="4">
                                         <input type="hidden" value="{{ $id_training }}" name="id_training"
                                             id="id_training">
-                                        <input name="feedback" type="text" id="feedback" class="form-control col">
+                                        <input name="feedback" type="text" id="feedback" class="form-control col"
+                                            required>
                                     </td>
                                     <td>{{ $tanggal_training }}</td>
                                     <td class="text-center">{{ $pic }}</td>
-                                    <td><input type="text" class="form-control" name="durasi" id="durasi"></td>
+                                    <td><input type="text" class="form-control" name="durasi" id="durasi" required>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>{{ $lokasi_training }}</td>
@@ -55,7 +57,7 @@
                                 <tr>
                                     <td></td>
                                     <td colspan="2" class="text-center"><input type="text" name="alat"
-                                            id="alat" class="form-control"></td>
+                                            id="alat" class="form-control" required></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -118,7 +120,7 @@
                                     <td>Male</td>
                                     <td>Female</td>
                                     <td rowspan="4">
-                                        <textarea name="evaluasi" type="text" id="evaluasi" class="form-control col"> </textarea>
+                                        <textarea name="evaluasi" type="text" id="evaluasi" class="form-control col" required> </textarea>
                                     </td>
                                 </tr>
                                 <tr>
@@ -165,100 +167,116 @@
                                         <th>Sangat Tidak Puas</th>
                                         <td>Jumlah</td>
                                         <td>Precentage</td>
-                                        <td><input type="number" name="sangat_puas1" id="sangat_puas1"
-                                                class="form-control"></td>
-                                        <td><input type="number" name="sangat_puas2" id="sangat_puas2"
-                                                class="form-control"></td>
-                                        <td><input type="number" name="sangat_puas3" id="sangat_puas3"
-                                                class="form-control"></td>
-                                        <td><input type="number" name="sangat_puas4" id="sangat_puas4"
-                                                class="form-control"></td>
-                                        <td><input type="number" name="sangat_puas5" id="sangat_puas5"
-                                                class="form-control"></td>
-                                        <td><input type="number" name="sangat_puas6" id="sangat_puas6"
-                                                class="form-control"></td>
+                                        <td><input type="number" name="sangat_tidak_puas1" id="sangat_tidak_puas1"
+                                                class="form-control" required></td>
+                                        <td><input type="number" name="sangat_tidak_puas2" id="sangat_tidak_puas2"
+                                                class="form-control" required></td>
+                                        <td><input type="number" name="sangat_tidak_puas3" id="sangat_tidak_puas3"
+                                                class="form-control" required></td>
+                                        <td><input type="number" name="sangat_tidak_puas4" id="sangat_tidak_puas4"
+                                                class="form-control" required></td>
+                                        <td><input type="number" name="sangat_tidak_puas5" id="sangat_tidak_puas5"
+                                                class="form-control" required></td>
+                                        <td><input type="number" name="sangat_tidak_puas6" id="sangat_tidak_puas6"
+                                                class="form-control" required></td>
                                     </tr>
                                     <tr>
                                         <th>Tidak Puas</th>
                                         {{-- <td>{{ $data->hasil_test * 0.1 }}</td>
                                         <td>{{ $data->hasil_test * 0.2 }}</td> --}}
-                                        <td><input type="number" name="hasil_tes1" id="hasil_tes1"
-                                                class="form-control"></td>
-                                        <td><input type="number" name="hasil_tes2" id="hasil_tes2"
-                                                class="form-control"></td>
-                                        <td><input type="number" name="hasil_tes3" id="hasil_tes3"
-                                                class="form-control"></td>
-                                        <td><input type="number" name="hasil_tes4" id="hasil_tes4"
-                                                class="form-control"></td>
-                                        <td><input type="number" name="hasil_tes5" id="hasil_tes5"
-                                                class="form-control"></td>
-                                        <td><input type="number" name="hasil_tes6" id="hasil_tes6"
-                                                class="form-control"></td>
-                                        <td><input type="number" name="hasil_tes7" id="hasil_tes7"
-                                                class="form-control"></td>
-                                        <td><input type="number" id="hasil_tes8" name="hasil_tes8"
-                                                class="form-control"></td>
+                                        <td><input type="number" name="hasil_tes1" id="hasil_tes1" class="form-control"
+                                                required></td>
+                                        <td><input type="number" name="hasil_tes2" id="hasil_tes2" class="form-control"
+                                                required></td>
+                                        <td><input type="number" name="hasil_tes3" id="hasil_tes3" class="form-control"
+                                                required></td>
+                                        <td><input type="number" name="hasil_tes4" id="hasil_tes4" class="form-control"
+                                                required></td>
+                                        <td><input type="number" name="hasil_tes5" id="hasil_tes5" class="form-control"
+                                                required></td>
+                                        <td><input type="number" name="hasil_tes6" id="hasil_tes6" class="form-control"
+                                                required></td>
+                                        <td><input type="number" name="hasil_tes7" id="hasil_tes7" class="form-control"
+                                                required></td>
+                                        <td><input type="number" id="hasil_tes8" name="hasil_tes8" class="form-control"
+                                                required></td>
                                     </tr>
                                     <tr>
                                         <th>Netral</th>
                                         {{-- <td>{{ $data->hasil_test * 0.3 }}</td>
                                         <td>{{ $data->hasil_test * 0.4 }}</td> --}}
-                                        <td><input type="number" name="netral1" id="netral1" class="form-control">
+                                        <td><input type="number" name="netral1" id="netral1" class="form-control"
+                                                required>
                                         </td>
-                                        <td><input type="number" name="netral2" id="netral2" class="form-control">
+                                        <td><input type="number" name="netral2" id="netral2" class="form-control"
+                                                required>
                                         </td>
-                                        <td><input type="number" name="netral3" id="netral3" class="form-control">
+                                        <td><input type="number" name="netral3" id="netral3" class="form-control"
+                                                required>
                                         </td>
-                                        <td><input type="number" name="netral4" id="netral4" class="form-control">
+                                        <td><input type="number" name="netral4" id="netral4" class="form-control"
+                                                required>
                                         </td>
-                                        <td><input type="number" name="netral5" id="netral5" class="form-control">
+                                        <td><input type="number" name="netral5" id="netral5" class="form-control"
+                                                required>
                                         </td>
-                                        <td><input type="number" name="netral6" id="netral6" class="form-control">
+                                        <td><input type="number" name="netral6" id="netral6" class="form-control"
+                                                required>
                                         </td>
-                                        <td><input type="number" name="netral7" id="netral7" class="form-control">
+                                        <td><input type="number" name="netral7" id="netral7" class="form-control"
+                                                required>
                                         </td>
-                                        <td><input type="number" name="netral8" id="netral8" class="form-control">
+                                        <td><input type="number" name="netral8" id="netral8" class="form-control"
+                                                required>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>Puas</th>
                                         {{-- <td>{{ $data->hasil_test * 0.5 }}</td>
                                         <td>{{ $data->hasil_test * 0.6 }}</td> --}}
-                                        <td><input type="number" name="puas1" id="puas1" class="form-control">
+                                        <td><input type="number" name="puas1" id="puas1"
+                                                class="form-control"required>
                                         </td>
-                                        <td><input type="number" name="puas2" id="puas2" class="form-control">
+                                        <td><input type="number" name="puas2" id="puas2"
+                                                class="form-control"required>
                                         </td>
-                                        <td><input type="number" name="puas3" id="puas3" class="form-control">
+                                        <td><input type="number" name="puas3" id="puas3"
+                                                class="form-control"required>
                                         </td>
-                                        <td><input type="number" name="puas4" id="puas4" class="form-control">
+                                        <td><input type="number" name="puas4" id="puas4"
+                                                class="form-control"required>
                                         </td>
-                                        <td><input type="number" name="puas5" id="puas5" class="form-control">
+                                        <td><input type="number" name="puas5" id="puas5"
+                                                class="form-control"required>
                                         </td>
-                                        <td><input type="number" name="puas6" id="puas6" class="form-control">
+                                        <td><input type="number" name="puas6" id="puas6"
+                                                class="form-control"required>
                                         </td>
-                                        <td><input type="number" name="puas7" id="puas7" class="form-control">
+                                        <td><input type="number" name="puas7" id="puas7" class="form-control"
+                                                required>
                                         </td>
-                                        <td><input type="number" name="puas8" id="puas8" class="form-control">
+                                        <td><input type="number" name="puas8" id="puas8" class="form-control"
+                                                required>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>Sangat Puas</th>
                                         <td><input type="number" name="sangat_puas1" id="sangat_puas1"
-                                                class="form-control"></td>
+                                                class="form-control" required></td>
                                         <td><input type="number" name="sangat_puas2" id="sangat_puas2"
-                                                class="form-control"></td>
+                                                class="form-control" required></td>
                                         <td><input type="number" name="sangat_puas3" id="sangat_puas3"
-                                                class="form-control"></td>
+                                                class="form-control" required></td>
                                         <td><input type="number" name="sangat_puas4" id="sangat_puas4"
-                                                class="form-control"></td>
+                                                class="form-control" required></td>
                                         <td><input type="number" name="sangat_puas5" id="sangat_puas5"
-                                                class="form-control"></td>
+                                                class="form-control" required></td>
                                         <td><input type="number" name="sangat_puas6" id="sangat_puas7"
-                                                class="form-control"></td>
+                                                class="form-control" required></td>
                                         <td><input type="number" name="sangat_puas7" id="sangat_puas7"
-                                                class="form-control"></td>
+                                                class="form-control"required></td>
                                         <td><input type="number" name="sangat_puas8" id="sangat_puas8"
-                                                class="form-control"></td>
+                                                class="form-control" required></td>
                                     </tr>
                                 @endif
                             </tbody>
@@ -321,12 +339,12 @@
                     durasi: $('#durasi').val(),
                     alat: $('#alat').val(),
                     evaluasi: $('#evaluasi').val(),
-                    sangat_puas1: $('#sangat_puas1').val(),
-                    sangat_puas2: $('#sangat_puas2').val(),
-                    sangat_puas3: $('#sangat_puas3').val(),
-                    sangat_puas4: $('#sangat_puas4').val(),
-                    sangat_puas5: $('#sangat_puas5').val(),
-                    sangat_puas6: $('#sangat_puas6').val(),
+                    sangat_tidak_puas1: $('#sangat_tidak_puas1').val(),
+                    sangat_tidak_puas2: $('#sangat_tidak_puas2').val(),
+                    sangat_tidak_puas3: $('#sangat_tidak_puas3').val(),
+                    sangat_tidak_puas4: $('#sangat_tidak_puas4').val(),
+                    sangat_tidak_puas5: $('#sangat_tidak_puas5').val(),
+                    sangat_tidak_puas6: $('#sangat_tidak_puas6').val(),
                     hasil_tes1: $('#hasil_tes1').val(),
                     hasil_tes2: $('#hasil_tes2').val(),
                     hasil_tes3: $('#hasil_tes3').val(),
@@ -397,33 +415,33 @@
                 }));
                 form.append($('<input>', {
                     'type': 'hidden',
-                    'name': 'sangat_puas1',
-                    'value': inputData.sangat_puas1
+                    'name': 'sangat_tidak_puas1',
+                    'value': inputData.sangat_tidak_puas1
                 }));
                 form.append($('<input>', {
                     'type': 'hidden',
-                    'name': 'sangat_puas2',
-                    'value': inputData.sangat_puas2
+                    'name': 'sangat_tidak_puas2',
+                    'value': inputData.sangat_tidak_puas2
                 }));
                 form.append($('<input>', {
                     'type': 'hidden',
-                    'name': 'sangat_puas3',
-                    'value': inputData.sangat_puas3
+                    'name': 'sangat_tidak_puas3',
+                    'value': inputData.sangat_tidak_puas3
                 }));
                 form.append($('<input>', {
                     'type': 'hidden',
-                    'name': 'sangat_puas4',
-                    'value': inputData.sangat_puas4
+                    'name': 'sangat_tidak_puas4',
+                    'value': inputData.sangat_tidak_puas4
                 }));
                 form.append($('<input>', {
                     'type': 'hidden',
-                    'name': 'sangat_puas5',
-                    'value': inputData.sangat_puas5
+                    'name': 'sangat_tidak_puas5',
+                    'value': inputData.sangat_tidak_puas5
                 }));
                 form.append($('<input>', {
                     'type': 'hidden',
-                    'name': 'sangat_puas6',
-                    'value': inputData.sangat_puas6
+                    'name': 'sangat_tidak_puas6',
+                    'value': inputData.sangat_tidak_puas6
                 }));
                 form.append($('<input>', {
                     'type': 'hidden',
