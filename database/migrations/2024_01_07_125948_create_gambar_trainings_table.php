@@ -18,7 +18,7 @@ class CreateGambarTrainingsTable extends Migration
             $table->foreignId('id_report');
             $table->String("gambar");
             $table->timestamps();
-            $table->foreign('id_report')->references('id')->on('report')->onDelete('cascade')->onUpdate('cascade');
+            // $table->foreign('id_report')->references('id')->on('report')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
