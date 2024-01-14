@@ -1,5 +1,5 @@
-@extends('indexPeserta')
-@section('container')
+@extends('indexreport')
+@section('kontainer')
     <div class="row my-3">
         @if (session('success'))
             <div class="alert alert-success">

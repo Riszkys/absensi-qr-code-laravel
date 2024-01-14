@@ -271,7 +271,7 @@
                                                 class="form-control" required></td>
                                         <td><input type="number" name="sangat_puas5" id="sangat_puas5"
                                                 class="form-control" required></td>
-                                        <td><input type="number" name="sangat_puas6" id="sangat_puas7"
+                                        <td><input type="number" name="sangat_puas6" id="sangat_puas6"
                                                 class="form-control" required></td>
                                         <td><input type="number" name="sangat_puas7" id="sangat_puas7"
                                                 class="form-control"required></td>
