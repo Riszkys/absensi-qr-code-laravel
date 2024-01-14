@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use PDF;
 use App\Models\User;
 use App\Models\Report;
+use Barryvdh\DomPDF\PDF;
 use App\Models\Training;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateReportRequest;
@@ -803,7 +803,7 @@ class ReportController extends Controller
             $pic = '';
             $status_training = '';
             $gambarTraining = '';
-            return view('panitia.training.tReport', compact(
+            $html = view('pdf.report', compact(
                 'reportData',
                 'id_training',
                 'materi_training',
@@ -863,8 +863,11 @@ class ReportController extends Controller
                 'durasi',
                 'feedback',
                 'alat'
-            ));
+            ))->render();
+            $pdf = app('dompdf.wrapper');
+            $pdf->loadHTML($html);
             $pdf->setPaper('landscape');
+
             return $pdf->download('training_report.pdf');
         }
 
@@ -876,7 +879,7 @@ class ReportController extends Controller
         $pic = $reportData[0]->pic;
         $status_training = $reportData[0]->status_training;
 
-        $pdf = PDF::loadView('pdf.report', compact(
+        $html = view('pdf.report', compact(
             'reportData',
             'id_training',
             'materi_training',
@@ -935,8 +938,11 @@ class ReportController extends Controller
             'durasi',
             'feedback',
             'alat'
-        ));
+        ))->render();
+        $pdf = app('dompdf.wrapper');
+        $pdf->loadHTML($html);
         $pdf->setPaper('landscape');
+
         return $pdf->download('training_report.pdf');
     }
 
@@ -1062,7 +1068,7 @@ class ReportController extends Controller
             $pic = '';
             $nama_training = '';
             $status_training = '';
-            $gambarTraining = '';
+            $gambar_training = '';
             return view('panitia.training.tReport', compact(
                 'reportData',
                 'id_training',
@@ -1089,9 +1095,9 @@ class ReportController extends Controller
         $waktu_mulai = $reportData[0]->waktu_mulai;
         $tanggal_training = $reportData[0]->tanggal_training;
         $lokasi_training = $reportData[0]->lokasi_training;
-        $gambar_training = $reportData[0]->gambar;
         $pic = $reportData[0]->pic;
         $status_training = $reportData[0]->status_training;
+        $gambar_training = $reportData[0]->gambar;
 
         return view('panitia.training.tReport', compact(
             'reportData',
@@ -1102,7 +1108,6 @@ class ReportController extends Controller
             'tanggal_training',
             'lokasi_training',
             'pic',
-            'gambar_training',
             'status_training',
             'genderCount',
             'averagePreTest',
@@ -1110,6 +1115,7 @@ class ReportController extends Controller
             'totalAttendance',
             'hadirCount',
             'lakiCount',
+            'gambar_training',
             'perempuanCount'
         ));
     }

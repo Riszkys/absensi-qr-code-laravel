@@ -313,16 +313,17 @@
                                 @endif
                             </div>
                         @endif
-                    </div>
-                    <div class="row justify-content-start g-2 my-3">
-                        <input type="hidden" name="id_training" value="{{ $id_training }}">
-                        <a href="#" id="downloadExcel" class="btn btn-success col-2 col-md-1 mx-2">Cetak Excel</a>
-                        <a href="#" id="cetakPdfLink" class="btn btn-primary col-2 col-md-1 mx-2">Cetak PDF</a>
-                        <button id="btnsimpanreport" type="submit" class="btn btn-primary col-2 col-md-1 mx-2">Simpan
-                            Data</button>
+                        <div class="row justify-content-start g-2 my-3">
+                            <input type="hidden" name="id_training" value="{{ $id_training }}">
+                            <a href="#" id="downloadExcel" class="btn btn-success col-2 col-md-1 mx-2">Cetak
+                                Excel</a>
+                            <a href="#" id="cetakPdfLink" class="btn btn-primary col-2 col-md-1 mx-2">Cetak PDF</a>
+                            <button id="btnsimpanreport" type="submit"
+                                class="btn btn-primary col-2 col-md-1 mx-2">Simpan
+                                Data</button>
+                        </div>
                     </div>
                 </div>
-            </div>
         </form>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
