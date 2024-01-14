@@ -708,6 +708,49 @@ class ReportController extends Controller
     public function generatePDF(Request $request)
     {
         $id_training = $request->input('id_training');
+        $alat = $request->input('alat');
+        $durasi = $request->input('durasi');
+        $evaluasi = $request->input('evaluasi');
+        $feedback = $request->input('feedback');
+        $sangat_puas1 = $request->input('sangat_puas1');
+        $sangat_puas2 = $request->input('sangat_puas2');
+        $sangat_puas3 = $request->input('sangat_puas3');
+        $sangat_puas4 = $request->input('sangat_puas4');
+        $sangat_puas5 = $request->input('sangat_puas5');
+        $sangat_puas6 = $request->input('sangat_puas6');
+        $hasil_tes1 = $request->input('hasil_tes1');
+        $hasil_tes2 = $request->input('hasil_tes2');
+        $hasil_tes3 = $request->input('hasil_tes3');
+        $hasil_tes4 = $request->input('hasil_tes4');
+        $hasil_tes5 = $request->input('hasil_tes5');
+        $hasil_tes6 = $request->input('hasil_tes6');
+        $hasil_tes7 = $request->input('hasil_tes7');
+        $hasil_tes8 = $request->input('hasil_tes8');
+        $netral1 = $request->input('netral1');
+        $netral2 = $request->input('netral2');
+        $netral3 = $request->input('netral3');
+        $netral4 = $request->input('netral4');
+        $netral5 = $request->input('netral5');
+        $netral6 = $request->input('netral6');
+        $netral7 = $request->input('netral7');
+        $netral8 = $request->input('netral8');
+        $puas1 = $request->input('puas1');
+        $puas2 = $request->input('puas2');
+        $puas3 = $request->input('puas3');
+        $puas4 = $request->input('puas4');
+        $puas5 = $request->input('puas5');
+        $puas6 = $request->input('puas6');
+        $puas7 = $request->input('puas7');
+        $puas8 = $request->input('puas8');
+        $sangat_puas1 = $request->input('sangat_puas1');
+        $sangat_puas2 = $request->input('sangat_puas2');
+        $sangat_puas3 = $request->input('sangat_puas3');
+        $sangat_puas4 = $request->input('sangat_puas4');
+        $sangat_puas5 = $request->input('sangat_puas5');
+        $sangat_puas6 = $request->input('sangat_puas6');
+        $sangat_puas7 = $request->input('sangat_puas7');
+        $sangat_puas8 = $request->input('sangat_puas8');
+
         $reportData = Training::select(
             'training.materi_training',
             'training.waktu_mulai',
@@ -774,7 +817,49 @@ class ReportController extends Controller
                 'totalAttendance',
                 'hadirCount',
                 'lakiCount',
-                'perempuanCount'
+                'perempuanCount',
+                'sangat_puas1',
+                'sangat_puas2',
+                'sangat_puas3',
+                'sangat_puas4',
+                'sangat_puas5',
+                'sangat_puas6',
+                'hasil_tes1',
+                'hasil_tes2',
+                'hasil_tes3',
+                'hasil_tes4',
+                'hasil_tes5',
+                'hasil_tes6',
+                'hasil_tes7',
+                'hasil_tes8',
+                'netral1',
+                'netral2',
+                'netral3',
+                'netral4',
+                'netral5',
+                'netral6',
+                'netral7',
+                'netral8',
+                'puas1',
+                'puas2',
+                'puas3',
+                'puas4',
+                'puas5',
+                'puas6',
+                'puas7',
+                'puas8',
+                'sangat_puas1',
+                'sangat_puas2',
+                'sangat_puas3',
+                'sangat_puas4',
+                'sangat_puas5',
+                'sangat_puas6',
+                'sangat_puas7',
+                'sangat_puas8',
+                'alat',
+                'durasi',
+                'feedback',
+                'alat'
             ));
             $pdf->setPaper('landscape');
             return $pdf->download('training_report.pdf');
@@ -802,7 +887,49 @@ class ReportController extends Controller
             'totalAttendance',
             'hadirCount',
             'lakiCount',
-            'perempuanCount'
+            'perempuanCount',
+            'sangat_puas1',
+            'sangat_puas2',
+            'sangat_puas3',
+            'sangat_puas4',
+            'sangat_puas5',
+            'sangat_puas6',
+            'hasil_tes1',
+            'hasil_tes2',
+            'hasil_tes3',
+            'hasil_tes4',
+            'hasil_tes5',
+            'hasil_tes6',
+            'hasil_tes7',
+            'hasil_tes8',
+            'netral1',
+            'netral2',
+            'netral3',
+            'netral4',
+            'netral5',
+            'netral6',
+            'netral7',
+            'netral8',
+            'puas1',
+            'puas2',
+            'puas3',
+            'puas4',
+            'puas5',
+            'puas6',
+            'puas7',
+            'puas8',
+            'sangat_puas1',
+            'sangat_puas2',
+            'sangat_puas3',
+            'sangat_puas4',
+            'sangat_puas5',
+            'sangat_puas6',
+            'sangat_puas7',
+            'sangat_puas8',
+            'alat',
+            'durasi',
+            'feedback',
+            'alat'
         ));
         $pdf->setPaper('landscape');
         return $pdf->download('training_report.pdf');
