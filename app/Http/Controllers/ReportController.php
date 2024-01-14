@@ -752,6 +752,7 @@ class ReportController extends Controller
         $sangat_puas8 = $request->input('sangat_puas8');
 
         $reportData = Training::select(
+            'training.nama_training',
             'training.materi_training',
             'training.waktu_mulai',
             'training.tanggal_training',
@@ -798,6 +799,7 @@ class ReportController extends Controller
             $waktu_mulai = '';
             $tanggal_training = '';
             $lokasi_training = '';
+            $nama_training = '';
             $pic = '';
             $status_training = '';
             $gambarTraining = '';
@@ -806,6 +808,7 @@ class ReportController extends Controller
                 'id_training',
                 'materi_training',
                 'waktu_mulai',
+                'nama_training',
                 'tanggal_training',
                 'lokasi_training',
                 'pic',
@@ -868,6 +871,7 @@ class ReportController extends Controller
         $materi_training = $reportData[0]->materi_training;
         $waktu_mulai = $reportData[0]->waktu_mulai;
         $tanggal_training = $reportData[0]->tanggal_training;
+        $nama_training = $reportData[0]->nama_training;
         $lokasi_training = $reportData[0]->lokasi_training;
         $pic = $reportData[0]->pic;
         $status_training = $reportData[0]->status_training;
@@ -877,6 +881,7 @@ class ReportController extends Controller
             'id_training',
             'materi_training',
             'waktu_mulai',
+            'nama_training',
             'tanggal_training',
             'lokasi_training',
             'pic',
@@ -1008,6 +1013,7 @@ class ReportController extends Controller
     {
         $id_training = $request->input('id_training');
         $reportData = Training::select(
+            'training.nama_training',
             'training.materi_training',
             'training.waktu_mulai',
             'training.tanggal_training',
@@ -1036,7 +1042,7 @@ class ReportController extends Controller
             ->where('training.id', $id_training)
             ->distinct()
             ->get();
-
+        // dd($reportData);
         $genderCount = $reportData->groupBy('jenis_kelamin')->map(function ($item, $key) {
             return count($item);
         });
@@ -1054,17 +1060,19 @@ class ReportController extends Controller
             $tanggal_training = '';
             $lokasi_training = '';
             $pic = '';
+            $nama_training = '';
             $status_training = '';
             $gambarTraining = '';
             return view('panitia.training.tReport', compact(
                 'reportData',
                 'id_training',
+                'nama_training',
                 'materi_training',
                 'waktu_mulai',
                 'tanggal_training',
                 'lokasi_training',
                 'pic',
-                'gambarTraining',
+                'gambar_training',
                 'status_training',
                 'genderCount',
                 'averagePreTest',
@@ -1077,20 +1085,24 @@ class ReportController extends Controller
         }
 
         $materi_training = $reportData[0]->materi_training;
+        $nama_training = $reportData[0]->nama_training;
         $waktu_mulai = $reportData[0]->waktu_mulai;
         $tanggal_training = $reportData[0]->tanggal_training;
         $lokasi_training = $reportData[0]->lokasi_training;
+        $gambar_training = $reportData[0]->gambar;
         $pic = $reportData[0]->pic;
         $status_training = $reportData[0]->status_training;
 
         return view('panitia.training.tReport', compact(
             'reportData',
             'id_training',
+            'nama_training',
             'materi_training',
             'waktu_mulai',
             'tanggal_training',
             'lokasi_training',
             'pic',
+            'gambar_training',
             'status_training',
             'genderCount',
             'averagePreTest',

@@ -13,6 +13,25 @@
             </div>
         @endif
         <h2 class="my-3 text-center">Report Training</h2>
+        <table class="table" border="1">
+            <th class="text-center">
+                <img src="{{ asset('storage/header1.jpg') }}" alt="" style="max-width: 100px">
+            </th>
+            <th>
+                <h1 class="text-center">Training Report</h1>
+                <p class="text-center">PT Prima Sejati Sejahtera</p>
+            </th>
+            <th class="text-center">
+                <img src="{{ asset('storage/header2.jpg') }}" alt="" style="max-width: 100px">
+            </th>
+        </table>
+
+        <table class="table" border="1">
+            <th>
+                <h1 class="text-center">{{ $nama_training }}</h1>
+            </th>
+        </table>
+
         <form id="formEvaluasi" action="{{ route('simpan.report') }}" method="post" enctype="multipart/form-data">
             @csrf
 
@@ -284,7 +303,6 @@
                     </div>
                     <div class="row my-3 text-center">
                         <h5 class="my-2">Gambar Training</h5>
-
                         @if (count($reportData) > 0)
                             <div class="col-md-4 mb-3">
                                 @if ($reportData[0]->gambar)
