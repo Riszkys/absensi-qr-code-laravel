@@ -151,11 +151,14 @@
                                     <td>{{ $perempuanCount ?? 0 }}</td>
                                 </tr>
                                 <tr>
-                                    <th colspan="2" rowspan="3" class="text-center">
+                                    <th colspan="2" rowspan="3" class="text-center" id="totalkehadiran">
                                         @if ($hadirCount != 0)
                                             {{ number_format(($totalAttendance / $hadirCount) * 100, 2) }}%
+                                            <span id="totalkehadiran-value"
+                                                style="display: none;">{{ number_format(($totalAttendance / $hadirCount) * 100, 2) }}</span>
                                         @else
                                             N/A
+                                            <span id="totalkehadiran-value" style="display: none;">N/A</span>
                                         @endif
                                     </th>
                                     <td rowspan="3" colspan="2" class="text-center">
@@ -404,7 +407,6 @@
                     'action': '{{ route('simpan.pdf') }}',
                     'target': '_blank',
                     'style': 'display:none;'
-
                 });
                 form.append('{{ csrf_field() }}');
                 form.append($('<input>', {
@@ -632,14 +634,290 @@
         <script>
             $(document).on('click', '#downloadExcel', function(e) {
                 e.preventDefault();
+
+                var idTrainingValue = $('#id_training').val();
+                var inputData = {
+                    id_training: $('#id_training').val(),
+                    feedback: $('#feedback').val(),
+                    durasi: $('#durasi').val(),
+                    alat: $('#alat').val(),
+                    evaluasi: $('#evaluasi').val(),
+                    sangat_tidak_puas1: $('#sangat_tidak_puas1').val(),
+                    sangat_tidak_puas2: $('#sangat_tidak_puas2').val(),
+                    sangat_tidak_puas3: $('#sangat_tidak_puas3').val(),
+                    sangat_tidak_puas4: $('#sangat_tidak_puas4').val(),
+                    sangat_tidak_puas5: $('#sangat_tidak_puas5').val(),
+                    sangat_tidak_puas6: $('#sangat_tidak_puas6').val(),
+                    hasil_tes1: $('#hasil_tes1').val(),
+                    hasil_tes2: $('#hasil_tes2').val(),
+                    hasil_tes3: $('#hasil_tes3').val(),
+                    hasil_tes4: $('#hasil_tes4').val(),
+                    hasil_tes5: $('#hasil_tes5').val(),
+                    hasil_tes6: $('#hasil_tes6').val(),
+                    hasil_tes7: $('#hasil_tes7').val(),
+                    hasil_tes8: $('#hasil_tes8').val(),
+                    netral1: $('#netral1').val(),
+                    netral2: $('#netral2').val(),
+                    netral3: $('#netral3').val(),
+                    netral4: $('#netral4').val(),
+                    netral5: $('#netral5').val(),
+                    netral6: $('#netral6').val(),
+                    netral7: $('#netral7').val(),
+                    netral8: $('#netral8').val(),
+                    puas1: $('#puas1').val(),
+                    puas2: $('#puas2').val(),
+                    puas3: $('#puas3').val(),
+                    puas4: $('#puas4').val(),
+                    puas5: $('#puas5').val(),
+                    puas6: $('#puas6').val(),
+                    puas7: $('#puas7').val(),
+                    puas8: $('#puas8').val(),
+                    sangat_puas1: $('#sangat_puas1').val(),
+                    sangat_puas2: $('#sangat_puas2').val(),
+                    sangat_puas3: $('#sangat_puas3').val(),
+                    sangat_puas4: $('#sangat_puas4').val(),
+                    sangat_puas5: $('#sangat_puas5').val(),
+                    sangat_puas6: $('#sangat_puas6').val(),
+                    sangat_puas7: $('#sangat_puas7').val(),
+                    sangat_puas8: $('#sangat_puas8').val(),
+                };
+                console.log(inputData);
+                var totalKehadiran = $('#totalkehadiran-value').text();
+                console.log(totalKehadiran);
                 var form = $('<form>', {
                     'method': 'POST',
                     'action': '{{ route('simpan.excel') }}',
                     'target': '_blank',
                     'style': 'display:none;'
                 });
-
                 form.append('{{ csrf_field() }}');
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'id_training',
+                    'value': idTrainingValue
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'feedback',
+                    'value': inputData.feedback
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'durasi',
+                    'value': inputData.durasi
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'alat',
+                    'value': inputData.alat
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'evaluasi',
+                    'value': inputData.evaluasi
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'sangat_tidak_puas1',
+                    'value': inputData.sangat_tidak_puas1
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'sangat_tidak_puas2',
+                    'value': inputData.sangat_tidak_puas2
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'sangat_tidak_puas3',
+                    'value': inputData.sangat_tidak_puas3
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'sangat_tidak_puas4',
+                    'value': inputData.sangat_tidak_puas4
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'sangat_tidak_puas5',
+                    'value': inputData.sangat_tidak_puas5
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'sangat_tidak_puas6',
+                    'value': inputData.sangat_tidak_puas6
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'hasil_tes1',
+                    'value': inputData.hasil_tes1
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'hasil_tes2',
+                    'value': inputData.hasil_tes2
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'hasil_tes3',
+                    'value': inputData.hasil_tes3
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'hasil_tes4',
+                    'value': inputData.hasil_tes4
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'hasil_tes5',
+                    'value': inputData.hasil_tes5
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'hasil_tes6',
+                    'value': inputData.hasil_tes6
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'hasil_tes7',
+                    'value': inputData.hasil_tes7
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'hasil_tes8',
+                    'value': inputData.hasil_tes8
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'netral1',
+                    'value': inputData.netral1
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'netral2',
+                    'value': inputData.netral2
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'netral3',
+                    'value': inputData.netral3
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'netral4',
+                    'value': inputData.netral4
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'netral5',
+                    'value': inputData.netral5
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'netral6',
+                    'value': inputData.netral6
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'netral7',
+                    'value': inputData.netral7
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'netral8',
+                    'value': inputData.netral8
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'puas1',
+                    'value': inputData.puas1
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'puas2',
+                    'value': inputData.puas2
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'puas3',
+                    'value': inputData.puas3
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'puas4',
+                    'value': inputData.puas4
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'puas5',
+                    'value': inputData.puas5
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'puas6',
+                    'value': inputData.puas6
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'puas7',
+                    'value': inputData.puas7
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'puas8',
+                    'value': inputData.puas8
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'sangat_puas1',
+                    'value': inputData.sangat_puas1
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'sangat_puas2',
+                    'value': inputData.sangat_puas2
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'sangat_puas3',
+                    'value': inputData.sangat_puas3
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'sangat_puas4',
+                    'value': inputData.sangat_puas4
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'sangat_puas5',
+                    'value': inputData.sangat_puas5
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'sangat_puas6',
+                    'value': inputData.sangat_puas6
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'sangat_puas7',
+                    'value': inputData.sangat_puas7
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'sangat_puas8',
+                    'value': inputData.sangat_puas8
+                }));
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': 'totalKehadiran',
+                    'value': totalKehadiran
+                }));
+                $.each(inputData, function(key, value) {
+                    form.append($('<input>', {
+                        'type': 'hidden',
+                        'name': key,
+                        'value': value
+                    }));
+                });
                 $('body').append(form);
                 form.submit();
             });
