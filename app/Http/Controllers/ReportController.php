@@ -4,14 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Report;
-use Barryvdh\DomPDF\PDF;
 use App\Models\Training;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
-use App\Http\Requests\UpdateReportRequest;
 use App\Models\GambarTraining;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreReportRequest;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use App\Http\Requests\UpdateReportRequest;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
 class ReportController extends Controller
@@ -25,141 +26,154 @@ class ReportController extends Controller
     public function exportDataToExcel(Request $request)
     {
         // Mengambil semua data dari formulir
-        $sangatTidakPuasProgram1 = $request->input('sangat_tidak_puas_program1');
-        $sangatTidakPuasProgram2 = $request->input('sangat_tidak_puas_program2');
-        $sangatTidakPuasPelatih1 = $request->input('sangat_tidak_puas_pelatih1');
-        $sangatTidakPuasPelatih2 = $request->input('sangat_tidak_puas_pelatih2');
-        $sangatTidakPuasMetode1 = $request->input('sangat_tidak_puas_metode1');
-        $sangatTidakPuasMetode2 = $request->input('sangat_tidak_puas_metode2');
-        $sangatTidakPuasKesan1 = $request->input('sangat_tidak_puas_kesan1');
-        $sangatTidakPuasKesan2 = $request->input('sangat_tidak_puas_kesan2');
+        $sangatTidakPuasProgram1 = $request->input("sangat_tidak_puas_program1");
+        $sangatTidakPuasProgram2 = $request->input("sangat_tidak_puas_program2");
+        $sangatTidakPuasPelatih1 = $request->input("sangat_tidak_puas_pelatih1");
+        $sangatTidakPuasPelatih2 = $request->input("sangat_tidak_puas_pelatih2");
+        $sangatTidakPuasMetode1 = $request->input("sangat_tidak_puas_metode1");
+        $sangatTidakPuasMetode2 = $request->input("sangat_tidak_puas_metode2");
+        $sangatTidakPuasKesan1 = $request->input("sangat_tidak_puas_kesan1");
+        $sangatTidakPuasKesan2 = $request->input("sangat_tidak_puas_kesan2");
 
-        $tidakPuasProgram1 = $request->input('tidak_puas_program1');
-        $tidakPuasProgram2 = $request->input('tidak_puas_program2');
-        $tidakPuasPelatih1 = $request->input('tidak_puas_pelatih1');
-        $tidakPuasPelatih2 = $request->input('tidak_puas_pelatih2');
-        $tidakPuasMetode1 = $request->input('tidak_puas_metode1');
-        $tidakPuasMetode2 = $request->input('tidak_puas_metode2');
-        $tidakPuasKesan1 = $request->input('tidak_puas_kesan1');
-        $tidakPuasKesan2 = $request->input('tidak_puas_kesan2');
+        $tidakPuasProgram1 = $request->input("tidak_puas_program1");
+        $tidakPuasProgram2 = $request->input("tidak_puas_program2");
+        $tidakPuasPelatih1 = $request->input("tidak_puas_pelatih1");
+        $tidakPuasPelatih2 = $request->input("tidak_puas_pelatih2");
+        $tidakPuasMetode1 = $request->input("tidak_puas_metode1");
+        $tidakPuasMetode2 = $request->input("tidak_puas_metode2");
+        $tidakPuasKesan1 = $request->input("tidak_puas_kesan1");
+        $tidakPuasKesan2 = $request->input("tidak_puas_kesan2");
 
-        $netralProgram1 = $request->input('netral_program1');
-        $netralProgram2 = $request->input('netral_program2');
-        $netralPelatih1 = $request->input('netral_pelatih1');
-        $netralPelatih2 = $request->input('netral_pelatih2');
-        $netralMetode1 = $request->input('netral_metode1');
-        $netralMetode2 = $request->input('netral_metode2');
-        $netralKesan1 = $request->input('netral_kesan1');
-        $netralKesan2 = $request->input('netral_kesan2');
+        $netralProgram1 = $request->input("netral_program1");
+        $netralProgram2 = $request->input("netral_program2");
+        $netralPelatih1 = $request->input("netral_pelatih1");
+        $netralPelatih2 = $request->input("netral_pelatih2");
+        $netralMetode1 = $request->input("netral_metode1");
+        $netralMetode2 = $request->input("netral_metode2");
+        $netralKesan1 = $request->input("netral_kesan1");
+        $netralKesan2 = $request->input("netral_kesan2");
 
-        $puasProgram1 = $request->input('puas_program1');
-        $puasProgram2 = $request->input('puas_program2');
-        $puasPelatih1 = $request->input('puas_pelatih1');
-        $puasPelatih2 = $request->input('puas_pelatih2');
-        $puasMetode1 = $request->input('puas_metode1');
-        $puasMetode2 = $request->input('puas_metode2');
-        $puasKesan1 = $request->input('puas_kesan1');
-        $puasKesan2 = $request->input('puas_kesan2');
+        $puasProgram1 = $request->input("puas_program1");
+        $puasProgram2 = $request->input("puas_program2");
+        $puasPelatih1 = $request->input("puas_pelatih1");
+        $puasPelatih2 = $request->input("puas_pelatih2");
+        $puasMetode1 = $request->input("puas_metode1");
+        $puasMetode2 = $request->input("puas_metode2");
+        $puasKesan1 = $request->input("puas_kesan1");
+        $puasKesan2 = $request->input("puas_kesan2");
 
-        $sangatPuasProgram1 = $request->input('sangat_puas_program1');
-        $sangatPuasProgram2 = $request->input('sangat_puas_program2');
-        $sangatPuasPelatih1 = $request->input('sangat_puas_pelatih1');
-        $sangatPuasPelatih2 = $request->input('sangat_puas_pelatih2');
-        $sangatPuasMetode1 = $request->input('sangat_puas_metode1');
-        $sangatPuasMetode2 = $request->input('sangat_puas_metode2');
-        $sangatPuasKesan1 = $request->input('sangat_puas_kesan1');
-        $sangatPuasKesan2 = $request->input('sangat_puas_kesan2');
+        $sangatPuasProgram1 = $request->input("sangat_puas_program1");
+        $sangatPuasProgram2 = $request->input("sangat_puas_program2");
+        $sangatPuasPelatih1 = $request->input("sangat_puas_pelatih1");
+        $sangatPuasPelatih2 = $request->input("sangat_puas_pelatih2");
+        $sangatPuasMetode1 = $request->input("sangat_puas_metode1");
+        $sangatPuasMetode2 = $request->input("sangat_puas_metode2");
+        $sangatPuasKesan1 = $request->input("sangat_puas_kesan1");
+        $sangatPuasKesan2 = $request->input("sangat_puas_kesan2");
 
         // Ambil data yang ingin diekspor (contoh: data dari model User)
-        $data = User::all();
-        $id_training = $request->input('id_training');
-        $alat = $request->input('alat');
-        $durasi = $request->input('durasi');
-        $evaluasi = $request->input('evaluasi');
-        $feedback = $request->input('feedback');
-        $sangat_tidak_puas1 = $request->input('sangat_tidak_puas1');
-        $sangat_tidak_puas2 = $request->input('sangat_tidak_puas2');
-        $sangat_tidak_puas3 = $request->input('sangat_puas3');
-        $sangat_tidak_puas4 = $request->input('sangat_tidak_puas4');
-        $sangat_tidak_puas5 = $request->input('sangat_tidak_puas5');
-        $sangat_tidak_puas6 = $request->input('sangat_tidak_puas6');
-        $hasil_tes1 = $request->input('hasil_tes1');
-        $hasil_tes2 = $request->input('hasil_tes2');
-        $hasil_tes3 = $request->input('hasil_tes3');
-        $hasil_tes4 = $request->input('hasil_tes4');
-        $hasil_tes5 = $request->input('hasil_tes5');
-        $hasil_tes6 = $request->input('hasil_tes6');
-        $hasil_tes7 = $request->input('hasil_tes7');
-        $hasil_tes8 = $request->input('hasil_tes8');
-        $netral1 = $request->input('netral1');
-        $netral2 = $request->input('netral2');
-        $netral3 = $request->input('netral3');
-        $netral4 = $request->input('netral4');
-        $netral5 = $request->input('netral5');
-        $netral6 = $request->input('netral6');
-        $netral7 = $request->input('netral7');
-        $netral8 = $request->input('netral8');
-        $puas1 = $request->input('puas1');
-        $puas2 = $request->input('puas2');
-        $puas3 = $request->input('puas3');
-        $puas4 = $request->input('puas4');
-        $puas5 = $request->input('puas5');
-        $puas6 = $request->input('puas6');
-        $puas7 = $request->input('puas7');
-        $puas8 = $request->input('puas8');
-        $sangat_puas1 = $request->input('sangat_puas1');
-        $sangat_puas2 = $request->input('sangat_puas2');
-        $sangat_puas3 = $request->input('sangat_puas3');
-        $sangat_puas4 = $request->input('sangat_puas4');
-        $sangat_puas5 = $request->input('sangat_puas5');
-        $sangat_puas6 = $request->input('sangat_puas6');
-        $sangat_puas7 = $request->input('sangat_puas7');
-        $sangat_puas8 = $request->input('sangat_puas8');
-        $totalKehadiran = $request->input('totalKehadiran');
+        $datauser = DB::table('test_pesertas')
+            ->join('users', 'test_pesertas.id_user', '=', 'users.id')
+            ->select(
+                'users.name',
+                'users.nik',
+                DB::raw('MAX(CASE WHEN test_pesertas.id_test = 1 THEN test_pesertas.hasil_test END) AS pre'),
+                DB::raw('MAX(CASE WHEN test_pesertas.id_test = 2 THEN test_pesertas.hasil_test END) AS post')
+            )
+            ->groupBy('users.name', 'users.nik')
+            ->get();
+
+        $id_training = $request->input("id_training");
+        $alat = $request->input("alat");
+        $durasi = $request->input("durasi");
+        $evaluasi = $request->input("evaluasi");
+        $feedback = $request->input("feedback");
+        $sangat_tidak_puas1 = $request->input("sangat_tidak_puas1");
+        $sangat_tidak_puas2 = $request->input("sangat_tidak_puas2");
+        $sangat_tidak_puas3 = $request->input("sangat_puas3");
+        $sangat_tidak_puas4 = $request->input("sangat_tidak_puas4");
+        $sangat_tidak_puas5 = $request->input("sangat_tidak_puas5");
+        $sangat_tidak_puas6 = $request->input("sangat_tidak_puas6");
+        $hasil_tes1 = $request->input("hasil_tes1");
+        $hasil_tes2 = $request->input("hasil_tes2");
+        $hasil_tes3 = $request->input("hasil_tes3");
+        $hasil_tes4 = $request->input("hasil_tes4");
+        $hasil_tes5 = $request->input("hasil_tes5");
+        $hasil_tes6 = $request->input("hasil_tes6");
+        $hasil_tes7 = $request->input("hasil_tes7");
+        $hasil_tes8 = $request->input("hasil_tes8");
+        $netral1 = $request->input("netral1");
+        $netral2 = $request->input("netral2");
+        $netral3 = $request->input("netral3");
+        $netral4 = $request->input("netral4");
+        $netral5 = $request->input("netral5");
+        $netral6 = $request->input("netral6");
+        $netral7 = $request->input("netral7");
+        $netral8 = $request->input("netral8");
+        $puas1 = $request->input("puas1");
+        $puas2 = $request->input("puas2");
+        $puas3 = $request->input("puas3");
+        $puas4 = $request->input("puas4");
+        $puas5 = $request->input("puas5");
+        $puas6 = $request->input("puas6");
+        $puas7 = $request->input("puas7");
+        $puas8 = $request->input("puas8");
+        $sangat_puas1 = $request->input("sangat_puas1");
+        $sangat_puas2 = $request->input("sangat_puas2");
+        $sangat_puas3 = $request->input("sangat_puas3");
+        $sangat_puas4 = $request->input("sangat_puas4");
+        $sangat_puas5 = $request->input("sangat_puas5");
+        $sangat_puas6 = $request->input("sangat_puas6");
+        $sangat_puas7 = $request->input("sangat_puas7");
+        $sangat_puas8 = $request->input("sangat_puas8");
+        $totalKehadiran = $request->input("totalKehadiran");
+        $index = 23;
+        $indexluar = 0;
+        $date = date("d-m-Y");
 
 
         $reportData = Training::select(
-            'training.nama_training',
-            'training.materi_training',
-            'training.waktu_mulai',
-            'training.tanggal_training',
-            'training.pic',
-            'training.lokasi_training',
-            'training.status_training',
-            'users.nik',
-            'users.name',
-            'users.jenis_kelamin',
-            'departement.nama as department_name',
-            'absensi.status_absen',
-            'test_pesertas.hasil_test',
-            'test_pesertas.id_test',
-            'test.jenis_test',
-            'report.*',
-            'gambar_training.gambar'
+            "training.nama_training",
+            "training.materi_training",
+            "training.waktu_mulai",
+            "training.tanggal_training",
+            "training.pic",
+            "training.lokasi_training",
+            "training.status_training",
+            "users.nik",
+            "users.name",
+            "users.jenis_kelamin",
+            "departement.nama as department_name",
+            "absensi.status_absen",
+            "test_pesertas.hasil_test",
+            "test_pesertas.id_test",
+            "test.jenis_test",
+            "report.*",
+            "gambar_training.gambar"
         )
-            ->join('detail_trainings', 'training.id', '=', 'detail_trainings.id_training')
-            ->join('users', 'detail_trainings.id_user', '=', 'users.id')
-            ->join('departement', 'detail_trainings.id_departement', '=', 'departement.id')
-            ->leftJoin('absensi', 'detail_trainings.id_absen', '=', 'absensi.id')
-            ->leftJoin('test_pesertas', 'detail_trainings.id_user', '=', 'test_pesertas.id_user')
-            ->leftJoin('report', 'training.id', '=', 'report.id_training')
-            ->leftJoin('gambar_training', 'report.id_training', '=', 'gambar_training.id_report')
-            ->leftJoin('test', 'test_pesertas.id_test', '=', 'test.id')
-            ->where('training.id', $id_training)
+            ->join("detail_trainings", "training.id", "=", "detail_trainings.id_training")
+            ->join("users", "detail_trainings.id_user", "=", "users.id")
+            ->join("departement", "detail_trainings.id_departement", "=", "departement.id")
+            ->leftJoin("absensi", "detail_trainings.id_absen", "=", "absensi.id")
+            ->leftJoin("test_pesertas", "detail_trainings.id_user", "=", "test_pesertas.id_user")
+            ->leftJoin("report", "training.id", "=", "report.id_training")
+            ->leftJoin("gambar_training", "report.id_training", "=", "gambar_training.id_report")
+            ->leftJoin("test", "test_pesertas.id_test", "=", "test.id")
+            ->where("training.id", $id_training)
             ->distinct()
             ->get();
         // dd($reportData);
 
-        $genderCount = $reportData->groupBy('jenis_kelamin')->map(function ($item, $key) {
+        $genderCount = $reportData->groupBy("jenis_kelamin")->map(function ($item, $key) {
             return count($item);
         });
         $namaTraining = $reportData[0]->nama_training;
-        $lakiCount = $genderCount['laki'] ?? 0;
-        $perempuanCount = $genderCount['perempuan'] ?? 0;
+        $lakiCount = $genderCount["laki"] ?? 0;
+        $perempuanCount = $genderCount["perempuan"] ?? 0;
         $totalAttendance = $reportData->count();
-        $hadirCount = $reportData->where('status_absen', 'hadir')->count();
-        $preTestResults = $reportData->where('id_test', 1)->pluck('hasil_test');
-        $postTestResults = $reportData->where('id_test', 2)->pluck('hasil_test');
+        $hadirCount = $reportData->where("status_absen", "hadir")->count();
+        $preTestResults = $reportData->where("id_test", 1)->pluck("hasil_test");
+        $postTestResults = $reportData->where("id_test", 2)->pluck("hasil_test");
         $averagePreTest = $preTestResults->avg();
         $averagePostTest = $postTestResults->avg();
 
@@ -181,650 +195,584 @@ class ReportController extends Controller
         $sheet = $spreadsheet->getActiveSheet();
 
         // Path ke file gambar di storage Laravel
-        $imagePath = storage_path('app/public/header1.jpg');
+        $imagePath = storage_path("app/public/header1.jpg");
 
         // Menyisipkan gambar ke dalam sel B2:C4
         $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
         $drawing->setPath($imagePath);
-        $drawing->setCoordinates('B2');
+        $drawing->setCoordinates("B2");
         $drawing->setHeight(100); // Sesuaikan dengan ukuran yang diinginkan
         $drawing->setWidth(100);  // Sesuaikan dengan ukuran yang diinginkan
 
         // Menyisipkan gambar ke dalam worksheet
-        $sheet->mergeCells('B2:C4');
-        $sheet->getStyle('B2:C4')->getAlignment()->setHorizontal('center');
-        $sheet->getStyle('B2:C4')->getBorders()->getAllBorders()->setBorderStyle('medium');
+        $sheet->mergeCells("B2:C4");
+        $sheet->getStyle("B2:C4")->getAlignment()->setHorizontal("center");
+        $sheet->getStyle("B2:C4")->getBorders()->getAllBorders()->setBorderStyle("medium");
 
         // Menambahkan gambar ke worksheet menggunakan addDrawing (alternatif dari addImage)
         // Menambahkan gambar ke collection
         $drawings = $sheet->getDrawingCollection();
         $drawings[] = $drawing;
 
-        $sheet->mergeCells('D2:I3');
-        $sheet->getStyle('D2:I3')->getAlignment()->setHorizontal('center');
-        $sheet->getStyle('D2:I3')->getFont()->setSize(26)->setName('Times New Roman')->setBold('bold');
-        $sheet->setCellValue('D2', ' TRAINING REPORT');
-        $sheet->getStyle('D2:I3')->getBorders()->getAllBorders()->setBorderStyle('medium');
+        $sheet->mergeCells("D2:I3");
+        $sheet->getStyle("D2:I3")->getAlignment()->setHorizontal("center");
+        $sheet->getStyle("D2:I3")->getFont()->setSize(26)->setName("Times New Roman")->setBold("bold");
+        $sheet->setCellValue("D2", " TRAINING REPORT");
+        $sheet->getStyle("D2:I3")->getBorders()->getAllBorders()->setBorderStyle("medium");
 
         // Path ke file gambar di storage Laravel
-        $imagePath = storage_path('app/public/header2.jpg');
+        $imagePath = storage_path("app/public/header2.jpg");
 
         // Menyisipkan gambar ke dalam sel B2:C4
         $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
         $drawing->setPath($imagePath);
-        $drawing->setCoordinates('J2');
+        $drawing->setCoordinates("J2");
         $drawing->setHeight(100); // Sesuaikan dengan ukuran yang diinginkan
         $drawing->setWidth(100);  // Sesuaikan dengan ukuran yang diinginkan
 
         // Menyisipkan gambar ke dalam worksheet
-        $sheet->mergeCells('J2:k4');
-        $sheet->getStyle('J2:k4')->getAlignment()->setHorizontal('center');
-        $sheet->getStyle('J2:k4')->getBorders()->getAllBorders()->setBorderStyle('medium');
+        $sheet->mergeCells("J2:k4");
+        $sheet->getStyle("J2:k4")->getAlignment()->setHorizontal("center");
+        $sheet->getStyle("J2:k4")->getBorders()->getAllBorders()->setBorderStyle("medium");
 
         // Menambahkan gambar ke collection
         $drawings = $sheet->getDrawingCollection();
         $drawings[] = $drawing;
 
-        $sheet->mergeCells('D4:I4');
-        $sheet->getStyle('D4:I4')->getAlignment()->setHorizontal('center');
-        $sheet->getStyle('D4:I4')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-        $sheet->setCellValue('D4', 'PT PAN BROTHERS TBK');
-        $sheet->getStyle('D4:I4')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->mergeCells('B7:K7');
-        $sheet->getStyle('B7:K7')->getAlignment()->setHorizontal('center');
-        $sheet->getStyle('B7:K7')->getFont()->setSize(20)->setName('Times New Roman')->setBold('bold');
-        $sheet->setCellValue('B7', 'TRAINING BPJS');
-        $sheet->getStyle('B7:K7')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('B8', '1');
-        $sheet->getStyle('B8')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-        $sheet->getStyle('B8')->getAlignment()->setHorizontal('center');
-
-        $sheet->mergeCells('C8:K8');
-        $sheet->setCellValue('C8', 'Materi Training ');
-        $sheet->getStyle('C8')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-
-        $sheet->mergeCells('C9:K9');
-        $sheet->setCellValue('C9', $materi_training);
-        $sheet->getStyle('C9')->getFont()->setSize(12)->setName('Times New Roman');
-
-        $sheet->setCellValue('B11', '2');
-        $sheet->getStyle('B11')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-        $sheet->getStyle('B11')->getAlignment()->setHorizontal('center');
-
-        $sheet->mergeCells('C11:K11');
-        $sheet->setCellValue('C11', 'Pelaksanaan Training');
-        $sheet->getStyle('C11')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-
-        $sheet->mergeCells('B13:F13');
-        $sheet->setCellValue('B13', 'Feedback');
-        $sheet->getStyle('B13')->getAlignment()->setHorizontal('center');
-        $sheet->getStyle('B13:F13')->getBorders()->getAllBorders()->setBorderStyle('medium');
-        $sheet->getStyle('B13:F13')->getFill()->setFillType('solid')->getStartColor()->setRGB('98FB98');
-        $sheet->getStyle('B13')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-
-        $sheet->mergeCells('B14:F18');
-        $sheet->getStyle('B14')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('B14')->getAlignment()->setWrapText(true);
-        $sheet->setCellValue('B14', $feedback);
-        $sheet->getStyle('B14')->getFont()->setSize(12)->setName('Times New Roman');
-        $sheet->getStyle('B14:F18')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->mergeCells('G13:H13');
-        $sheet->setCellValue('G13', 'Tanggal & Tempat');
-        $sheet->getStyle('G13')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('G13:H13')->getBorders()->getAllBorders()->setBorderStyle('medium');
-        $sheet->getStyle('G13:H13')->getFill()->setFillType('solid')->getStartColor()->setRGB('98FB98');
-        $sheet->getStyle('G13')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-
-        $sheet->mergeCells('G14:H14');
-        $sheet->setCellValue('G14', $tanggal_training);
-        $sheet->getStyle('G14')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('G14:H14')->getBorders()->getAllBorders()->setBorderStyle('medium');
-        $sheet->getStyle('G14')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-
-        $sheet->mergeCells('G15:H15');
-        $sheet->setCellValue('G15', $lokasi_training);
-        $sheet->getStyle('G15')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('G15')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-        $sheet->getStyle('G14:H14')->getBorders()->getAllBorders()->setBorderStyle('thin');
-
-        $sheet->mergeCells('I13:J13');
-        $sheet->setCellValue('I13', 'Fasilitator / Trainer');
-        $sheet->getStyle('I13')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('I13:J13')->getBorders()->getAllBorders()->setBorderStyle('medium');
-        $sheet->getStyle('I13:J13')->getFill()->setFillType('solid')->getStartColor()->setRGB('98FB98');
-        $sheet->getStyle('I13')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-
-        $sheet->mergeCells('I14:J15');
-        $sheet->setCellValue('I14', $pic);
-        $sheet->getStyle('I14')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('I14')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-        $sheet->getStyle('I14:J15')->getBorders()->getAllBorders()->setBorderStyle('thin');
-
-        $sheet->setCellValue('K13', 'Durasi');
-        $sheet->getStyle('K13')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('K13')->getFill()->setFillType('solid')->getStartColor()->setRGB('98FB98');
-        $sheet->getStyle('K13')->getBorders()->getAllBorders()->setBorderStyle('medium');
-        $sheet->getStyle('K13')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-
-        $sheet->mergeCells('K14:K15');
-        $sheet->setCellValue('K14', $durasi);
-        $sheet->getStyle('K14')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('K14')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-        $sheet->getStyle('K14:K15')->getBorders()->getAllBorders()->setBorderStyle('thin');
-
-        $sheet->mergeCells('G16:K16');
-        $sheet->setCellValue('G16', 'Alat');
-        $sheet->getStyle('G16')->getAlignment()->setHorizontal('center');
-        $sheet->getStyle('G16:K16')->getBorders()->getAllBorders()->setBorderStyle('medium');
-        $sheet->getStyle('G16:K16')->getFill()->setFillType('solid')->getStartColor()->setRGB('98FB98');
-        $sheet->getStyle('G16')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-
-        $sheet->mergeCells('G17:K18');
-        $sheet->setCellValue('G17', $alat);
-        $sheet->getStyle('G17')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('G17')->getFont()->setSize(12)->setName('Times New Roman');
-        $sheet->getStyle('G17:K18')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-
-
-
-        $sheet->setCellValue('B20', '3');
-        $sheet->getStyle('B20')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-        $sheet->getStyle('B20')->getAlignment()->setHorizontal('center');
-
-        $sheet->mergeCells('C20:K20');
-        $sheet->setCellValue('C20', 'Peserta');
-        $sheet->getStyle('C20')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-
-
-        $sheet->mergeCells('B22:E22');
-        $sheet->setCellValue('B22', 'Nama');
-        $sheet->getStyle('B22')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-        $sheet->getStyle('B22')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('B22:E22')->getBorders()->getAllBorders()->setBorderStyle('medium');
-        $sheet->getStyle('B22:E22')->getFill()->setFillType('solid')->getStartColor()->setRGB('98FB98'); // Hijau Muda
-
-        $sheet->mergeCells('F22:G22');
-        $sheet->setCellValue('F22', 'NIK');
-        $sheet->getStyle('F22:G22')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-        $sheet->getStyle('F22:G22')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('F22:G22')->getBorders()->getAllBorders()->setBorderStyle('medium');
-        $sheet->getStyle('F22:G22')->getFill()->setFillType('solid')->getStartColor()->setRGB('98FB98'); // Hijau Muda
-
-        $sheet->mergeCells('H22:I22');
-        $sheet->setCellValue('H22', 'PRE');
-        $sheet->getStyle('H22:I22')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-        $sheet->getStyle('H22:I22')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('H22:I22')->getBorders()->getAllBorders()->setBorderStyle('medium');
-        $sheet->getStyle('H22:I22')->getFill()->setFillType('solid')->getStartColor()->setRGB('98FB98'); // Hijau Muda
-
-        $sheet->mergeCells('J22:K22');
-        $sheet->setCellValue('J22', 'POST');
-        $sheet->getStyle('J22:K22')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-        $sheet->getStyle('J22:K22')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('J22:K22')->getBorders()->getAllBorders()->setBorderStyle('medium');
-        $sheet->getStyle('J22:K22')->getFill()->setFillType('solid')->getStartColor()->setRGB('98FB98'); // Hijau Muda
-
-
-        $sheet->mergeCells('B23:E23');
-        $sheet->setCellValue('B23', 'Sindi Senora');
-        $sheet->getStyle('B23:E23')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
-        $sheet->getStyle('B23:E23')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('B23:E23')->getBorders()->getAllBorders()->setBorderStyle('thin');
-
-        $sheet->mergeCells('F23:G23');
-        $sheet->setCellValue('F23', '092100483');
-        $sheet->getStyle('F23:G23')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
-        $sheet->getStyle('F23:G23')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('F23:G23')->getBorders()->getAllBorders()->setBorderStyle('thin');
-
-        $sheet->mergeCells('H23:I23');
-        $sheet->setCellValue('H23', '');
-        $sheet->getStyle('H23:I23')->getFont()->setSize(12)->setName('Arial')->setBold(false);
-        $sheet->getStyle('H23:I23')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('H23:I23')->getBorders()->getAllBorders()->setBorderStyle('thin');
-
-        $sheet->mergeCells('J23:K23');
-        $sheet->setCellValue('J23', '10');
-        $sheet->getStyle('J23:K23')->getFont()->setSize(12)->setName('Arial')->setBold(false);
-        $sheet->getStyle('J23:K23')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('J23:K23')->getBorders()->getAllBorders()->setBorderStyle('thin');
-
-
-
-        $sheet->mergeCells('B24:E24');
-        $sheet->setCellValue('B24', 'Sindi Senora');
-        $sheet->getStyle('B24:E24')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
-        $sheet->getStyle('B24:E24')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('B24:E24')->getBorders()->getAllBorders()->setBorderStyle('thin');
-
-        $sheet->mergeCells('F24:G24');
-        $sheet->setCellValue('F24', '092100483');
-        $sheet->getStyle('F24:G24')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
-        $sheet->getStyle('F24:G24')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('F24:G24')->getBorders()->getAllBorders()->setBorderStyle('thin');
-
-        $sheet->mergeCells('H24:I24');
-        $sheet->setCellValue('H24', '6');
-        $sheet->getStyle('H24:I24')->getFont()->setSize(12)->setName('Arial')->setBold(false);
-        $sheet->getStyle('H24:I24')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('H24:I24')->getBorders()->getAllBorders()->setBorderStyle('thin');
-
-        $sheet->mergeCells('J24:K24');
-        $sheet->setCellValue('J24', '10');
-        $sheet->getStyle('J24:K24')->getFont()->setSize(12)->setName('Arial')->setBold(false);
-        $sheet->getStyle('J24:K24')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('J24:K24')->getBorders()->getAllBorders()->setBorderStyle('thin');
-
-        $sheet->mergeCells('B25:E25');
-        $sheet->setCellValue('B25', 'Sindi Senora');
-        $sheet->getStyle('B25:E25')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
-        $sheet->getStyle('B25:E25')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('B25:E25')->getBorders()->getAllBorders()->setBorderStyle('thin');
-
-        $sheet->mergeCells('F25:G25');
-        $sheet->setCellValue('F25', '092100483');
-        $sheet->getStyle('F25:G25')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
-        $sheet->getStyle('F25:G25')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('F25:G25')->getBorders()->getAllBorders()->setBorderStyle('thin');
-
-        $sheet->mergeCells('H25:I25');
-        $sheet->setCellValue('H25', '6');
-        $sheet->getStyle('H25:I25')->getFont()->setSize(12)->setName('Arial')->setBold(false);
-        $sheet->getStyle('H25:I25')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('H25:I25')->getBorders()->getAllBorders()->setBorderStyle('thin');
-
-        $sheet->mergeCells('J25:K25');
-        $sheet->setCellValue('J25', '10');
-        $sheet->getStyle('J25:K25')->getFont()->setSize(12)->setName('Arial')->setBold(false);
-        $sheet->getStyle('J25:K25')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('J25:K25')->getBorders()->getAllBorders()->setBorderStyle('thin');
-
-        $sheet->setCellValue('B27', '4');
-        $sheet->getStyle('B27')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('B27')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-
-        $sheet->mergeCells('C27:K27');
-        $sheet->setCellValue('C27', 'Evaluasi Training');
-        $sheet->getStyle('C27')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-
-        $sheet->mergeCells('B29:C29');
-        $sheet->setCellValue('B29', 'Kehadiran');
-        $sheet->getStyle('B29:C29')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('B29:C29')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-        $sheet->getStyle('B29:C29')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->mergeCells('D29:E29');
-        $sheet->setCellValue('D29', 'Test');
-        $sheet->getStyle('D29:E29')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('D29:E29')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-        $sheet->getStyle('D29:E29')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->mergeCells('F29:G29');
-        $sheet->setCellValue('F29', 'Peserta');
-        $sheet->getStyle('F29:G29')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('F29:G29')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-        $sheet->getStyle('F29:G29')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->mergeCells('H29:K29');
-        $sheet->setCellValue('H29', 'Evaluasi');
-        $sheet->getStyle('F29:K29')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('F29:K29')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-        $sheet->getStyle('F29:K29')->getBorders()->getAllBorders()->setBorderStyle('medium');
-        $sheet->getStyle('F29')->getAlignment()->setWrapText(true);
-
-        $sheet->setCellValue('B30', 'Plan');
-        $sheet->getStyle('B30')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
-        $sheet->getStyle('B30')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('B30')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('C30', 'Actual');
-        $sheet->getStyle('C30')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
-        $sheet->getStyle('C30')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('C30')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('D30', 'Ave Pre');
-        $sheet->getStyle('D30')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
-        $sheet->getStyle('D30')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('D30')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('E30', 'Ave Post');
-        $sheet->getStyle('E30')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
-        $sheet->getStyle('E30')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('E30')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('F30', 'Male');
-        $sheet->getStyle('F30')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
-        $sheet->getStyle('F30')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('F30')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('G30', 'Female');
-        $sheet->getStyle('G30')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
-        $sheet->getStyle('G30')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('G30')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->mergeCells('H30:K32');
-        $sheet->setCellValue('H30', $evaluasi);
-        $sheet->getStyle('H30:K32')->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle('H30:K32')->getBorders()->getAllBorders()->setBorderStyle('medium');
-        $sheet->getStyle('H30:K32')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('H30:K32')->getAlignment()->setWrapText(true);
-
-        $sheet->setCellValue('B30', 'Plan');
-        $sheet->getStyle('B30')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
-        $sheet->getStyle('B30')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('B30')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('B31', $totalAttendance);
-        $sheet->getStyle('B31')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
-        $sheet->getStyle('B31')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('B31')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('C31', $hadirCount);
-        $sheet->getStyle('C31')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
-        $sheet->getStyle('C31')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('C31')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('D31', $averagePreTest);
-        $sheet->getStyle('D31')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
-        $sheet->getStyle('D31')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('D31')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('E31', $averagePostTest);
-        $sheet->getStyle('E31')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
-        $sheet->getStyle('E31')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('E31')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('F31', $lakiCount);
-        $sheet->getStyle('F31')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
-        $sheet->getStyle('F31')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('F31')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('G31', $perempuanCount);
-        $sheet->getStyle('G31')->getFont()->setSize(12)->setName('Times New Roman')->setBold(false);
-        $sheet->getStyle('G31')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('G31')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->mergeCells('B32:C32');
-        $sheet->setCellValue('B32', $totalKehadiran);
-        $sheet->getStyle('B32:C32')->getFont()->setSize(26)->setName('Times New Roman')->setBold(false);
-        $sheet->getStyle('B32:C32')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('B32:C32')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->mergeCells('D32:E32');
-        $sheet->setCellValue('D32', $rata_rata);
-        $sheet->getStyle('D32:E32')->getFont()->setSize(26)->setName('Times New Roman')->setBold(false);
-        $sheet->getStyle('D32:E32')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('D32:E32')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('F32', $averageCount);
-        $sheet->getStyle('F32')->getFont()->setSize(18)->setName('Times New Roman')->setBold(false);
-        $sheet->getStyle('F32')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('F32')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('G32', $averageCount);
-        $sheet->getStyle('G32')->getFont()->setSize(18)->setName('Times New Roman')->setBold(false);
-        $sheet->getStyle('G32')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('G32')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->mergeCells('B33:K33');
-        $sheet->setCellValue('B33', 'Evaluasi Training');
-        $sheet->getStyle('B33')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-        $sheet->getStyle('B33:K33')->getBorders()->getAllBorders()->setBorderStyle('medium');
-        $sheet->getStyle('B33:K33')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('B33:K33')->getFill()->setFillType('solid')->getStartColor()->setRGB('98FB98');
-
-        $sheet->setCellValue('B34', 'Bagian');
-        $sheet->getStyle('B34:C34')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-        $sheet->mergeCells('B34:C34');
-        $sheet->getStyle('B34:C34')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-
-        $sheet->getStyle('B29:K29')->getFill()->setFillType('solid')->getStartColor()->setRGB('98FB98'); // Hijau Muda
-
-
-        $sheet->setCellValue('D34', 'Program');
-        $sheet->getStyle('D34')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-        $sheet->mergeCells('D34:E34');
-        $sheet->getStyle('D34:E34')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('F34', 'Pelatih');
-        $sheet->getStyle('F34')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-        $sheet->mergeCells('F34:G34');
-        $sheet->getStyle('F34:G34')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('H34', 'Metode Pelatihan');
-        $sheet->getStyle('H34')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-        $sheet->mergeCells('H34:I34');
-        $sheet->getStyle('H34:I34')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('J34', 'Kesan Umum');
-        $sheet->getStyle('J34')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-        $sheet->mergeCells('J34:K34');
-        $sheet->getStyle('J34:K34')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('B35', 'Sangat Tidak Puas');
-        $sheet->getStyle('B35')->getFont()->setSize(11)->setName('Calibri')->setBold('normal');
-        $sheet->mergeCells('B35:C35');
-        $sheet->getStyle('B35:C35')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('B36', 'Tidak Puas');
-        $sheet->getStyle('B36')->getFont()->setSize(11)->setName('Calibri')->setBold('normal');
-        $sheet->mergeCells('B36:C36');
-        $sheet->getStyle('B36:C36')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('B37', 'Netral');
-        $sheet->getStyle('B37')->getFont()->setSize(11)->setName('Calibri')->setBold('normal');
-        $sheet->mergeCells('B37:C37');
-        $sheet->getStyle('B37:C37')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('B38', 'Puas');
-        $sheet->getStyle('B38')->getFont()->setSize(11)->setName('Calibri')->setBold('normal');
-        $sheet->mergeCells('B38:C38');
-        $sheet->getStyle('B38:C38')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('B39', 'Sangat Puas');
-        $sheet->getStyle('B39')->getFont()->setSize(11)->setName('Calibri')->setBold('normal');
-        $sheet->mergeCells('B39:C39');
-        $sheet->getStyle('B39:C39')->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $rangeD35toK39 = 'D35:K39';
-
-        $sheet->setCellValue('D35', 'Jumlah');
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('E35', 'Percentage');
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('F35', $sangat_tidak_puas1);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(11)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('G35', $sangat_tidak_puas2);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('H35', $sangat_tidak_puas3);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('I35', $sangat_tidak_puas4);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('J35', $sangat_tidak_puas5);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('K35', $sangat_tidak_puas6);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-
-
-        $sheet->setCellValue('D36', $hasil_tes1);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('E36', $hasil_tes2);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('F36', $hasil_tes3);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('G36', $hasil_tes4);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('H36', $hasil_tes5);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('I36', $hasil_tes6);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('J36', $hasil_tes7);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('K36', $hasil_tes8);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-
-
-        $sheet->setCellValue('D37', $netral1);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('E37', $netral2);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('F37', $netral3);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('G37', $netral4);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('H37', $netral5);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('I37', $netral6);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('J37', $netral7);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('K37', $netral8);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-
-
-        $sheet->setCellValue('D38', $puas1);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('E38', $puas2);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('F38', $puas3);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('G38', $puas4);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('H38', $puas5);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('I38', $puas6);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('J38', $puas7);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('K38', $puas8);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-
-
-        $sheet->setCellValue('D39', $sangat_puas1);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('E39', $sangat_puas2);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('F39', $sangat_puas3);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('G39', $sangat_puas4);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('H39', $sangat_puas5);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('I39', $sangat_puas6);
-        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle('medium');
-
-        $sheet->setCellValue('B41', $sangat_puas7);
-        $sheet->getStyle('B41')->getAlignment()->setHorizontal('center')->setVertical('center');
-        $sheet->getStyle('B41')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-
-        $sheet->setCellValue('C41', $sangat_puas8);
-        $sheet->getStyle('C41')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-        $sheet->mergeCells('C41:K41');
-
-        $sheet->setCellValue('B53', 'Dibuat oleh');
-        $sheet->getStyle('B53')->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-
-        $sheet->setCellValue('I53', 'Diperiksa');
-        $sheet->getStyle('I53')->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-
-        $sheet->setCellValue('B57', 'Widiastuti');
-        $sheet->getStyle('B57')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-
-        $sheet->setCellValue('I57', 'Anik Kuswandari');
-        $sheet->getStyle('I57')->getFont()->setSize(12)->setName('Times New Roman')->setBold('bold');
-
-        $sheet->setCellValue('B58', 'Staff T&D');
-        $sheet->getStyle('B58')->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-
-        $sheet->setCellValue('I58', 'HRM Factory Manager');
-        $sheet->getStyle('I58')->getFont()->setSize(12)->setName('Times New Roman')->setBold('normal');
-
-        $sheet->setCellValue('J59', 'FM-HRD-34.R.02 #20-07-2023');
-        $sheet->getStyle('J59')->getFont()->setSize(8)->setName('Times New Roman')->setBold('normal');
+        $sheet->mergeCells("D4:I4");
+        $sheet->getStyle("D4:I4")->getAlignment()->setHorizontal("center");
+        $sheet->getStyle("D4:I4")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+        $sheet->setCellValue("D4", "PT PAN BROTHERS TBK");
+        $sheet->getStyle("D4:I4")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->mergeCells("B7:K7");
+        $sheet->getStyle("B7:K7")->getAlignment()->setHorizontal("center");
+        $sheet->getStyle("B7:K7")->getFont()->setSize(20)->setName("Times New Roman")->setBold("bold");
+        $sheet->setCellValue("B7", "TRAINING BPJS");
+        $sheet->getStyle("B7:K7")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->setCellValue("B8", "1");
+        $sheet->getStyle("B8")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+        $sheet->getStyle("B8")->getAlignment()->setHorizontal("center");
+
+        $sheet->mergeCells("C8:K8");
+        $sheet->setCellValue("C8", "Materi Training ");
+        $sheet->getStyle("C8")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+
+        $sheet->mergeCells("C9:K9");
+        $sheet->setCellValue("C9", $materi_training);
+        $sheet->getStyle("C9")->getFont()->setSize(12)->setName("Times New Roman");
+
+        $sheet->setCellValue("B11", "2");
+        $sheet->getStyle("B11")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+        $sheet->getStyle("B11")->getAlignment()->setHorizontal("center");
+
+        $sheet->mergeCells("C11:K11");
+        $sheet->setCellValue("C11", "Pelaksanaan Training");
+        $sheet->getStyle("C11")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+
+        $sheet->mergeCells("B13:F13");
+        $sheet->setCellValue("B13", "Feedback");
+        $sheet->getStyle("B13")->getAlignment()->setHorizontal("center");
+        $sheet->getStyle("B13:F13")->getBorders()->getAllBorders()->setBorderStyle("medium");
+        $sheet->getStyle("B13:F13")->getFill()->setFillType("solid")->getStartColor()->setRGB("98FB98");
+        $sheet->getStyle("B13")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+
+        $sheet->mergeCells("B14:F18");
+        $sheet->getStyle("B14")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("B14")->getAlignment()->setWrapText(true);
+        $sheet->setCellValue("B14", $feedback);
+        $sheet->getStyle("B14")->getFont()->setSize(12)->setName("Times New Roman");
+        $sheet->getStyle("B14:F18")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->mergeCells("G13:H13");
+        $sheet->setCellValue("G13", "Tanggal & Tempat");
+        $sheet->getStyle("G13")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("G13:H13")->getBorders()->getAllBorders()->setBorderStyle("medium");
+        $sheet->getStyle("G13:H13")->getFill()->setFillType("solid")->getStartColor()->setRGB("98FB98");
+        $sheet->getStyle("G13")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+
+        $sheet->mergeCells("G14:H14");
+        $sheet->setCellValue("G14", $tanggal_training);
+        $sheet->getStyle("G14")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("G14:H14")->getBorders()->getAllBorders()->setBorderStyle("medium");
+        $sheet->getStyle("G14")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+
+        $sheet->mergeCells("G15:H15");
+        $sheet->setCellValue("G15", $lokasi_training);
+        $sheet->getStyle("G15")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("G15")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+        $sheet->getStyle("G14:H14")->getBorders()->getAllBorders()->setBorderStyle("thin");
+
+        $sheet->mergeCells("I13:J13");
+        $sheet->setCellValue("I13", "Fasilitator / Trainer");
+        $sheet->getStyle("I13")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("I13:J13")->getBorders()->getAllBorders()->setBorderStyle("medium");
+        $sheet->getStyle("I13:J13")->getFill()->setFillType("solid")->getStartColor()->setRGB("98FB98");
+        $sheet->getStyle("I13")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+
+        $sheet->mergeCells("I14:J15");
+        $sheet->setCellValue("I14", $pic);
+        $sheet->getStyle("I14")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("I14")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+        $sheet->getStyle("I14:J15")->getBorders()->getAllBorders()->setBorderStyle("thin");
+
+        $sheet->setCellValue("K13", "Durasi");
+        $sheet->getStyle("K13")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("K13")->getFill()->setFillType("solid")->getStartColor()->setRGB("98FB98");
+        $sheet->getStyle("K13")->getBorders()->getAllBorders()->setBorderStyle("medium");
+        $sheet->getStyle("K13")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+
+        $sheet->mergeCells("K14:K15");
+        $sheet->setCellValue("K14", $durasi);
+        $sheet->getStyle("K14")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("K14")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+        $sheet->getStyle("K14:K15")->getBorders()->getAllBorders()->setBorderStyle("thin");
+
+        $sheet->mergeCells("G16:K16");
+        $sheet->setCellValue("G16", "Alat");
+        $sheet->getStyle("G16")->getAlignment()->setHorizontal("center");
+        $sheet->getStyle("G16:K16")->getBorders()->getAllBorders()->setBorderStyle("medium");
+        $sheet->getStyle("G16:K16")->getFill()->setFillType("solid")->getStartColor()->setRGB("98FB98");
+        $sheet->getStyle("G16")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+
+        $sheet->mergeCells("G17:K18");
+        $sheet->setCellValue("G17", $alat);
+        $sheet->getStyle("G17")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("G17")->getFont()->setSize(12)->setName("Times New Roman");
+        $sheet->getStyle("G17:K18")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+
+
+
+        $sheet->setCellValue("B20", "3");
+        $sheet->getStyle("B20")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+        $sheet->getStyle("B20")->getAlignment()->setHorizontal("center");
+
+        $sheet->mergeCells("C20:K20");
+        $sheet->setCellValue("C20", "Peserta");
+        $sheet->getStyle("C20")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+
+
+        $sheet->mergeCells("B22:E22");
+        $sheet->setCellValue("B22", "Nama");
+        $sheet->getStyle("B22")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+        $sheet->getStyle("B22")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("B22:E22")->getBorders()->getAllBorders()->setBorderStyle("medium");
+        $sheet->getStyle("B22:E22")->getFill()->setFillType("solid")->getStartColor()->setRGB("98FB98"); // Hijau Muda
+
+        $sheet->mergeCells("F22:G22");
+        $sheet->setCellValue("F22", "NIK");
+        $sheet->getStyle("F22:G22")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+        $sheet->getStyle("F22:G22")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("F22:G22")->getBorders()->getAllBorders()->setBorderStyle("medium");
+        $sheet->getStyle("F22:G22")->getFill()->setFillType("solid")->getStartColor()->setRGB("98FB98"); // Hijau Muda
+
+        $sheet->mergeCells("H22:I22");
+        $sheet->setCellValue("H22", "PRE");
+        $sheet->getStyle("H22:I22")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+        $sheet->getStyle("H22:I22")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("H22:I22")->getBorders()->getAllBorders()->setBorderStyle("medium");
+        $sheet->getStyle("H22:I22")->getFill()->setFillType("solid")->getStartColor()->setRGB("98FB98"); // Hijau Muda
+
+        $sheet->mergeCells("J22:K22");
+        $sheet->setCellValue("J22", "POST");
+        $sheet->getStyle("J22:K22")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+        $sheet->getStyle("J22:K22")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("J22:K22")->getBorders()->getAllBorders()->setBorderStyle("medium");
+        $sheet->getStyle("J22:K22")->getFill()->setFillType("solid")->getStartColor()->setRGB("98FB98"); // Hijau Muda
+
+
+        foreach ($datauser as $user) {
+            // Merge cells and set value for column B to E
+            $sheet->mergeCells("B$index:E$index");
+            $sheet->setCellValue("B$index", $user->name); // Assuming User model has 'name' property
+            $sheet->getStyle("B$index:E$index")->getFont()->setSize(12)->setName("Times New Roman")->setBold(false);
+            $sheet->getStyle("B$index:E$index")->getAlignment()->setHorizontal("center")->setVertical("center");
+            $sheet->getStyle("B$index:E$index")->getBorders()->getAllBorders()->setBorderStyle("thin");
+
+            // Merge cells and set value for column F to G
+            $sheet->mergeCells("F$index:G$index");
+            $sheet->setCellValue("F$index", $user->nik); // Assuming User model has 'id' property
+            $sheet->getStyle("F$index:G$index")->getFont()->setSize(12)->setName("Times New Roman")->setBold(false);
+            $sheet->getStyle("F$index:G$index")->getAlignment()->setHorizontal("center")->setVertical("center");
+            $sheet->getStyle("F$index:G$index")->getBorders()->getAllBorders()->setBorderStyle("thin");
+
+            // Merge cells and set value for column H to I
+            $sheet->mergeCells("H$index:I$index");
+            $sheet->setCellValue("H$index", $user->pre); // Replace 'custom_field' with the actual property in your User model
+            $sheet->getStyle("H$index:I$index")->getFont()->setSize(12)->setName("Arial")->setBold(false);
+            $sheet->getStyle("H$index:I$index")->getAlignment()->setHorizontal("center")->setVertical("center");
+            $sheet->getStyle("H$index:I$index")->getBorders()->getAllBorders()->setBorderStyle("thin");
+
+            // Merge cells and set value for column J to K
+            $sheet->mergeCells("J$index:K$index");
+            $sheet->setCellValue("J$index", $user->post); // Replace 'another_field' with the actual property in your User model
+            $sheet->getStyle("J$index:K$index")->getFont()->setSize(12)->setName("Arial")->setBold(false);
+            $sheet->getStyle("J$index:K$index")->getAlignment()->setHorizontal("center")->setVertical("center");
+            $sheet->getStyle("J$index:K$index")->getBorders()->getAllBorders()->setBorderStyle("thin");
+
+            $index++;
+            $indexluar = $index;
+        }
+
+        $indexluar++;
+
+        $sheet->setCellValue("B$indexluar", "4");
+        $sheet->getStyle("B$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("B$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+
+        $sheet->mergeCells("C$indexluar:K$indexluar");
+        $sheet->setCellValue("C$indexluar", "Evaluasi Training");
+        $sheet->getStyle("C$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+
+        $indexluar++;
+
+        $sheet->getStyle("B$indexluar:K$indexluar")->getFill()->setFillType("solid")->getStartColor()->setRGB("98FB98"); // Hijau Muda
+
+        $sheet->mergeCells("B$indexluar:C$indexluar");
+        $sheet->setCellValue("B$indexluar", "Kehadiran");
+        $sheet->getStyle("B$indexluar:C$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("B$indexluar:C$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+        $sheet->getStyle("B$indexluar:C$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->mergeCells("D$indexluar:E$indexluar");
+        $sheet->setCellValue("D$indexluar", "Test");
+        $sheet->getStyle("D$indexluar:E$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("D$indexluar:E$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+        $sheet->getStyle("D$indexluar:E$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->mergeCells("F$indexluar:G$indexluar");
+        $sheet->setCellValue("F$indexluar", "Peserta");
+        $sheet->getStyle("F$indexluar:G$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("F$indexluar:G$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+        $sheet->getStyle("F$indexluar:G$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->mergeCells("H$indexluar:K$indexluar");
+        $sheet->setCellValue("H$indexluar", "Evaluasi");
+        $sheet->getStyle("F$indexluar:K$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("F$indexluar:K$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+        $sheet->getStyle("F$indexluar:K$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+        $sheet->getStyle("F$indexluar")->getAlignment()->setWrapText(true);
+
+        $indexluar++;
+
+        $sheet->setCellValue("B$indexluar", "Plan");
+        $sheet->getStyle("B$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold(false);
+        $sheet->getStyle("B$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("B$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->setCellValue("C$indexluar", "Actual");
+        $sheet->getStyle("C$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold(false);
+        $sheet->getStyle("C$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("C$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->setCellValue("D$indexluar", "Ave Pre");
+        $sheet->getStyle("D$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold(false);
+        $sheet->getStyle("D$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("D$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->setCellValue("E$indexluar", "Ave Post");
+        $sheet->getStyle("E$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold(false);
+        $sheet->getStyle("E$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("E$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->setCellValue("F$indexluar", "Male");
+        $sheet->getStyle("F$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold(false);
+        $sheet->getStyle("F$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("F$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->setCellValue("G$indexluar", "Female");
+        $sheet->getStyle("G$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold(false);
+        $sheet->getStyle("G$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("G$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->mergeCells("H$indexluar:K" . ($indexluar + 2));
+        $sheet->setCellValue("H$indexluar", $evaluasi);
+        $sheet->getStyle("H$indexluar:K" . ($indexluar + 2))->getFont()->setSize(12)->setName("Times New Roman")->setBold("normal");
+        $sheet->getStyle("H$indexluar:K" . ($indexluar + 2))->getBorders()->getAllBorders()->setBorderStyle("medium");
+        $sheet->getStyle("H$indexluar:K" . ($indexluar + 2))->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("H$indexluar:K" . ($indexluar + 2))->getAlignment()->setWrapText(true);
+
+        $sheet->setCellValue("B$indexluar", "Plan");
+        $sheet->getStyle("B$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold(false);
+        $sheet->getStyle("B$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("B$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $indexluar++;
+
+        $sheet->setCellValue("B$indexluar", $totalAttendance);
+        $sheet->getStyle("B$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold(false);
+        $sheet->getStyle("B$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("B$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->setCellValue("C$indexluar", $hadirCount);
+        $sheet->getStyle("C$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold(false);
+        $sheet->getStyle("C$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("C$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->setCellValue("D$indexluar", $averagePreTest);
+        $sheet->getStyle("D$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold(false);
+        $sheet->getStyle("D$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("D$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->setCellValue("E$indexluar", $averagePostTest);
+        $sheet->getStyle("E$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold(false);
+        $sheet->getStyle("E$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("E$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->setCellValue("F$indexluar", $lakiCount);
+        $sheet->getStyle("F$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold(false);
+        $sheet->getStyle("F$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("F$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->setCellValue("G$indexluar", $perempuanCount);
+        $sheet->getStyle("G$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold(false);
+        $sheet->getStyle("G$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("G$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $indexluar++;
+
+        $sheet->mergeCells("B$indexluar:C$indexluar");
+        $sheet->setCellValue("B$indexluar", $totalKehadiran);
+        $sheet->getStyle("B$indexluar:C$indexluar")->getFont()->setSize(26)->setName("Times New Roman")->setBold(false);
+        $sheet->getStyle("B$indexluar:C$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("B$indexluar:C$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->mergeCells("D$indexluar:E$indexluar");
+        $sheet->setCellValue("D$indexluar", $rata_rata);
+        $sheet->getStyle("D$indexluar:E$indexluar")->getFont()->setSize(26)->setName("Times New Roman")->setBold(false);
+        $sheet->getStyle("D$indexluar:E$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("D$indexluar:E$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->setCellValue("F$indexluar", $averageCount);
+        $sheet->getStyle("F$indexluar")->getFont()->setSize(18)->setName("Times New Roman")->setBold(false);
+        $sheet->getStyle("F$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("F$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->setCellValue("G$indexluar", $averageCount);
+        $sheet->getStyle("G$indexluar")->getFont()->setSize(18)->setName("Times New Roman")->setBold(false);
+        $sheet->getStyle("G$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("G$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $indexluar++;
+
+        $sheet->mergeCells("B$indexluar:K$indexluar");
+        $sheet->setCellValue("B$indexluar", "Evaluasi Training");
+        $sheet->getStyle("B$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+        $sheet->getStyle("B$indexluar:K$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+        $sheet->getStyle("B$indexluar:K$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("B$indexluar:K$indexluar")->getFill()->setFillType("solid")->getStartColor()->setRGB("98FB98");
+
+        $indexluar++;
+
+        $sheet->setCellValue("B$indexluar", "Bagian");
+        $sheet->getStyle("B$indexluar:C$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+        $sheet->mergeCells("B$indexluar:C$indexluar");
+        $sheet->getStyle("B$indexluar:C$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+
+        $sheet->setCellValue("D$indexluar", "Program");
+        $sheet->getStyle("D$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+        $sheet->mergeCells("D$indexluar:E$indexluar");
+        $sheet->getStyle("D$indexluar:E$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->setCellValue("F$indexluar", "Pelatih");
+        $sheet->getStyle("F$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+        $sheet->mergeCells("F$indexluar:G$indexluar");
+        $sheet->getStyle("F$indexluar:G$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->setCellValue("H$indexluar", "Metode Pelatihan");
+        $sheet->getStyle("H$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+        $sheet->mergeCells("H$indexluar:I$indexluar");
+        $sheet->getStyle("H$indexluar:I$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->setCellValue("J$indexluar", "Kesan Umum");
+        $sheet->getStyle("J$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+        $sheet->mergeCells("J$indexluar:K$indexluar");
+        $sheet->getStyle("J$indexluar:K$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $indexluar++;
+
+        $rangeD35toK39 = "D$indexluar:K" . ($indexluar + 4);
+
+        $sheet->getStyle($rangeD35toK39)->getFont()->setSize(12)->setName("Times New Roman")->setBold("normal");
+        $sheet->getStyle($rangeD35toK39)->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->setCellValue("B$indexluar", "Sangat Tidak Puas");
+        $sheet->getStyle("B$indexluar")->getFont()->setSize(11)->setName("Calibri")->setBold("normal");
+        $sheet->mergeCells("B$indexluar:C$indexluar");
+        $sheet->getStyle("B$indexluar:C$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->setCellValue("D$indexluar", "Jumlah");
+
+        $sheet->setCellValue("E$indexluar", "Percentage");
+
+        $sheet->setCellValue("F$indexluar", $sangat_tidak_puas1);
+
+        $sheet->setCellValue("G$indexluar", $sangat_tidak_puas2);
+
+        $sheet->setCellValue("H$indexluar", $sangat_tidak_puas3);
+
+        $sheet->setCellValue("I$indexluar", $sangat_tidak_puas4);
+
+        $sheet->setCellValue("J$indexluar", $sangat_tidak_puas5);
+
+        $sheet->setCellValue("K$indexluar", $sangat_tidak_puas6);
+
+        $indexluar++;
+
+        $sheet->setCellValue("B$indexluar", "Tidak Puas");
+        $sheet->getStyle("B$indexluar")->getFont()->setSize(11)->setName("Calibri")->setBold("normal");
+        $sheet->mergeCells("B$indexluar:C$indexluar");
+        $sheet->getStyle("B$indexluar:C$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->setCellValue("D$indexluar", $hasil_tes1);
+
+        $sheet->setCellValue("E$indexluar", $hasil_tes2);
+
+        $sheet->setCellValue("F$indexluar", $hasil_tes3);
+
+        $sheet->setCellValue("G$indexluar", $hasil_tes4);
+
+        $sheet->setCellValue("H$indexluar", $hasil_tes5);
+
+        $sheet->setCellValue("I$indexluar", $hasil_tes6);
+
+        $sheet->setCellValue("J$indexluar", $hasil_tes7);
+
+        $sheet->setCellValue("K$indexluar", $hasil_tes8);
+
+        $indexluar++;
+
+        $sheet->setCellValue("B$indexluar", "Netral");
+        $sheet->getStyle("B$indexluar")->getFont()->setSize(11)->setName("Calibri")->setBold("normal");
+        $sheet->mergeCells("B$indexluar:C$indexluar");
+        $sheet->getStyle("B$indexluar:C$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->setCellValue("D$indexluar", $netral1);
+
+        $sheet->setCellValue("E$indexluar", $netral2);
+
+        $sheet->setCellValue("F$indexluar", $netral3);
+
+        $sheet->setCellValue("G$indexluar", $netral4);
+
+        $sheet->setCellValue("H$indexluar", $netral5);
+
+        $sheet->setCellValue("I$indexluar", $netral6);
+
+        $sheet->setCellValue("J$indexluar", $netral7);
+
+        $sheet->setCellValue("K$indexluar", $netral8);
+
+        $indexluar++;
+
+        $sheet->setCellValue("B$indexluar", "Puas");
+        $sheet->getStyle("B$indexluar")->getFont()->setSize(11)->setName("Calibri")->setBold("normal");
+        $sheet->mergeCells("B$indexluar:C$indexluar");
+        $sheet->getStyle("B$indexluar:C$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->setCellValue("D$indexluar", $puas1);
+
+        $sheet->setCellValue("E$indexluar", $puas2);
+
+        $sheet->setCellValue("F$indexluar", $puas3);
+
+        $sheet->setCellValue("G$indexluar", $puas4);
+
+        $sheet->setCellValue("H$indexluar", $puas5);
+
+        $sheet->setCellValue("I$indexluar", $puas6);
+
+        $sheet->setCellValue("J$indexluar", $puas7);
+
+        $sheet->setCellValue("K$indexluar", $puas8);
+
+        $indexluar++;
+
+        $sheet->setCellValue("B$indexluar", "Sangat Puas");
+        $sheet->getStyle("B$indexluar")->getFont()->setSize(11)->setName("Calibri")->setBold("normal");
+        $sheet->mergeCells("B$indexluar:C$indexluar");
+        $sheet->getStyle("B$indexluar:C$indexluar")->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+        $sheet->setCellValue("D$indexluar", $sangat_puas1);
+
+        $sheet->setCellValue("E$indexluar", $sangat_puas2);
+
+        $sheet->setCellValue("F$indexluar", $sangat_puas3);
+
+        $sheet->setCellValue("G$indexluar", $sangat_puas4);
+
+        $sheet->setCellValue("H$indexluar", $sangat_puas5);
+
+        $sheet->setCellValue("I$indexluar", $sangat_puas6);
+
+        $sheet->setCellValue("j$indexluar", $sangat_puas7);
+
+        $sheet->setCellValue("k$indexluar", $sangat_puas8);
+
+        $indexluar++;
+        $indexluar++;
+        $indexluar++;
+
+        $sheet->setCellValue("B$indexluar", "Dibuat oleh");
+        $sheet->getStyle("B$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->mergeCells("B$indexluar:D$indexluar");
+        $sheet->getStyle("B$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold("normal");
+
+        $sheet->mergeCells("I$indexluar:K$indexluar");
+        $sheet->getStyle("I$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->setCellValue("I$indexluar", "Diperiksa");
+        $sheet->getStyle("I$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold("normal");
+
+        $indexluar++;
+
+        $sheet->mergeCells("B$indexluar:D" . ($indexluar + 2));
+        $sheet->mergeCells("I$indexluar:K" . ($indexluar + 2));
+
+        $indexluar++;
+        $indexluar++;
+        $indexluar++;
+
+        $sheet->mergeCells("B$indexluar:D$indexluar");
+        $sheet->mergeCells("I$indexluar:K$indexluar");
+
+
+        $sheet->setCellValue("B$indexluar", "Widiastuti");
+        $sheet->getStyle("B$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("B$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+
+        $sheet->setCellValue("I$indexluar", "Anik Kuswandari");
+        $sheet->getStyle("I$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("I$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+
+        $indexluar++;
+
+        $sheet->mergeCells("B$indexluar:D$indexluar");
+        $sheet->mergeCells("I$indexluar:K$indexluar");
+        $sheet->getStyle("B$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("I$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+
+
+        $sheet->setCellValue("B$indexluar", "Staff T&D");
+        $sheet->getStyle("B$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold("normal");
+
+        $sheet->setCellValue("I$indexluar", "HRM Factory Manager");
+        $sheet->getStyle("I$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold("normal");
+
+        $indexluar++;
+        $indexluar++;
+        $indexluar++;
+
+        $sheet->getStyle("B$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->mergeCells("B$indexluar:K$indexluar");
+        $sheet->setCellValue("B$indexluar", "FM-HRD-34.R.02 #$date");
+        $sheet->getStyle("B$indexluar")->getFont()->setSize(8)->setName("Times New Roman")->setBold("normal");
 
 
         // Simpan ke file Excel
-        $filename = 'export_data.xlsx';
+        $filename = "export_data.xlsx";
         $writer = new Xlsx($spreadsheet);
         $writer->save($filename);
 
@@ -836,190 +784,190 @@ class ReportController extends Controller
     {
         try {
             $report = new Report();
-            $report->id_training = $request->input('id_training');
-            $report->feedback = $request->input('feedback');
-            $report->evaluasi = $request->input('evaluasi');
+            $report->id_training = $request->input("id_training");
+            $report->feedback = $request->input("feedback");
+            $report->evaluasi = $request->input("evaluasi");
             $report->save();
 
-            if ($request->hasFile('gambar')) {
-                foreach ($request->file('gambar') as $image) {
+            if ($request->hasFile("gambar")) {
+                foreach ($request->file("gambar") as $image) {
                     $gambarTraining = new GambarTraining();
                     $gambarTraining->id_report = $report->id_training;
-                    $gambarTraining->gambar = $image->store('gambar_training', 'public');
+                    $gambarTraining->gambar = $image->store("gambar_training", "public");
                     $gambarTraining->save();
                 }
             }
 
-            return redirect()->back()->with('success', 'Data berhasil disimpan.');
+            return redirect()->back()->with("success", "Data berhasil disimpan.");
         } catch (\Exception $e) {
-            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return back()->with("error", "Terjadi kesalahan: " . $e->getMessage());
         }
     }
 
     public function generatePDF(Request $request)
     {
-        $id_training = $request->input('id_training');
-        $alat = $request->input('alat');
-        $durasi = $request->input('durasi');
-        $evaluasi = $request->input('evaluasi');
-        $feedback = $request->input('feedback');
-        $sangat_tidak_puas1 = $request->input('sangat_tidak_puas1');
-        $sangat_tidak_puas2 = $request->input('sangat_tidak_puas2');
-        $sangat_tidak_puas3 = $request->input('sangat_puas3');
-        $sangat_tidak_puas4 = $request->input('sangat_tidak_puas4');
-        $sangat_tidak_puas5 = $request->input('sangat_tidak_puas5');
-        $sangat_tidak_puas6 = $request->input('sangat_tidak_puas6');
-        $hasil_tes1 = $request->input('hasil_tes1');
-        $hasil_tes2 = $request->input('hasil_tes2');
-        $hasil_tes3 = $request->input('hasil_tes3');
-        $hasil_tes4 = $request->input('hasil_tes4');
-        $hasil_tes5 = $request->input('hasil_tes5');
-        $hasil_tes6 = $request->input('hasil_tes6');
-        $hasil_tes7 = $request->input('hasil_tes7');
-        $hasil_tes8 = $request->input('hasil_tes8');
-        $netral1 = $request->input('netral1');
-        $netral2 = $request->input('netral2');
-        $netral3 = $request->input('netral3');
-        $netral4 = $request->input('netral4');
-        $netral5 = $request->input('netral5');
-        $netral6 = $request->input('netral6');
-        $netral7 = $request->input('netral7');
-        $netral8 = $request->input('netral8');
-        $puas1 = $request->input('puas1');
-        $puas2 = $request->input('puas2');
-        $puas3 = $request->input('puas3');
-        $puas4 = $request->input('puas4');
-        $puas5 = $request->input('puas5');
-        $puas6 = $request->input('puas6');
-        $puas7 = $request->input('puas7');
-        $puas8 = $request->input('puas8');
-        $sangat_puas1 = $request->input('sangat_puas1');
-        $sangat_puas2 = $request->input('sangat_puas2');
-        $sangat_puas3 = $request->input('sangat_puas3');
-        $sangat_puas4 = $request->input('sangat_puas4');
-        $sangat_puas5 = $request->input('sangat_puas5');
-        $sangat_puas6 = $request->input('sangat_puas6');
-        $sangat_puas7 = $request->input('sangat_puas7');
-        $sangat_puas8 = $request->input('sangat_puas8');
+        $id_training = $request->input("id_training");
+        $alat = $request->input("alat");
+        $durasi = $request->input("durasi");
+        $evaluasi = $request->input("evaluasi");
+        $feedback = $request->input("feedback");
+        $sangat_tidak_puas1 = $request->input("sangat_tidak_puas1");
+        $sangat_tidak_puas2 = $request->input("sangat_tidak_puas2");
+        $sangat_tidak_puas3 = $request->input("sangat_puas3");
+        $sangat_tidak_puas4 = $request->input("sangat_tidak_puas4");
+        $sangat_tidak_puas5 = $request->input("sangat_tidak_puas5");
+        $sangat_tidak_puas6 = $request->input("sangat_tidak_puas6");
+        $hasil_tes1 = $request->input("hasil_tes1");
+        $hasil_tes2 = $request->input("hasil_tes2");
+        $hasil_tes3 = $request->input("hasil_tes3");
+        $hasil_tes4 = $request->input("hasil_tes4");
+        $hasil_tes5 = $request->input("hasil_tes5");
+        $hasil_tes6 = $request->input("hasil_tes6");
+        $hasil_tes7 = $request->input("hasil_tes7");
+        $hasil_tes8 = $request->input("hasil_tes8");
+        $netral1 = $request->input("netral1");
+        $netral2 = $request->input("netral2");
+        $netral3 = $request->input("netral3");
+        $netral4 = $request->input("netral4");
+        $netral5 = $request->input("netral5");
+        $netral6 = $request->input("netral6");
+        $netral7 = $request->input("netral7");
+        $netral8 = $request->input("netral8");
+        $puas1 = $request->input("puas1");
+        $puas2 = $request->input("puas2");
+        $puas3 = $request->input("puas3");
+        $puas4 = $request->input("puas4");
+        $puas5 = $request->input("puas5");
+        $puas6 = $request->input("puas6");
+        $puas7 = $request->input("puas7");
+        $puas8 = $request->input("puas8");
+        $sangat_puas1 = $request->input("sangat_puas1");
+        $sangat_puas2 = $request->input("sangat_puas2");
+        $sangat_puas3 = $request->input("sangat_puas3");
+        $sangat_puas4 = $request->input("sangat_puas4");
+        $sangat_puas5 = $request->input("sangat_puas5");
+        $sangat_puas6 = $request->input("sangat_puas6");
+        $sangat_puas7 = $request->input("sangat_puas7");
+        $sangat_puas8 = $request->input("sangat_puas8");
 
         $reportData = Training::select(
-            'training.nama_training',
-            'training.materi_training',
-            'training.waktu_mulai',
-            'training.tanggal_training',
-            'training.pic',
-            'training.lokasi_training',
-            'training.status_training',
-            'users.nik',
-            'users.name',
-            'users.jenis_kelamin',
-            'departement.nama as department_name',
-            'absensi.status_absen',
-            'test_pesertas.hasil_test',
-            'test_pesertas.id_test',
-            'test.jenis_test',
-            'report.*',
-            'gambar_training.gambar'
+            "training.nama_training",
+            "training.materi_training",
+            "training.waktu_mulai",
+            "training.tanggal_training",
+            "training.pic",
+            "training.lokasi_training",
+            "training.status_training",
+            "users.nik",
+            "users.name",
+            "users.jenis_kelamin",
+            "departement.nama as department_name",
+            "absensi.status_absen",
+            "test_pesertas.hasil_test",
+            "test_pesertas.id_test",
+            "test.jenis_test",
+            "report.*",
+            "gambar_training.gambar"
         )
-            ->join('detail_trainings', 'training.id', '=', 'detail_trainings.id_training')
-            ->join('users', 'detail_trainings.id_user', '=', 'users.id')
-            ->join('departement', 'detail_trainings.id_departement', '=', 'departement.id')
-            ->leftJoin('absensi', 'detail_trainings.id_absen', '=', 'absensi.id')
-            ->leftJoin('test_pesertas', 'detail_trainings.id_user', '=', 'test_pesertas.id_user')
-            ->leftJoin('report', 'training.id', '=', 'report.id_training')
-            ->leftJoin('gambar_training', 'report.id_training', '=', 'gambar_training.id_report')
-            ->leftJoin('test', 'test_pesertas.id_test', '=', 'test.id')
-            ->where('training.id', $id_training)
+            ->join("detail_trainings", "training.id", "=", "detail_trainings.id_training")
+            ->join("users", "detail_trainings.id_user", "=", "users.id")
+            ->join("departement", "detail_trainings.id_departement", "=", "departement.id")
+            ->leftJoin("absensi", "detail_trainings.id_absen", "=", "absensi.id")
+            ->leftJoin("test_pesertas", "detail_trainings.id_user", "=", "test_pesertas.id_user")
+            ->leftJoin("report", "training.id", "=", "report.id_training")
+            ->leftJoin("gambar_training", "report.id_training", "=", "gambar_training.id_report")
+            ->leftJoin("test", "test_pesertas.id_test", "=", "test.id")
+            ->where("training.id", $id_training)
             ->distinct()
             ->get();
         // dd($reportData);
 
-        $genderCount = $reportData->groupBy('jenis_kelamin')->map(function ($item, $key) {
+        $genderCount = $reportData->groupBy("jenis_kelamin")->map(function ($item, $key) {
             return count($item);
         });
-        $lakiCount = $genderCount['laki'] ?? 0;
-        $perempuanCount = $genderCount['perempuan'] ?? 0;
+        $lakiCount = $genderCount["laki"] ?? 0;
+        $perempuanCount = $genderCount["perempuan"] ?? 0;
         $totalAttendance = $reportData->count();
-        $hadirCount = $reportData->where('status_absen', 'hadir')->count();
-        $preTestResults = $reportData->where('id_test', 1)->pluck('hasil_test');
-        $postTestResults = $reportData->where('id_test', 2)->pluck('hasil_test');
+        $hadirCount = $reportData->where("status_absen", "hadir")->count();
+        $preTestResults = $reportData->where("id_test", 1)->pluck("hasil_test");
+        $postTestResults = $reportData->where("id_test", 2)->pluck("hasil_test");
         $averagePreTest = $preTestResults->avg();
         $averagePostTest = $postTestResults->avg();
         if ($reportData->isEmpty()) {
-            $materi_training = '';
-            $waktu_mulai = '';
-            $tanggal_training = '';
-            $lokasi_training = '';
-            $nama_training = '';
-            $pic = '';
-            $status_training = '';
-            $gambarTraining = '';
-            $html = view('pdf.report', compact(
-                'reportData',
-                'id_training',
-                'materi_training',
-                'waktu_mulai',
-                'nama_training',
-                'tanggal_training',
-                'lokasi_training',
-                'pic',
-                'gambarTraining',
-                'status_training',
-                'genderCount',
-                'averagePreTest',
-                'averagePostTest',
-                'totalAttendance',
-                'hadirCount',
-                'lakiCount',
-                'perempuanCount',
-                'sangat_tidak_puas1',
-                'sangat_tidak_puas2',
-                'sangat_tidak_puas3',
-                'sangat_tidak_puas4',
-                'sangat_tidak_puas5',
-                'sangat_tidak_puas6',
-                'hasil_tes1',
-                'hasil_tes2',
-                'hasil_tes3',
-                'hasil_tes4',
-                'hasil_tes5',
-                'hasil_tes6',
-                'hasil_tes7',
-                'hasil_tes8',
-                'netral1',
-                'netral2',
-                'netral3',
-                'netral4',
-                'netral5',
-                'netral6',
-                'netral7',
-                'netral8',
-                'puas1',
-                'puas2',
-                'puas3',
-                'puas4',
-                'puas5',
-                'puas6',
-                'puas7',
-                'puas8',
-                'sangat_puas1',
-                'sangat_puas2',
-                'sangat_puas3',
-                'sangat_puas4',
-                'sangat_puas5',
-                'sangat_puas6',
-                'sangat_puas7',
-                'sangat_puas8',
-                'alat',
-                'durasi',
-                'feedback',
-                'alat'
+            $materi_training = "";
+            $waktu_mulai = "";
+            $tanggal_training = "";
+            $lokasi_training = "";
+            $nama_training = "";
+            $pic = "";
+            $status_training = "";
+            $gambarTraining = "";
+            $html = view("pdf.report", compact(
+                "reportData",
+                "id_training",
+                "materi_training",
+                "waktu_mulai",
+                "nama_training",
+                "tanggal_training",
+                "lokasi_training",
+                "pic",
+                "gambarTraining",
+                "status_training",
+                "genderCount",
+                "averagePreTest",
+                "averagePostTest",
+                "totalAttendance",
+                "hadirCount",
+                "lakiCount",
+                "perempuanCount",
+                "sangat_tidak_puas1",
+                "sangat_tidak_puas2",
+                "sangat_tidak_puas3",
+                "sangat_tidak_puas4",
+                "sangat_tidak_puas5",
+                "sangat_tidak_puas6",
+                "hasil_tes1",
+                "hasil_tes2",
+                "hasil_tes3",
+                "hasil_tes4",
+                "hasil_tes5",
+                "hasil_tes6",
+                "hasil_tes7",
+                "hasil_tes8",
+                "netral1",
+                "netral2",
+                "netral3",
+                "netral4",
+                "netral5",
+                "netral6",
+                "netral7",
+                "netral8",
+                "puas1",
+                "puas2",
+                "puas3",
+                "puas4",
+                "puas5",
+                "puas6",
+                "puas7",
+                "puas8",
+                "sangat_puas1",
+                "sangat_puas2",
+                "sangat_puas3",
+                "sangat_puas4",
+                "sangat_puas5",
+                "sangat_puas6",
+                "sangat_puas7",
+                "sangat_puas8",
+                "alat",
+                "durasi",
+                "feedback",
+                "alat"
             ))->render();
-            $pdf = app('dompdf.wrapper');
+            $pdf = app("dompdf.wrapper");
             $pdf->loadHTML($html);
-            $pdf->setPaper('landscape');
+            $pdf->setPaper("landscape");
 
-            return $pdf->download('training_report.pdf');
+            return $pdf->download("training_report.pdf");
         }
 
         $materi_training = $reportData[0]->materi_training;
@@ -1030,145 +978,145 @@ class ReportController extends Controller
         $pic = $reportData[0]->pic;
         $status_training = $reportData[0]->status_training;
 
-        $html = view('pdf.report', compact(
-            'reportData',
-            'id_training',
-            'materi_training',
-            'waktu_mulai',
-            'nama_training',
-            'tanggal_training',
-            'lokasi_training',
-            'pic',
-            'status_training',
-            'genderCount',
-            'averagePreTest',
-            'averagePostTest',
-            'totalAttendance',
-            'hadirCount',
-            'lakiCount',
-            'perempuanCount',
-            'sangat_tidak_puas1',
-            'sangat_tidak_puas2',
-            'sangat_tidak_puas3',
-            'sangat_tidak_puas4',
-            'sangat_tidak_puas5',
-            'sangat_tidak_puas6',
-            'hasil_tes1',
-            'hasil_tes2',
-            'hasil_tes3',
-            'hasil_tes4',
-            'hasil_tes5',
-            'hasil_tes6',
-            'hasil_tes7',
-            'hasil_tes8',
-            'netral1',
-            'netral2',
-            'netral3',
-            'netral4',
-            'netral5',
-            'netral6',
-            'netral7',
-            'netral8',
-            'puas1',
-            'puas2',
-            'puas3',
-            'puas4',
-            'puas5',
-            'puas6',
-            'puas7',
-            'puas8',
-            'sangat_puas1',
-            'sangat_puas2',
-            'sangat_puas3',
-            'sangat_puas4',
-            'sangat_puas5',
-            'sangat_puas6',
-            'sangat_puas7',
-            'sangat_puas8',
-            'alat',
-            'durasi',
-            'feedback',
-            'alat'
+        $html = view("pdf.report", compact(
+            "reportData",
+            "id_training",
+            "materi_training",
+            "waktu_mulai",
+            "nama_training",
+            "tanggal_training",
+            "lokasi_training",
+            "pic",
+            "status_training",
+            "genderCount",
+            "averagePreTest",
+            "averagePostTest",
+            "totalAttendance",
+            "hadirCount",
+            "lakiCount",
+            "perempuanCount",
+            "sangat_tidak_puas1",
+            "sangat_tidak_puas2",
+            "sangat_tidak_puas3",
+            "sangat_tidak_puas4",
+            "sangat_tidak_puas5",
+            "sangat_tidak_puas6",
+            "hasil_tes1",
+            "hasil_tes2",
+            "hasil_tes3",
+            "hasil_tes4",
+            "hasil_tes5",
+            "hasil_tes6",
+            "hasil_tes7",
+            "hasil_tes8",
+            "netral1",
+            "netral2",
+            "netral3",
+            "netral4",
+            "netral5",
+            "netral6",
+            "netral7",
+            "netral8",
+            "puas1",
+            "puas2",
+            "puas3",
+            "puas4",
+            "puas5",
+            "puas6",
+            "puas7",
+            "puas8",
+            "sangat_puas1",
+            "sangat_puas2",
+            "sangat_puas3",
+            "sangat_puas4",
+            "sangat_puas5",
+            "sangat_puas6",
+            "sangat_puas7",
+            "sangat_puas8",
+            "alat",
+            "durasi",
+            "feedback",
+            "alat"
         ))->render();
-        $pdf = app('dompdf.wrapper');
+        $pdf = app("dompdf.wrapper");
         $pdf->loadHTML($html);
-        $pdf->setPaper('landscape');
+        $pdf->setPaper("landscape");
 
-        return $pdf->download('training_report.pdf');
+        return $pdf->download("training_report.pdf");
     }
 
     public function index(Request $request)
     {
-        $id_training = $request->input('id_training');
+        $id_training = $request->input("id_training");
         $reportData = Training::select(
-            'training.nama_training',
-            'training.materi_training',
-            'training.waktu_mulai',
-            'training.tanggal_training',
-            'training.pic',
-            'training.lokasi_training',
-            'training.status_training',
-            'users.nik',
-            'users.name',
-            'users.jenis_kelamin',
-            'departement.nama as department_name',
-            'absensi.status_absen',
-            'test_pesertas.hasil_test',
-            'test_pesertas.id_test',
-            'test.jenis_test',
-            'report.*',
-            'gambar_training.gambar'
+            "training.nama_training",
+            "training.materi_training",
+            "training.waktu_mulai",
+            "training.tanggal_training",
+            "training.pic",
+            "training.lokasi_training",
+            "training.status_training",
+            "users.nik",
+            "users.name",
+            "users.jenis_kelamin",
+            "departement.nama as department_name",
+            "absensi.status_absen",
+            "test_pesertas.hasil_test",
+            "test_pesertas.id_test",
+            "test.jenis_test",
+            "report.*",
+            "gambar_training.gambar"
         )
-            ->join('detail_trainings', 'training.id', '=', 'detail_trainings.id_training')
-            ->join('users', 'detail_trainings.id_user', '=', 'users.id')
-            ->join('departement', 'detail_trainings.id_departement', '=', 'departement.id')
-            ->leftJoin('absensi', 'detail_trainings.id_absen', '=', 'absensi.id')
-            ->leftJoin('test_pesertas', 'detail_trainings.id_user', '=', 'test_pesertas.id_user')
-            ->leftJoin('report', 'training.id', '=', 'report.id_training')
-            ->leftJoin('gambar_training', 'report.id_training', '=', 'gambar_training.id_report')
-            ->leftJoin('test', 'test_pesertas.id_test', '=', 'test.id')
-            ->where('training.id', $id_training)
+            ->join("detail_trainings", "training.id", "=", "detail_trainings.id_training")
+            ->join("users", "detail_trainings.id_user", "=", "users.id")
+            ->join("departement", "detail_trainings.id_departement", "=", "departement.id")
+            ->leftJoin("absensi", "detail_trainings.id_absen", "=", "absensi.id")
+            ->leftJoin("test_pesertas", "detail_trainings.id_user", "=", "test_pesertas.id_user")
+            ->leftJoin("report", "training.id", "=", "report.id_training")
+            ->leftJoin("gambar_training", "report.id_training", "=", "gambar_training.id_report")
+            ->leftJoin("test", "test_pesertas.id_test", "=", "test.id")
+            ->where("training.id", $id_training)
             ->distinct()
             ->get();
         // dd($reportData);
-        $genderCount = $reportData->groupBy('jenis_kelamin')->map(function ($item, $key) {
+        $genderCount = $reportData->groupBy("jenis_kelamin")->map(function ($item, $key) {
             return count($item);
         });
-        $lakiCount = $genderCount['laki'] ?? 0;
-        $perempuanCount = $genderCount['perempuan'] ?? 0;
+        $lakiCount = $genderCount["laki"] ?? 0;
+        $perempuanCount = $genderCount["perempuan"] ?? 0;
         $totalAttendance = $reportData->count();
-        $hadirCount = $reportData->where('status_absen', 'hadir')->count();
-        $preTestResults = $reportData->where('id_test', 1)->pluck('hasil_test');
-        $postTestResults = $reportData->where('id_test', 2)->pluck('hasil_test');
+        $hadirCount = $reportData->where("status_absen", "hadir")->count();
+        $preTestResults = $reportData->where("id_test", 1)->pluck("hasil_test");
+        $postTestResults = $reportData->where("id_test", 2)->pluck("hasil_test");
         $averagePreTest = $preTestResults->avg();
         $averagePostTest = $postTestResults->avg();
         if ($reportData->isEmpty()) {
-            $materi_training = '';
-            $waktu_mulai = '';
-            $tanggal_training = '';
-            $lokasi_training = '';
-            $pic = '';
-            $nama_training = '';
-            $status_training = '';
-            $gambar_training = '';
-            return view('panitia.training.tReport', compact(
-                'reportData',
-                'id_training',
-                'nama_training',
-                'materi_training',
-                'waktu_mulai',
-                'tanggal_training',
-                'lokasi_training',
-                'pic',
-                'gambar_training',
-                'status_training',
-                'genderCount',
-                'averagePreTest',
-                'averagePostTest',
-                'totalAttendance',
-                'hadirCount',
-                'lakiCount',
-                'perempuanCount'
+            $materi_training = "";
+            $waktu_mulai = "";
+            $tanggal_training = "";
+            $lokasi_training = "";
+            $pic = "";
+            $nama_training = "";
+            $status_training = "";
+            $gambar_training = "";
+            return view("panitia.training.tReport", compact(
+                "reportData",
+                "id_training",
+                "nama_training",
+                "materi_training",
+                "waktu_mulai",
+                "tanggal_training",
+                "lokasi_training",
+                "pic",
+                "gambar_training",
+                "status_training",
+                "genderCount",
+                "averagePreTest",
+                "averagePostTest",
+                "totalAttendance",
+                "hadirCount",
+                "lakiCount",
+                "perempuanCount"
             ));
         }
 
@@ -1181,24 +1129,24 @@ class ReportController extends Controller
         $status_training = $reportData[0]->status_training;
         $gambar_training = $reportData[0]->gambar;
 
-        return view('panitia.training.tReport', compact(
-            'reportData',
-            'id_training',
-            'nama_training',
-            'materi_training',
-            'waktu_mulai',
-            'tanggal_training',
-            'lokasi_training',
-            'pic',
-            'status_training',
-            'genderCount',
-            'averagePreTest',
-            'averagePostTest',
-            'totalAttendance',
-            'hadirCount',
-            'lakiCount',
-            'gambar_training',
-            'perempuanCount'
+        return view("panitia.training.tReport", compact(
+            "reportData",
+            "id_training",
+            "nama_training",
+            "materi_training",
+            "waktu_mulai",
+            "tanggal_training",
+            "lokasi_training",
+            "pic",
+            "status_training",
+            "genderCount",
+            "averagePreTest",
+            "averagePostTest",
+            "totalAttendance",
+            "hadirCount",
+            "lakiCount",
+            "gambar_training",
+            "perempuanCount"
         ));
     }
 
