@@ -83,6 +83,12 @@ class ReportController extends Controller
             ->groupBy('users.name', 'users.nik')
             ->get();
 
+        $gambarTraining = GambarTraining::join('report', 'gambar_training.id_report', '=', 'report.id')
+            ->where('report.id_training', '=', 1) // Ganti 1 dengan nilai yang sesuai
+            ->select('gambar_training.gambar')
+            ->get();
+
+
         $id_training = $request->input("id_training");
         $alat = $request->input("alat");
         $durasi = $request->input("durasi");
@@ -712,6 +718,44 @@ class ReportController extends Controller
         $sheet->setCellValue("j$indexluar", $sangat_puas7);
 
         $sheet->setCellValue("k$indexluar", $sangat_puas8);
+
+        $indexluar++;
+        $indexluar++;
+
+        $sheet->setCellValue("B$indexluar", "5");
+        $sheet->getStyle("B$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+        $sheet->getStyle("B$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+
+        $sheet->mergeCells("C$indexluar:K$indexluar");
+        $sheet->setCellValue("C$indexluar", "Gambar Training");
+        $sheet->getStyle("C$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
+
+        $indexluar++;
+
+
+        foreach ($gambarTraining as $gambar) {
+            $indexluar++;
+            // Path ke file gambar di storage Laravel
+            $imagePath = storage_path("app/public/{$gambar->gambar}");
+
+            // Menyisipkan gambar ke dalam sel
+            $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+            $drawing->setPath($imagePath);
+            $drawing->setCoordinates("B$indexluar");
+            $drawing->setHeight(100); // Sesuaikan dengan ukuran yang diinginkan
+            $drawing->setWidth(100);  // Sesuaikan dengan ukuran yang diinginkan
+
+            // Menyisipkan gambar ke dalam worksheet
+            $sheet->mergeCells("B$indexluar:K" . ($indexluar + 6));
+            $sheet->getStyle("B$indexluar")->getAlignment()->setHorizontal("center")->setVertical("center");
+            $sheet->getStyle("B$indexluar:K" . ($indexluar + 6))->getBorders()->getAllBorders()->setBorderStyle("medium");
+
+            $drawings = $sheet->getDrawingCollection();
+            $drawings[] = $drawing;
+
+            $indexluar += 7; // Sesuaikan dengan kebutuhan Anda
+
+        }
 
         $indexluar++;
         $indexluar++;
