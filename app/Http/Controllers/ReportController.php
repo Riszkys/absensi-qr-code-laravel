@@ -427,6 +427,7 @@ class ReportController extends Controller
         $sheet->getStyle("C$indexluar")->getFont()->setSize(12)->setName("Times New Roman")->setBold("bold");
 
         $indexluar++;
+        $indexluar++;
 
         $sheet->getStyle("B$indexluar:K$indexluar")->getFill()->setFillType("solid")->getStartColor()->setRGB("98FB98"); // Hijau Muda
 
